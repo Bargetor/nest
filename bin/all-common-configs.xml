@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- this file is reserved,it's main config file-->
-
-<allCommonConfigs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="all-common-configs.xsd">
-	<config id="common-config" fileName="config-common.properties" className="com.bargetor.service.common.config.configBeans.CommonConfig"/>
-	<!-- jdbc配置(必要) -->
-	<config id="all-jdbc-config" fileName="all-jdbc-config.properties" className="com.bargetor.service.common.jdbc.beans.AllJdbcConfigFileBean"/>
-</allCommonConfigs>

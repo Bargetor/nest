@@ -1,9 +1,0 @@
-eclipse.preferences.version=1
-encoding//src/com/bargetor/service/common/servlet/InitListener.java=GBK
-encoding//src/com/bargetor/service/common/util/EncryptUtil.java=GBK
-encoding//src/com/bargetor/service/common/util/IOUtil.java=GBK
-encoding//src/com/bargetor/service/common/util/JsonUtil.java=GBK
-encoding//src/com/bargetor/service/common/util/ObjectClone.java=GBK
-encoding//src/com/bargetor/service/common/util/ReflectUtil.java=GBK
-encoding//src/com/bargetor/service/common/util/StringUtil.java=GBK
-encoding//src/com/bargetor/service/common/util/XmlUtil.java=GBK
