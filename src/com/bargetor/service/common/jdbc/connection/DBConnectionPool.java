@@ -12,14 +12,14 @@ import com.bargetor.service.common.jdbc.beans.JDBCConfigBean;
 public class DBConnectionPool {
 	
 	/**
-	 * config:Êı¾İ¿âÅäÖÃ
+	 * config:æ•°æ®åº“é…ç½®
 	 */
 	private JDBCConfigBean config;
 	
 	private List<Connection> freeConnections;
 	
 	/**
-	 * inUsed:ÕıÔÚÊ¹ÓÃÁ¬½ÓÊı
+	 * inUsed:æ­£åœ¨ä½¿ç”¨è¿æ¥æ•°
 	 */
 	private int inUsed;
 	
@@ -31,10 +31,10 @@ public class DBConnectionPool {
 
 	/**
 	 *<p>Title: getConnection</p>
-	 *<p>Description: »ñÈ¡Á¬½Ó</p>
+	 *<p>Description: è·å–è¿æ¥</p>
 	 * @param @param timeout
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  Connection ·µ»ØÀàĞÍ
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  Connection è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public synchronized Connection getConnection(long timeout) {
@@ -45,7 +45,7 @@ public class DBConnectionPool {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			con = findOneConnection(); // ¼ÌĞø»ñµÃÁ¬½Ó
+			con = findOneConnection(); // ç»§ç»­è·å¾—è¿æ¥
 		}
 		if (con != null) {
 			this.freeConnections.remove(0);
@@ -56,9 +56,9 @@ public class DBConnectionPool {
 
 	/**
 	 *<p>Title: getConnection</p>
-	 *<p>Description:»ñÈ¡Á¬½Ó</p>
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  Connection ·µ»ØÀàĞÍ
+	 *<p>Description:è·å–è¿æ¥</p>
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  Connection è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public synchronized Connection getConnection() {
@@ -67,21 +67,21 @@ public class DBConnectionPool {
 	
 	/**
 	 *<p>Title: freeConnection</p>
-	 *<p>Description:¹é»¹Á¬½Ó</p>
-	 * @param @param con Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 *<p>Description:å½’è¿˜è¿æ¥</p>
+	 * @param @param con è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public synchronized void freeConnection(Connection con) {
-		this.freeConnections.add(con);// Ìí¼Óµ½¿ÕÏĞÁ¬½ÓµÄÄ©Î²
+		this.freeConnections.add(con);// æ·»åŠ åˆ°ç©ºé—²è¿æ¥çš„æœ«å°¾
 		this.inUsed--;
 	}
 	
 	/**
 	 *<p>Title: release</p>
-	 *<p>Description:×¢Ïú£¬ÊÍ·ÅËùÓĞÁ¬½Ó</p>
-	 * @param  Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 *<p>Description:æ³¨é”€ï¼Œé‡Šæ”¾æ‰€æœ‰è¿æ¥</p>
+	 * @param  è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public synchronized void release() {
@@ -108,7 +108,7 @@ public class DBConnectionPool {
 			con = (Connection) this.freeConnections.get(0);
 		}else{
 			if (this.config.getMaxConn() == 0 || this.config.getMaxConn() < this.inUsed) {
-				con = null;// ´ïµ½×î´óÁ¬½ÓÊı£¬ÔİÊ±²»ÄÜ»ñµÃÁ¬½ÓÁË¡£
+				con = null;// è¾¾åˆ°æœ€å¤§è¿æ¥æ•°ï¼Œæš‚æ—¶ä¸èƒ½è·å¾—è¿æ¥äº†ã€‚
 			}else{
 				con = addNewConnection();
 			}
@@ -119,9 +119,9 @@ public class DBConnectionPool {
 	
 	/**
 	 *<p>Title: init</p>
-	 *<p>Description:³õÊ¼»¯</p>
-	 * @param  Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 *<p>Description:åˆå§‹åŒ–</p>
+	 * @param  è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	private void init(){
@@ -131,9 +131,9 @@ public class DBConnectionPool {
 	
 	/**
 	 *<p>Title: initConnection</p>
-	 *<p>Description:³õÊ¼»¯Á¬½Ó³ØÁ¬½Ó</p>
-	 * @param  Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 *<p>Description:åˆå§‹åŒ–è¿æ¥æ± è¿æ¥</p>
+	 * @param  è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	private void initPoolConnection(){
@@ -146,9 +146,9 @@ public class DBConnectionPool {
 	
 	/**
 	 *<p>Title: addNewConnection</p>
-	 *<p>Description:Ôö¼ÓÒ»¸öĞÂÁ¬½Ó</p>
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  Connection ·µ»ØÀàĞÍ
+	 *<p>Description:å¢åŠ ä¸€ä¸ªæ–°è¿æ¥</p>
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  Connection è¿”å›ç±»å‹
 	 * @throws
 	*/
 	private Connection addNewConnection(){
@@ -161,9 +161,9 @@ public class DBConnectionPool {
 	
 	/**
 	 *<p>Title: buildConnection</p>
-	 *<p>Description:´´½¨Á¬½Ó</p>
-	 * @param  Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 *<p>Description:åˆ›å»ºè¿æ¥</p>
+	 * @param  è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	private Connection buildNewConnection(){

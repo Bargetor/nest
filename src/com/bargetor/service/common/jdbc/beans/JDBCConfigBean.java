@@ -1,9 +1,9 @@
 package com.bargetor.service.common.jdbc.beans;
 
 /**
- * <p>description: Êı¾İ¿âÅäÖÃBEAN</p>
- * <p>Date: 2013-9-20 ÏÂÎç01:49:18</p>
- * <p>modify£º</p>
+ * <p>description: æ•°æ®åº“é…ç½®BEAN</p>
+ * <p>Date: 2013-9-20 ä¸‹åˆ01:49:18</p>
+ * <p>modifyï¼š</p>
  * @author: Madgin
  * @version: 1.0
  */

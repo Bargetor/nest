@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * <p>description: ×Ö·û´®¹¤¾ß</p>
- * <p>Date: 2012-6-20 ÏÂÎç02:43:19</p>
- * <p>modify£º</p>
+ * <p>description: å­—ç¬¦ä¸²å·¥å…·</p>
+ * <p>Date: 2012-6-20 ä¸‹åˆ02:43:19</p>
+ * <p>modifyï¼š</p>
  * @author: majin
  * @version: 1.0
  */
@@ -15,13 +15,13 @@ public class StringUtil {
 	
 	public static String getUUID(){ 
         String s = UUID.randomUUID().toString(); 
-        //È¥µô¡°-¡±·ûºÅ 
+        //å»æ‰â€œ-â€ç¬¦å· 
         return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24); 
     }
 	
 	/**
 	 *<p>Title: isNullStr</p>
-	 *<p>Description:×Ö·û´®ÊÇ·ñÎª¿Õ</p>
+	 *<p>Description:å­—ç¬¦ä¸²æ˜¯å¦ä¸ºç©º</p>
 	 * @param @param str
 	 * @param @return 
 	 * @return  boolean 
@@ -37,7 +37,7 @@ public class StringUtil {
 	
 	/**
 	 *<p>Title: isNullStr</p>
-	 *<p>Description:×Ö·û´®ÊÇ·ñ²»Îª¿Õ</p>
+	 *<p>Description:å­—ç¬¦ä¸²æ˜¯å¦ä¸ä¸ºç©º</p>
 	 * @param @param str
 	 * @param @return 
 	 * @return  boolean 
@@ -49,11 +49,11 @@ public class StringUtil {
 	
 	/**
 	 *<p>Title: changeCharset</p>
-	 *<p>Description:¸Ä±ä×Ö·û´®±àÂë</p>
+	 *<p>Description:æ”¹å˜å­—ç¬¦ä¸²ç¼–ç </p>
 	 * @param str
 	 * @param charsetName
 	 * @return
-	 * @return String ·µ»ØÀàĞÍ
+	 * @return String è¿”å›ç±»å‹
 	 * @throws UnsupportedEncodingException 
 	*/
 	public static String changeCharset(String str,String charsetName) throws UnsupportedEncodingException{
@@ -62,8 +62,8 @@ public class StringUtil {
 	}
 	
 	/**
-	 * joinList(ÒÔÁ¬½Ó·ûÁ¬½Ó×Ö·û´®¼¯ºÏ)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * joinList(ä»¥è¿æ¥ç¬¦è¿æ¥å­—ç¬¦ä¸²é›†åˆ)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param list
 	 * @param joinStr
 	 * @return

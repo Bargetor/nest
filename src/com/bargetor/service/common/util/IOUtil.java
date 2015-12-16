@@ -21,11 +21,11 @@ public class IOUtil {
 	
 	/**
 	 *<p>Title: toString</p>
-	 *<p>Description:输入转换成字符串</p>
+	 *<p>Description:杈撳叆杞崲鎴愬瓧绗︿覆</p>
 	 * @param in
 	 * @param encoding
 	 * @return
-	 * @return String 返回类型
+	 * @return String 杩斿洖绫诲瀷
 	*/
 	public static String toString(InputStream input, String encoding)throws IOException {
 		StringWriter sw = new StringWriter();

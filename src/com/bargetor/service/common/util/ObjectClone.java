@@ -15,74 +15,74 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>description: ¶ÔObject½øĞĞÉî¶È¿ËÂ¡</p>
+ * <p>description: å¯¹Objectè¿›è¡Œæ·±åº¦å…‹éš†</p>
  * <p>Date: Feb 3, 2012 11:38:01 AM</p>
- * <p>modify£º</p>
+ * <p>modifyï¼š</p>
  * @author: majin
  * @version: 1.0
- * </p>Company: ±±¾©ºÏÁ¦½ğÇÅÈí¼ş¼¼ÊõÓĞÏŞÔğÈÎ¹«Ë¾</p>
- * <p>¶ÔÒ»¸öjavaBean¶ÔÏó½øĞĞÉî¶È¿ËÂ¡</p>
- * <p>ÓÅÏÈ¼¶±ğÎª,¹ıÂËÆ÷->»ù±¾ÀàĞÍ->ÌØÊâ¶ÔÏó¿ËÂ¡->ĞòÁĞ»¯¿ËÂ¡->µ÷ÓÃ×ÔÉíÊµÏÖµÄclone·½·¨->µİ¹é¿ËÂ¡->null</p>
+ * </p>Company: åŒ—äº¬åˆåŠ›é‡‘æ¡¥è½¯ä»¶æŠ€æœ¯æœ‰é™è´£ä»»å…¬å¸</p>
+ * <p>å¯¹ä¸€ä¸ªjavaBeanå¯¹è±¡è¿›è¡Œæ·±åº¦å…‹éš†</p>
+ * <p>ä¼˜å…ˆçº§åˆ«ä¸º,è¿‡æ»¤å™¨->åŸºæœ¬ç±»å‹->ç‰¹æ®Šå¯¹è±¡å…‹éš†->åºåˆ—åŒ–å…‹éš†->è°ƒç”¨è‡ªèº«å®ç°çš„cloneæ–¹æ³•->é€’å½’å…‹éš†->null</p>
  */
 @SuppressWarnings("unchecked")
 public class ObjectClone {
-	/** ¹ıÂËÆ÷ */
+	/** è¿‡æ»¤å™¨ */
 	private ObjectClone.cloneFilter filter;
 	private String model;
 	
     /**
      *<p>Title: deepClone</p>
-     *<p>Description:ÀûÓÃµİ¹éµ÷ÓÃ¶Ô¶ÔÏó½øĞĞÉî²ã¿ËÂ¡</p>
+     *<p>Description:åˆ©ç”¨é€’å½’è°ƒç”¨å¯¹å¯¹è±¡è¿›è¡Œæ·±å±‚å…‹éš†</p>
      * @param @param obj
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  Object ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  Object è¿”å›ç±»å‹
      * @throws
     */
 	
     public <T>T deepClone(T obj) throws Exception {
     	if(obj == null) return null;
-    	//¹ıÂËÆ÷
+    	//è¿‡æ»¤å™¨
     	if(this.filter != null && !this.filter.filter(obj)){
     		if(this.model == null) return null;
     		if(ObjectClone.cloneFilter.IMPORT_FILTER_RETURN.equals(this.model))return obj;
     		return null;    		
     	}
-    	//Èç¹ûÊÇ»ù´¡ÀàĞÍ£¬Ö±½Ó·µ»Ø
+    	//å¦‚æœæ˜¯åŸºç¡€ç±»å‹ï¼Œç›´æ¥è¿”å›
     	if(ReflectUtil.isBaseType(obj))return obj;
     	
-    	//ÌØÊâ¶ÔÏó¿ËÂ¡
+    	//ç‰¹æ®Šå¯¹è±¡å…‹éš†
     	ObjectCloneForSpecial cloneForSpecial = new ObjectCloneForSpecial();
     	T newObjForSpecial = cloneForSpecial.cloneForSpecial(obj);
     	if(newObjForSpecial != null) return newObjForSpecial;
     	
-    	//½øĞĞĞòÁĞ»¯¿ËÂ¡
+    	//è¿›è¡Œåºåˆ—åŒ–å…‹éš†
     	T newObjByStrem = cloneByStrem(obj);
     	if(newObjByStrem != null) return newObjByStrem;
     	
-    	//µ÷ÓÃ×ÔÉíÊµÏÖ¿ËÂ¡º¯Êı
+    	//è°ƒç”¨è‡ªèº«å®ç°å…‹éš†å‡½æ•°
     	Method cloneMethod = ReflectUtil.getMethod(obj.getClass(), "clone", new Class[]{});
-    	//Èç¹û¶ÔÏóÊµÏÖÁËCloneableµÄclone·½·¨£¬Ôòµ÷ÓÃ¸Ã·½·¨
+    	//å¦‚æœå¯¹è±¡å®ç°äº†Cloneableçš„cloneæ–¹æ³•ï¼Œåˆ™è°ƒç”¨è¯¥æ–¹æ³•
     	if(cloneMethod != null && ReflectUtil.isInterfaceToAchieve(obj.getClass(), "Cloneable")){
     		T newObjectByClone = (T) cloneMethod.invoke(obj, new Object[]{});
     		return newObjectByClone;
     	}
     	
-    	//Ò»°ãJavaBean¶ÔÏó¿ËÂ¡
-		// getDeclaredFieldsµÃµ½objectÄÚ¶¨ÒåµÄËùÓĞfield
+    	//ä¸€èˆ¬JavaBeanå¯¹è±¡å…‹éš†
+		// getDeclaredFieldså¾—åˆ°objectå†…å®šä¹‰çš„æ‰€æœ‰field
         Field[] fields = obj.getClass().getDeclaredFields();
-		// ÀûÓÃnewInstance·½·¨£¬Éú³ÉÒ»¸ö¿ÕµÄObject
+		// åˆ©ç”¨newInstanceæ–¹æ³•ï¼Œç”Ÿæˆä¸€ä¸ªç©ºçš„Object
         T newObj = (T) obj.getClass().newInstance();
         for (int i = 0, j = fields.length; i < j; i++) {
 			String propertyName = fields[i].getName();
-			// fieldµÄÖµ
+			// fieldçš„å€¼
 			Object propertyValue = ReflectUtil.getProperty(obj, propertyName);
 			if (propertyValue != null) {
-				// Èç¹ûfield²»ÊÇ8ÖÖ»ù±¾ÀàĞÍ£¬»òÕßString£¬ÔòÖ±½Ó¸³Öµ
+				// å¦‚æœfieldä¸æ˜¯8ç§åŸºæœ¬ç±»å‹ï¼Œæˆ–è€…Stringï¼Œåˆ™ç›´æ¥èµ‹å€¼
 				if (ReflectUtil.isBaseType(propertyValue)) {
 					ReflectUtil.setProperty(newObj, propertyName, propertyValue);
 				} else {
-					// Èç¹ûfieldÀàĞÍÊÇÆäËûObjectÇÒÃ»ÓĞÊµÏÖclone·½·¨£¬Ôòµİ¹é¿ËÂ¡
+					// å¦‚æœfieldç±»å‹æ˜¯å…¶ä»–Objectä¸”æ²¡æœ‰å®ç°cloneæ–¹æ³•ï¼Œåˆ™é€’å½’å…‹éš†
 					Object newPropObj = deepClone(propertyValue);
 					ReflectUtil.setProperty(newObj, propertyName, newPropObj);
 				}
@@ -93,13 +93,13 @@ public class ObjectClone {
     
     /**
      *<p>Title: deepClone</p>
-     *<p>Description:´ø¹ıÂËÆ÷µÄÉî¶È¿ËÂ¡</p>
+     *<p>Description:å¸¦è¿‡æ»¤å™¨çš„æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param obj
      * @param @param filter
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws
     */
     public <T>T deepClone(T obj,ObjectClone.cloneFilter filter) throws Exception{
@@ -109,14 +109,14 @@ public class ObjectClone {
     
     /**
      *<p>Title: deepClone</p>
-     *<p>Description:´øÄ£Ê½£¬´ø¹ıÂËÆ÷µÄÉî¶È¿ËÂ¡</p>
+     *<p>Description:å¸¦æ¨¡å¼ï¼Œå¸¦è¿‡æ»¤å™¨çš„æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param obj
      * @param @param filter
      * @param @param model
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws
     */
     public <T>T deepClone (T obj,String model,ObjectClone.cloneFilter filter) throws Exception{
@@ -126,45 +126,45 @@ public class ObjectClone {
 
     /**
      *<p>Title: basicClone</p>
-     *<p>Description:Ö»¶Ô¶ÔÏó½øĞĞÌØÊâ¶ÔÏó¿ËÂ¡ºÍÒ»°ã¿ËÂ¡</p>
+     *<p>Description:åªå¯¹å¯¹è±¡è¿›è¡Œç‰¹æ®Šå¯¹è±¡å…‹éš†å’Œä¸€èˆ¬å…‹éš†</p>
      * @param @param <T>
      * @param @param obj
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws
     */
     public <T>T basicClone(T obj) throws Exception{
     	if(obj == null) return null;
-    	//¹ıÂËÆ÷
+    	//è¿‡æ»¤å™¨
     	if(this.filter != null && !this.filter.filter(obj)){
     		if(this.model == null) return null;
     		if(ObjectClone.cloneFilter.IMPORT_FILTER_RETURN.equals(this.model))return obj;
     		return null;    		
     	}
-    	//Èç¹ûÊÇ»ù´¡ÀàĞÍ£¬Ö±½Ó·µ»Ø
+    	//å¦‚æœæ˜¯åŸºç¡€ç±»å‹ï¼Œç›´æ¥è¿”å›
     	if(ReflectUtil.isBaseType(obj))return obj;
     	
-    	//ÌØÊâ¶ÔÏó¿ËÂ¡
+    	//ç‰¹æ®Šå¯¹è±¡å…‹éš†
     	ObjectCloneForSpecial cloneForSpecial = new ObjectCloneForSpecial();
     	T newObjForSpecial = cloneForSpecial.cloneForSpecial(obj);
     	if(newObjForSpecial != null) return newObjForSpecial;
     	
-    	//Ò»°ãJavaBean¶ÔÏó¿ËÂ¡
-		// getDeclaredFieldsµÃµ½objectÄÚ¶¨ÒåµÄËùÓĞfield
+    	//ä¸€èˆ¬JavaBeanå¯¹è±¡å…‹éš†
+		// getDeclaredFieldså¾—åˆ°objectå†…å®šä¹‰çš„æ‰€æœ‰field
         Field[] fields = obj.getClass().getDeclaredFields();
-		// ÀûÓÃnewInstance·½·¨£¬Éú³ÉÒ»¸ö¿ÕµÄObject
+		// åˆ©ç”¨newInstanceæ–¹æ³•ï¼Œç”Ÿæˆä¸€ä¸ªç©ºçš„Object
         T newObj = (T) obj.getClass().newInstance();
         for (int i = 0, j = fields.length; i < j; i++) {
 			String propertyName = fields[i].getName();
-			// fieldµÄÖµ
+			// fieldçš„å€¼
 			Object propertyValue = ReflectUtil.getProperty(obj, propertyName);
 			if (propertyValue != null) {
-				// Èç¹ûfield²»ÊÇ8ÖÖ»ù±¾ÀàĞÍ£¬»òÕßString£¬ÔòÖ±½Ó¸³Öµ
+				// å¦‚æœfieldä¸æ˜¯8ç§åŸºæœ¬ç±»å‹ï¼Œæˆ–è€…Stringï¼Œåˆ™ç›´æ¥èµ‹å€¼
 				if (ReflectUtil.isBaseType(propertyValue)) {
 					ReflectUtil.setProperty(newObj, propertyName, propertyValue);
 				} else {
-					// Èç¹ûfieldÀàĞÍÊÇÆäËûObjectÇÒÃ»ÓĞÊµÏÖclone·½·¨£¬Ôòµİ¹é¿ËÂ¡
+					// å¦‚æœfieldç±»å‹æ˜¯å…¶ä»–Objectä¸”æ²¡æœ‰å®ç°cloneæ–¹æ³•ï¼Œåˆ™é€’å½’å…‹éš†
 					Object newPropObj = basicClone(propertyValue);
 					ReflectUtil.setProperty(newObj, propertyName, newPropObj);
 				}
@@ -175,13 +175,13 @@ public class ObjectClone {
     
     /**
      *<p>Title: basicClone</p>
-     *<p>Description:´ø¹ıÂËÆ÷µÄÉî¶È¿ËÂ¡</p>
+     *<p>Description:å¸¦è¿‡æ»¤å™¨çš„æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param obj
      * @param @param filter
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws
     */
     public <T>T basicClone(T obj,ObjectClone.cloneFilter filter) throws Exception{
@@ -191,14 +191,14 @@ public class ObjectClone {
     
     /**
      *<p>Title: basicClone</p>
-     *<p>Description:´øÄ£Ê½£¬´ø¹ıÂËÆ÷µÄÉî¶È¿ËÂ¡</p>
+     *<p>Description:å¸¦æ¨¡å¼ï¼Œå¸¦è¿‡æ»¤å™¨çš„æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param obj
      * @param @param filter
      * @param @param model
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws
     */
     public <T>T basicClone (T obj,String model,ObjectClone.cloneFilter filter) throws Exception{
@@ -207,11 +207,11 @@ public class ObjectClone {
     }
     /**
      *<p>Title: clone</p>
-     *<p>Description:¶ÔÏóÇ³¶È¿ËÂ¡</p>
+     *<p>Description:å¯¹è±¡æµ…åº¦å…‹éš†</p>
      * @param @param obj
      * @param @return
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  Object ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  Object è¿”å›ç±»å‹
      * @throws
     */
     public <T>T clone(T obj) throws Exception {
@@ -228,12 +228,12 @@ public class ObjectClone {
     
     /**
      *<p>Title: getterToSetter</p>
-     *<p>Description:°ÑÊı¾İ´Ógetter×ªÒÆµ½setter,²»Îª»ù´¡Êı¾İµÄÔòÉî¶È¿ËÂ¡</p>
+     *<p>Description:æŠŠæ•°æ®ä»getterè½¬ç§»åˆ°setter,ä¸ä¸ºåŸºç¡€æ•°æ®çš„åˆ™æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param getter
      * @param @param setter
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws Exception 
      * @throws
     */
@@ -250,12 +250,12 @@ public class ObjectClone {
     
     /**
      *<p>Title: getterToSetter</p>
-     *<p>Description:°ÑÊı¾İ´Ógetter×ªÒÆµ½setter,Ö»×ö»ù´¡Êı¾İ×ªÒÆ(°üÀ¨Date)</p>
+     *<p>Description:æŠŠæ•°æ®ä»getterè½¬ç§»åˆ°setter,åªåšåŸºç¡€æ•°æ®è½¬ç§»(åŒ…æ‹¬Date)</p>
      * @param @param <T>
      * @param @param getter
      * @param @param setter
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  T ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  T è¿”å›ç±»å‹
      * @throws Exception 
      * @throws
     */
@@ -273,13 +273,13 @@ public class ObjectClone {
     
     /**
      *<p>Title: getterToSetterByMethod</p>
-     *<p>Description:°ÑÊı¾İ´Ógetter×ªÒÆµ½setter,²»Îª»ù´¡Êı¾İµÄÔòÉî¶È¿ËÂ¡</p>
+     *<p>Description:æŠŠæ•°æ®ä»getterè½¬ç§»åˆ°setter,ä¸ä¸ºåŸºç¡€æ•°æ®çš„åˆ™æ·±åº¦å…‹éš†</p>
      * @param @param <T>
      * @param @param <V>
      * @param @param getter
      * @param @param setter
-     * @param @throws Exception Éè¶¨ÎÄ¼ş
-     * @return  void ·µ»ØÀàĞÍ
+     * @param @throws Exception è®¾å®šæ–‡ä»¶
+     * @return  void è¿”å›ç±»å‹
      * @throws
     */
     public <T,V>void getterToSetterByMethod(T getter,V setter) throws Exception{
@@ -298,10 +298,10 @@ public class ObjectClone {
       
     /**
      *<p>Title: cloneByStrem</p>
-     *<p>Description:¶Ô¶ÔÏó½øĞĞĞòÁĞ»¯¿ËÂ¡</p>
+     *<p>Description:å¯¹å¯¹è±¡è¿›è¡Œåºåˆ—åŒ–å…‹éš†</p>
      * @param @param src
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Object ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Object è¿”å›ç±»å‹
      * @throws
     */
 	private <T>T cloneByStrem(T src) {
@@ -330,24 +330,24 @@ public class ObjectClone {
     
 /****************************************** ObjectCloneForSpecial ********************************************************/
     /**
-     * <p>description: ÌØÊâ¶ÔÏóµÄ¿ËÂ¡</p>
+     * <p>description: ç‰¹æ®Šå¯¹è±¡çš„å…‹éš†</p>
      * <p>Date: Feb 3, 2012 2:01:51 PM</p>
-     * <p>modify£º</p>
+     * <p>modifyï¼š</p>
      * @author: majin
      * @version: 1.0
-     * </p>Company: ±±¾©ºÏÁ¦½ğÇÅÈí¼ş¼¼ÊõÓĞÏŞÔğÈÎ¹«Ë¾</p>
+     * </p>Company: åŒ—äº¬åˆåŠ›é‡‘æ¡¥è½¯ä»¶æŠ€æœ¯æœ‰é™è´£ä»»å…¬å¸</p>
      */
     private class ObjectCloneForSpecial {
     	
     	/**
     	 *<p>Title: cloneForMap</p>
-    	 *<p>Description:¶ÔMap½øĞĞ¿ËÂ¡</p>
+    	 *<p>Description:å¯¹Mapè¿›è¡Œå…‹éš†</p>
     	 * @param @param <T>
     	 * @param @param <V>
     	 * @param @param map
     	 * @param @return
-    	 * @param @throws Exception Éè¶¨ÎÄ¼ş
-    	 * @return  Map<T,V> ·µ»ØÀàĞÍ
+    	 * @param @throws Exception è®¾å®šæ–‡ä»¶
+    	 * @return  Map<T,V> è¿”å›ç±»å‹
     	 * @throws
     	*/
     	public <T,V>Map<T,V> cloneForMap(Map<T,V> map) throws Exception{
@@ -365,12 +365,12 @@ public class ObjectClone {
     	
     	/**
     	 *<p>Title: cloneForCollection</p>
-    	 *<p>Description:¶Ô¼¯ºÏ½øĞĞ¿ËÂ¡</p>
+    	 *<p>Description:å¯¹é›†åˆè¿›è¡Œå…‹éš†</p>
     	 * @param @param <T>
     	 * @param @param collection
     	 * @param @return
-    	 * @param @throws Exception Éè¶¨ÎÄ¼ş
-    	 * @return  Collection ·µ»ØÀàĞÍ
+    	 * @param @throws Exception è®¾å®šæ–‡ä»¶
+    	 * @return  Collection è¿”å›ç±»å‹
     	 * @throws
     	*/
     	public <T>Collection<T> cloneForCollection (Collection<T> collection) throws Exception{
@@ -384,11 +384,11 @@ public class ObjectClone {
     	
     	/**
     	 *<p>Title: cloneForClob</p>
-    	 *<p>Description:¶ÔCLOB½øĞĞ¿ËÂ¡</p>
+    	 *<p>Description:å¯¹CLOBè¿›è¡Œå…‹éš†</p>
     	 * @param @param clob
     	 * @param @return
-    	 * @param @throws Exception Éè¶¨ÎÄ¼ş
-    	 * @return  Clob ·µ»ØÀàĞÍ
+    	 * @param @throws Exception è®¾å®šæ–‡ä»¶
+    	 * @return  Clob è¿”å›ç±»å‹
     	 * @throws
     	*/
     	public Clob cloneForClob(Clob clob) throws Exception{
@@ -397,11 +397,11 @@ public class ObjectClone {
     	
     	/**
     	 *<p>Title: cloneForClob</p>
-    	 *<p>Description:¶ÔCLOB½øĞĞ¿ËÂ¡</p>
+    	 *<p>Description:å¯¹CLOBè¿›è¡Œå…‹éš†</p>
     	 * @param @param clob
     	 * @param @return
-    	 * @param @throws Exception Éè¶¨ÎÄ¼ş
-    	 * @return  Clob ·µ»ØÀàĞÍ
+    	 * @param @throws Exception è®¾å®šæ–‡ä»¶
+    	 * @return  Clob è¿”å›ç±»å‹
     	 * @throws
     	*/
     	public Blob cloneForBlob(Blob blob) throws Exception{
@@ -410,13 +410,13 @@ public class ObjectClone {
     	
     	/**
     	 *<p>Title: cloneForSpecial</p>
-    	 *<p>Description:ÌØÊâÀàĞÍ¿ËÂ¡</p>
-    	 *<p>List,Map,Set,StackµÈ</p>
+    	 *<p>Description:ç‰¹æ®Šç±»å‹å…‹éš†</p>
+    	 *<p>List,Map,Set,Stackç­‰</p>
     	 * @param @param <T>
     	 * @param @param obj
     	 * @param @return
-    	 * @param @throws Exception Éè¶¨ÎÄ¼ş
-    	 * @return  T ·µ»ØÀàĞÍ
+    	 * @param @throws Exception è®¾å®šæ–‡ä»¶
+    	 * @return  T è¿”å›ç±»å‹
     	 * @throws
     	*/
     	public <T>T cloneForSpecial(T obj) throws Exception{
@@ -430,25 +430,25 @@ public class ObjectClone {
     }
     
     /**
-     * <p>description: ¹ıÂËÆ÷½Ó¿Ú,¹ıÂËÆ÷,ÎªÕæ¿ËÂ¡,Îª¼ÙÎŞ¶¯×÷</p>
+     * <p>description: è¿‡æ»¤å™¨æ¥å£,è¿‡æ»¤å™¨,ä¸ºçœŸå…‹éš†,ä¸ºå‡æ— åŠ¨ä½œ</p>
      * <p>Date: Feb 8, 2012 2:44:08 PM</p>
-     * <p>modify£º</p>
+     * <p>modifyï¼š</p>
      * @author: majin
      * @version: 1.0
-     * </p>Company: ±±¾©ºÏÁ¦½ğÇÅÈí¼ş¼¼ÊõÓĞÏŞÔğÈÎ¹«Ë¾</p>
+     * </p>Company: åŒ—äº¬åˆåŠ›é‡‘æ¡¥è½¯ä»¶æŠ€æœ¯æœ‰é™è´£ä»»å…¬å¸</p>
      */
     public interface cloneFilter {
-    	/** ¹ıÂËÊ§°ÜºóÎŞ¶¯×÷ */
+    	/** è¿‡æ»¤å¤±è´¥åæ— åŠ¨ä½œ */
     	public final static String NULL_FILTER_RETURN = "0";
-    	/** ¹ıÂËÊ§°Üºó·µ»Øµ±Ç°¿ËÂ¡¶ÔÏóÒıÓÃ */
+    	/** è¿‡æ»¤å¤±è´¥åè¿”å›å½“å‰å…‹éš†å¯¹è±¡å¼•ç”¨ */
     	public final static String IMPORT_FILTER_RETURN = "1";
     	/**
     	 *<p>Title: filter</p>
-    	 *<p>Description:¹ıÂËÆ÷,ÎªÕæ¿ËÂ¡,Îª¼ÙÎŞ¶¯×÷</p>
+    	 *<p>Description:è¿‡æ»¤å™¨,ä¸ºçœŸå…‹éš†,ä¸ºå‡æ— åŠ¨ä½œ</p>
     	 * @param @param <T>
     	 * @param @param obj
-    	 * @param @return Éè¶¨ÎÄ¼ş
-    	 * @return  boolean ·µ»ØÀàĞÍ
+    	 * @param @return è®¾å®šæ–‡ä»¶
+    	 * @return  boolean è¿”å›ç±»å‹
     	 * @throws
     	*/    	
     	public <T>boolean filter(T obj);

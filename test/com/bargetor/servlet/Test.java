@@ -8,7 +8,7 @@ public class Test {
 	 *<p>Title: main</p>
 	 *<p>Description:TODO</p>
 	 * @param args
-	 * @return void ·µ»ØÀàĞÍ
+	 * @return void è¿”å›ç±»å‹
 	 */
 
 	public static void main(String[] args) {

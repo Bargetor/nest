@@ -7,9 +7,9 @@ import com.bargetor.service.common.config.AllCommonConfigsLoader;
 import com.bargetor.service.common.jdbc.connection.DBConnectionManager;
 
 /**
- * <p>description: ³õÊ¼»¯¼àÌıÆ÷£¬ÓÃÓÚ¹«¹²Ä£¿éµÄ³õÊ¼»¯</p>
- * <p>Date: 2013-9-23 ÏÂÎç07:11:20</p>
- * <p>modify£º</p>
+ * <p>description: åˆå§‹åŒ–ç›‘å¬å™¨ï¼Œç”¨äºå…¬å…±æ¨¡å—çš„åˆå§‹åŒ–</p>
+ * <p>Date: 2013-9-23 ä¸‹åˆ07:11:20</p>
+ * <p>modifyï¼š</p>
  * @author: Madgin
  * @version: 1.0
  */

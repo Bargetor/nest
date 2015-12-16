@@ -15,9 +15,9 @@ import com.bargetor.service.common.util.ReflectUtil.BaseType;
 import com.bargetor.service.test.Test;
 
 /**
- * <p>description: Json¹¤¾ß</p>
- * <p>Date: 2013-9-23 ÉÏÎç11:55:45</p>
- * <p>modify£º</p>
+ * <p>description: Jsonå·¥å…·</p>
+ * <p>Date: 2013-9-23 ä¸Šåˆ11:55:45</p>
+ * <p>modifyï¼š</p>
  * @author: Madgin
  * @version: 1.0
  */
@@ -25,11 +25,11 @@ public class JsonUtil {
 	
 	/**
 	 *<p>Title: beanToJson</p>
-	 *<p>Description:¶ÔÏó×ª»»³Éjson¶ÔÏó</p>
+	 *<p>Description:å¯¹è±¡è½¬æ¢æˆjsonå¯¹è±¡</p>
 	 * @param <T>
 	 * @param bean
 	 * @return
-	 * @return JSONObject ·µ»ØÀàĞÍ
+	 * @return JSONObject è¿”å›ç±»å‹
 	*/
 	@SuppressWarnings("unchecked")
 	public static <T>JSONObject beanToJson(T bean){
@@ -65,8 +65,8 @@ public class JsonUtil {
 	}
 	
 	/**
-	 * collectionToJSONArray(¼¯ºÏÉú³ÉJSONArray¶ÔÏó)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * collectionToJSONArray(é›†åˆç”ŸæˆJSONArrayå¯¹è±¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param collection
 	 * @return
 	 *JSONArray
@@ -91,12 +91,12 @@ public class JsonUtil {
 	
 	/**
 	 *<p>Title: jsonToBean</p>
-	 *<p>Description:°Ñjson¸³Öµµ½¶ÔÏó</p>
+	 *<p>Description:æŠŠjsonèµ‹å€¼åˆ°å¯¹è±¡</p>
 	 * @param <T>
 	 * @param beanClass
 	 * @param json
 	 * @return
-	 * @return T ·µ»ØÀàĞÍ
+	 * @return T è¿”å›ç±»å‹
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 * @throws JSONException 
@@ -109,13 +109,13 @@ public class JsonUtil {
 	
 	/**
 	 *<p>Title: jsonToBean</p>
-	 *<p>Description:°Ñjson¸³Öµµ½¶ÔÏó</p>
+	 *<p>Description:æŠŠjsonèµ‹å€¼åˆ°å¯¹è±¡</p>
 	 * @param result
 	 * @param json
 	 * @return
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
-	 * @return Object ·µ»ØÀàĞÍ
+	 * @return Object è¿”å›ç±»å‹
 	 * @throws JSONException 
 	*/
 //	public static Object jsonToBean(Object result,JSONObject json) throws InstantiationException, IllegalAccessException{
@@ -146,13 +146,13 @@ public class JsonUtil {
 			try {
 				Object jsonValue = json.get(field.getName());
 				
-				//ÕâÀïÖ÷ÒªÊÇ»ñÈ¡·ºĞÍÀà·ºĞÍÊôĞÔ¾ßÌåÀàĞÍ
+				//è¿™é‡Œä¸»è¦æ˜¯è·å–æ³›å‹ç±»æ³›å‹å±æ€§å…·ä½“ç±»å‹
 				Class<?> realType = ReflectUtil.getFieldRealType(result.getClass(), field);
 				
 				if(ReflectUtil.isBaseType(realType) && ReflectUtil.isBaseType(jsonValue)){
 					ReflectUtil.setProperty(result, field.getName(), jsonValue);
 				}else if(ReflectUtil.whichBaseType(realType) == BaseType.String){
-					//×Ö·û´®ÀàĞÍÌØÊâ´¦Àí,Ö±½Ó½«jsonÔ­Ê¼Êı¾İĞ´Èë
+					//å­—ç¬¦ä¸²ç±»å‹ç‰¹æ®Šå¤„ç†,ç›´æ¥å°†jsonåŸå§‹æ•°æ®å†™å…¥
 					ReflectUtil.setProperty(result, field.getName(), jsonValue.toString());
 				}else if(jsonValue instanceof JSONObject && !ReflectUtil.isBaseType(realType)){
 					Object value = jsonToBean(realType, (JSONObject)jsonValue);
@@ -173,10 +173,10 @@ public class JsonUtil {
 	}
 	
 	/**
-	 * jsonArrayToCollection(½«jsonÊı×é¸³Öµµ½¼¯ºÏÖĞ)
-	 * Ö§³ÖÇ¶Ì×
+	 * jsonArrayToCollection(å°†jsonæ•°ç»„èµ‹å€¼åˆ°é›†åˆä¸­)
+	 * æ”¯æŒåµŒå¥—
 	 * @param jsonArray
-	 * @param subType subType¿ÉÒÔÎª¼¯ºÏ£¨Ç¶Ì×£© 
+	 * @param subType subTypeå¯ä»¥ä¸ºé›†åˆï¼ˆåµŒå¥—ï¼‰ 
 	 * @return
 	 * List<Object>
 	 * @throws JSONException 
@@ -191,7 +191,7 @@ public class JsonUtil {
 		result = new ArrayList<Object>();
 		for(int i = 0; i < jsonArray.length(); i++){
 			Object subJsonValue = jsonArray.get(i);
-			//Èç¹û¼¯ºÏÊÇÇ¶Ì×µÄ
+			//å¦‚æœé›†åˆæ˜¯åµŒå¥—çš„
 			if(ReflectUtil.isCollection(subType) && subJsonValue instanceof JSONArray){
 				List<Object> subListValue = jsonArrayToCollection((JSONArray)subJsonValue, ReflectUtil.getCollectionActualType(subType));
 				result.add(subListValue);

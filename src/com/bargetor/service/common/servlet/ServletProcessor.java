@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>description: servlet´¦ÀíÆ÷</p>
- * <p>Date: 2013-9-23 ÏÂÎç03:38:23</p>
- * <p>modify£º</p>
+ * <p>description: servletå¤„ç†å™¨</p>
+ * <p>Date: 2013-9-23 ä¸‹åˆ03:38:23</p>
+ * <p>modifyï¼š</p>
  * @author: Madgin
  * @version: 1.0
  */

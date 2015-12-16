@@ -26,7 +26,7 @@ public class XmlUtil {
 	private static final Logger logger = Logger.getLogger(XmlUtil.class);
 	/**
 	 * xmlToBean(XML to bean)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param xmlStr
 	 * @param clazz
 	 * @return
@@ -52,7 +52,7 @@ public class XmlUtil {
 //			JAXBContext jc = JAXBContext.newInstance(clazz);
 //			Unmarshaller unmarshaller = jc.createUnmarshaller();
 //			
-//			//´¦ÀíÃüÃû¿Õ¼ä
+//			//å¤„ç†å‘½åç©ºé—´
 //			if(nameSpaces != null){
 //				unmarshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapper(){
 //
@@ -82,7 +82,7 @@ public class XmlUtil {
 	
 	/**
 	 * xmlToBean(xml to bean by schema)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param xmlStr
 	 * @param packageName
 	 * @return
@@ -118,7 +118,7 @@ public class XmlUtil {
 	
 	/**
 	 * beanToXml(bean to xml)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param bean
 	 * @return
 	 * String
@@ -147,7 +147,7 @@ public class XmlUtil {
 	
 	/**
 	 * beanToXml(bean to xml)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param bean
 	 * @return
 	 * String
@@ -170,7 +170,7 @@ public class XmlUtil {
 			if(bean == null)return null;
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);// ÊÇ·ñÊ¡ÂÔxmÍ·ÉùÃ÷ĞÅÏ¢
+			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);// æ˜¯å¦çœç•¥xmå¤´å£°æ˜ä¿¡æ¯
 			StringWriter writer = new StringWriter();
 			marshaller.marshal(bean, writer);
 			return writer.getBuffer().toString();
@@ -182,10 +182,10 @@ public class XmlUtil {
 	
 	/**
 	 *<p>Title: initDocument</p>
-	 *<p>Description:¼ÓÔØ×ÜÅäÖÃÎÄµµ</p>
+	 *<p>Description:åŠ è½½æ€»é…ç½®æ–‡æ¡£</p>
 	 * @param docName
 	 * @return
-	 * @return Document ·µ»ØÀàĞÍ
+	 * @return Document è¿”å›ç±»å‹
 	*/
 	public static Document initDocument(String docName){
 		Document doc = null;
@@ -208,10 +208,10 @@ public class XmlUtil {
 	
 	/**
 	 *<p>Title: getNodeList</p>
-	 *<p>Description:»ñÈ¡½Úµã</p>
+	 *<p>Description:è·å–èŠ‚ç‚¹</p>
 	 * @param @param nodeName
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  List<Node> ·µ»ØÀàĞÍ
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  List<Node> è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public static List<Node> getNodeList(Document doc, String nodeName){
@@ -220,11 +220,11 @@ public class XmlUtil {
 	
 	/**
 	 *<p>Title: getNodeList</p>
-	 *<p>Description:»ñÈ¡½Úµã</p>
+	 *<p>Description:è·å–èŠ‚ç‚¹</p>
 	 * @param @param nodeName
 	 * @param @param node
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  List<Node> ·µ»ØÀàĞÍ
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  List<Node> è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public static List<Node> getNodeList(Document doc,String nodeName,Node node){
@@ -236,11 +236,11 @@ public class XmlUtil {
 	
 	/**
 	 *<p>Title: getNodeList</p>
-	 *<p>Description:µİ¹é»ñÈ¡½Úµã</p>
+	 *<p>Description:é€’å½’è·å–èŠ‚ç‚¹</p>
 	 * @param @param nodeName
 	 * @param @param result
-	 * @param @param node Éè¶¨ÎÄ¼ş
-	 * @return  void ·µ»ØÀàĞÍ
+	 * @param @param node è®¾å®šæ–‡ä»¶
+	 * @return  void è¿”å›ç±»å‹
 	 * @throws
 	*/
 	private static void getNodeList(Document doc,String nodeName,List<Node> result,Node node){

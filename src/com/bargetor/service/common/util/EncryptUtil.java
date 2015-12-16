@@ -6,15 +6,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * <p>description: ¼ÓÃÜ¹¤¾ß</p>
- * <p>Date: 2013-9-30 ÉÏÎç10:13:22</p>
- * <p>modify£º</p>
+ * <p>description: åŠ å¯†å·¥å…·</p>
+ * <p>Date: 2013-9-30 ä¸Šåˆ10:13:22</p>
+ * <p>modifyï¼š</p>
  * @author: Madgin
  * @version: 1.0
  */
 public class EncryptUtil {
 	
-	// È«¾ÖÊı×é
+	// å…¨å±€æ•°ç»„
     private final static String[] strDigits = { "0", "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
     
@@ -22,10 +22,10 @@ public class EncryptUtil {
     
     /**
      *<p>Title: byteToArrayString</p>
-     *<p>Description:·µ»ØĞÎÊ½ÎªÊı×Ö¸ú×Ö·û´®</p>
+     *<p>Description:è¿”å›å½¢å¼ä¸ºæ•°å­—è·Ÿå­—ç¬¦ä¸²</p>
      * @param bByte
      * @return
-     * @return String ·µ»ØÀàĞÍ
+     * @return String è¿”å›ç±»å‹
     */
     public static String byteToArrayString(byte bByte) {
         int iRet = bByte;
@@ -40,10 +40,10 @@ public class EncryptUtil {
 
     /**
      *<p>Title: byteToNum</p>
-     *<p>Description:·µ»ØĞÎÊ½Ö»ÎªÊı×Ö</p>
+     *<p>Description:è¿”å›å½¢å¼åªä¸ºæ•°å­—</p>
      * @param bByte
      * @return
-     * @return String ·µ»ØÀàĞÍ
+     * @return String è¿”å›ç±»å‹
     */
     public static String byteToNum(byte bByte) {
         int iRet = bByte;
@@ -57,10 +57,10 @@ public class EncryptUtil {
    
     /**
      *<p>Title: byteToString</p>
-     *<p>Description:×ª»»×Ö½ÚÊı×éÎª16½øÖÆ×Ö´®</p>
+     *<p>Description:è½¬æ¢å­—èŠ‚æ•°ç»„ä¸º16è¿›åˆ¶å­—ä¸²</p>
      * @param bByte
      * @return
-     * @return String ·µ»ØÀàĞÍ
+     * @return String è¿”å›ç±»å‹
     */
     public static String byteToString(byte[] bByte) {
         StringBuffer sBuffer = new StringBuffer();
@@ -72,17 +72,17 @@ public class EncryptUtil {
 
     /**
      *<p>Title: getMD5Code</p>
-     *<p>Description:MD5¼ÓÃÜ</p>
+     *<p>Description:MD5åŠ å¯†</p>
      * @param strObj
      * @return
-     * @return String ·µ»ØÀàĞÍ
+     * @return String è¿”å›ç±»å‹
     */
     public static String getMD5Code(String strObj) {
         String resultString = null;
         try {
             resultString = new String(strObj);
             MessageDigest md = MessageDigest.getInstance("MD5");
-            // md.digest() ¸Ãº¯Êı·µ»ØÖµÎª´æ·Å¹şÏ£Öµ½á¹ûµÄbyteÊı×é
+            // md.digest() è¯¥å‡½æ•°è¿”å›å€¼ä¸ºå­˜æ”¾å“ˆå¸Œå€¼ç»“æœçš„byteæ•°ç»„
             resultString = byteToString(md.digest(strObj.getBytes()));
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
@@ -92,12 +92,12 @@ public class EncryptUtil {
     
     /**
      *<p>Title: urlEncode</p>
-     *<p>Description:url±àÂë</p>
+     *<p>Description:urlç¼–ç </p>
      * @param url
      * @param charset
      * @return
      * @throws UnsupportedEncodingException
-     * @return String ·µ»ØÀàĞÍ
+     * @return String è¿”å›ç±»å‹
     */
     public static String urlEncode(String url,String charset) throws UnsupportedEncodingException{
     	String rc = URLEncoder.encode(url, charset);

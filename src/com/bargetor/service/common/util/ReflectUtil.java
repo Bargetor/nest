@@ -13,8 +13,8 @@ import java.util.List;
 public class ReflectUtil {
 	
 	/**
-	 * getCollectionActualClass(»ñÈ¡¼¯ºÏÀàĞÍµÄ·ºĞÍÀàĞÍ)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * getCollectionActualClass(è·å–é›†åˆç±»å‹çš„æ³›å‹ç±»å‹)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param collectionField
 	 * @return
 	 *Class<?>
@@ -30,8 +30,8 @@ public class ReflectUtil {
 	}
 	
 	/**
-	 * getCollectionActualType(»ñÈ¡¼¯ºÏÀàĞÍµÄ·ºĞÍÀàĞÍ)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * getCollectionActualType(è·å–é›†åˆç±»å‹çš„æ³›å‹ç±»å‹)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param collectionType
 	 * @return
 	 *Type
@@ -47,8 +47,8 @@ public class ReflectUtil {
 	}
 	
 	/**
-	 * isCollection(ÅĞ¶ÏÀàĞÍÊÇ·ñÎª¼¯ºÏ¶ÔÏó)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * isCollection(åˆ¤æ–­ç±»å‹æ˜¯å¦ä¸ºé›†åˆå¯¹è±¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param type
 	 * @return
 	 *boolean
@@ -65,8 +65,8 @@ public class ReflectUtil {
 	}
 	
 	/**
-	 * isCollection(ÅĞ¶ÏÀàÊÇ·ñÎª¼¯ºÏ¶ÔÏó)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * isCollection(åˆ¤æ–­ç±»æ˜¯å¦ä¸ºé›†åˆå¯¹è±¡)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param clazz
 	 * @return
 	 *boolean
@@ -79,12 +79,12 @@ public class ReflectUtil {
 	
     /**
      *<p>Title: setProperty</p>
-     *<p>Description:·´Éäµ÷ÓÃsetter·½·¨£¬½øĞĞ¸³Öµ</p>
-     * @param @param bean£ºÒª¸³ÖµµÄÊµÀı
-     * @param @param propertyName£º²ÎÊıÃû
-     * @param @param value£º²ÎÊıÖµ
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  boolean ·µ»ØÀàĞÍ
+     *<p>Description:åå°„è°ƒç”¨setteræ–¹æ³•ï¼Œè¿›è¡Œèµ‹å€¼</p>
+     * @param @param beanï¼šè¦èµ‹å€¼çš„å®ä¾‹
+     * @param @param propertyNameï¼šå‚æ•°å
+     * @param @param valueï¼šå‚æ•°å€¼
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  boolean è¿”å›ç±»å‹
      * @throws
     */
     public static boolean setProperty(Object bean, String propertyName,Object value) {
@@ -112,11 +112,11 @@ public class ReflectUtil {
 
     /**
      *<p>Title: getProperty</p>
-     *<p>Description:·´Éäµ÷ÓÃgetter·½·¨£¬µÃµ½fieldµÄÖµ</p>
+     *<p>Description:åå°„è°ƒç”¨getteræ–¹æ³•ï¼Œå¾—åˆ°fieldçš„å€¼</p>
      * @param @param bean
      * @param @param propertyName
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Object ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Object è¿”å›ç±»å‹
      * @throws
     */
     public static Object getProperty(Object bean, String propertyName) { 
@@ -131,12 +131,12 @@ public class ReflectUtil {
     
     /**
      *<p>Title: getSetterMethod</p>
-     *<p>Description:»ñÈ¡SETTERº¯Êı</p>
+     *<p>Description:è·å–SETTERå‡½æ•°</p>
      * @param @param propertyName
      * @param @param clazz
      * @param @param paramClasses
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Method ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Method è¿”å›ç±»å‹
      * @throws
     */
     public static Method getSetterMethod(String propertyName,Class<?> clazz,Class<?>[] paramClasses){
@@ -145,11 +145,11 @@ public class ReflectUtil {
     
     /**
      *<p>Title: getGetterMethod</p>
-     *<p>Description:»ñÈ¡getterº¯Êı</p>
+     *<p>Description:è·å–getterå‡½æ•°</p>
      * @param @param propertyName
      * @param @param clazz
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Method ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Method è¿”å›ç±»å‹
      * @throws
     */
     public static Method getGetterMethod(String propertyName,Class<?> clazz){
@@ -158,10 +158,10 @@ public class ReflectUtil {
 
     /**
      *<p>Title: getSetterName</p>
-     *<p>Description:µÃµ½fieldµÄget·½·¨</p>
+     *<p>Description:å¾—åˆ°fieldçš„getæ–¹æ³•</p>
      * @param @param propertyName
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  String ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  String è¿”å›ç±»å‹
      * @throws
     */
     public static String getGetterName(String propertyName) {
@@ -171,10 +171,10 @@ public class ReflectUtil {
 
     /**
      *<p>Title: getSetterName</p>
-     *<p>Description:µÃµ½fieldµÄset·½·¨</p>
+     *<p>Description:å¾—åˆ°fieldçš„setæ–¹æ³•</p>
      * @param @param propertyName
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  String ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  String è¿”å›ç±»å‹
      * @throws
     */
     public static String getSetterName(String propertyName) {
@@ -184,12 +184,12 @@ public class ReflectUtil {
     
     /**
      *<p>Title: getMethod</p>
-     *<p>Description:¸ù¾İ·½·¨Ãû·µ»Ø·½·¨£¬°üÀ¨´Ó¸¸½Úµã¼Ì³Ğ</p>
-     * @param @param clazz Àà
-     * @param @param methodName ·½·¨Ãû
-     * @param @param parameterClass ²ÎÊıÊı×é
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Method ·µ»ØÀàĞÍ
+     *<p>Description:æ ¹æ®æ–¹æ³•åè¿”å›æ–¹æ³•ï¼ŒåŒ…æ‹¬ä»çˆ¶èŠ‚ç‚¹ç»§æ‰¿</p>
+     * @param @param clazz ç±»
+     * @param @param methodName æ–¹æ³•å
+     * @param @param parameterClass å‚æ•°æ•°ç»„
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Method è¿”å›ç±»å‹
      * @throws
     */
     public static Method getMethod(Class<?> clazz,String methodName,Class<?>[] parameterClass){
@@ -199,21 +199,21 @@ public class ReflectUtil {
 				method = clazz.getDeclaredMethod(methodName, parameterClass);
 				return method;
 			} catch (SecurityException e) {
-				// ÆäËû´íÎó
+				// å…¶ä»–é”™è¯¯
 				return null;
 			} catch (NoSuchMethodException e) {
-				//ÎŞ·¨ÕÒµ½¶ÔÓ¦µÄ·½·¨
+				//æ— æ³•æ‰¾åˆ°å¯¹åº”çš„æ–¹æ³•
 				return getMethod(clazz.getSuperclass(), methodName, parameterClass);
 			}
     }
     
     /**
      *<p>Title: getMethodForName</p>
-     *<p>Description:Ö»¸ù¾İ·½·¨Ãû³Æ»ñÈ¡·½·¨£¬²»¿¼ÂÇ²ÎÊı</p>
+     *<p>Description:åªæ ¹æ®æ–¹æ³•åç§°è·å–æ–¹æ³•ï¼Œä¸è€ƒè™‘å‚æ•°</p>
      * @param @param clazz
      * @param @param methodName
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  Method ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  Method è¿”å›ç±»å‹
      * @throws
     */
     public static Method getMethodForName(Class<?> clazz,String methodName){
@@ -224,8 +224,8 @@ public class ReflectUtil {
     }
     
     /**
-     * getFieldActualTypeArguments(»ñÈ¡ÊôĞÔµÄ·ºĞÍÀàĞÍ¼¯)
-     * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+     * getFieldActualTypeArguments(è·å–å±æ€§çš„æ³›å‹ç±»å‹é›†)
+     * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
      * @param field
      * @return
      *Type[]
@@ -239,8 +239,8 @@ public class ReflectUtil {
     }
     
     /**
-     * getTypeActualTypeArguments(»ñÈ¡TypeµÄ·ºĞÍÀàĞÍ¼¯)
-     * (Èç¹û·ºĞÍµÄÀàĞÍ²»¾ßÌå£¬Èç£ºT,V,K µÈµÈ£¬»ñÈ¡µ½µÄÒ²ÊÇT)
+     * getTypeActualTypeArguments(è·å–Typeçš„æ³›å‹ç±»å‹é›†)
+     * (å¦‚æœæ³›å‹çš„ç±»å‹ä¸å…·ä½“ï¼Œå¦‚ï¼šT,V,K ç­‰ç­‰ï¼Œè·å–åˆ°çš„ä¹Ÿæ˜¯T)
      * @param type
      * @return
      *Type[]
@@ -256,8 +256,8 @@ public class ReflectUtil {
     }
     
     /**
-     * isParameterizedType(ÅĞ¶ÏÊÇ·ñ·ºĞÍ)
-     * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+     * isParameterizedType(åˆ¤æ–­æ˜¯å¦æ³›å‹)
+     * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
      * @param type
      * @return
      *boolean
@@ -274,11 +274,11 @@ public class ReflectUtil {
     
     /**
      *<p>Title: isInterfaceToAchieve</p>
-     *<p>Description:¼ì²éÀàÊÇ·ñÊµÏÖÁËÄ³¸ö½Ó¿Ú</p>
+     *<p>Description:æ£€æŸ¥ç±»æ˜¯å¦å®ç°äº†æŸä¸ªæ¥å£</p>
      * @param @param clazz
      * @param @param interfaceName
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  boolean ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  boolean è¿”å›ç±»å‹
      * @throws
     */
     public static boolean isInterfaceToAchieve(Class<?> clazz,String interfaceName){
@@ -296,12 +296,12 @@ public class ReflectUtil {
     
 	/**
 	 *<p>Title: isExtendsFrom</p>
-	 *<p>Description:ÅĞ¶ÏÀàÊÇ·ñ¼Ì³ĞÓÚÄ³¸öÀà</p>
+	 *<p>Description:åˆ¤æ–­ç±»æ˜¯å¦ç»§æ‰¿äºæŸä¸ªç±»</p>
 	 * @param @param <T>
-	 * @param @param clazz Ñ°×æ¶ùÅ®
-	 * @param @param superName ×æ×ÚÊ®°Ë´úÃû³Æ
-	 * @param @return Éè¶¨ÎÄ¼ş
-	 * @return  boolean ·µ»ØÀàĞÍ
+	 * @param @param clazz å¯»ç¥–å„¿å¥³
+	 * @param @param superName ç¥–å®—åå…«ä»£åç§°
+	 * @param @return è®¾å®šæ–‡ä»¶
+	 * @return  boolean è¿”å›ç±»å‹
 	 * @throws
 	*/
 	public static boolean isExtendsFrom(Class<?> clazz,String superName){
@@ -316,10 +316,10 @@ public class ReflectUtil {
 	
     /**
      *<p>Title: isBaseType</p>
-     *<p>Description:ÅĞ¶ÏOBJECTÊÇ·ñÎª»ù´¡ÀàĞÍ</p>
+     *<p>Description:åˆ¤æ–­OBJECTæ˜¯å¦ä¸ºåŸºç¡€ç±»å‹</p>
      * @param @param obj
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  boolean ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  boolean è¿”å›ç±»å‹
      * @throws
     */
     public static <T>boolean isBaseType(T obj){
@@ -330,10 +330,10 @@ public class ReflectUtil {
     
     /**
      *<p>Title: isBaseType</p>
-     *<p>Description:ÅĞ¶ÏFIELDÊÇ·ñÎª»ù´¡ÀàĞÍ</p>
+     *<p>Description:åˆ¤æ–­FIELDæ˜¯å¦ä¸ºåŸºç¡€ç±»å‹</p>
      * @param @param field
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  boolean ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  boolean è¿”å›ç±»å‹
      * @throws
     */
     public static boolean isBaseType(Field field){
@@ -356,8 +356,8 @@ public class ReflectUtil {
     }
     
     /**
-     * whichBaseType(ÅĞ¶ÏÊÇÄÄÒ»¸ö»ù´¡ÀàĞÍ)
-     * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+     * whichBaseType(åˆ¤æ–­æ˜¯å“ªä¸€ä¸ªåŸºç¡€ç±»å‹)
+     * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
      * @param type
      * @return
      *BaseType
@@ -373,7 +373,7 @@ public class ReflectUtil {
      * @throws InstantiationException 
      * @throws ClassNotFoundException 
      *<p>Title: newInstance</p>
-     *<p>Description:·µ»ØÀàµÄĞÂÊµÀı</p>
+     *<p>Description:è¿”å›ç±»çš„æ–°å®ä¾‹</p>
      * @param @param className
      * @param @return 
      * @return  Object 
@@ -388,7 +388,7 @@ public class ReflectUtil {
      * @throws IllegalAccessException 
      * @throws InstantiationException 
      *<p>Title: newInstance</p>
-     *<p>Description:·µ»ØÀàµÄĞÂÊµÀı</p>
+     *<p>Description:è¿”å›ç±»çš„æ–°å®ä¾‹</p>
      * @param @param <T>
      * @param @param clazz
      * @param @return 
@@ -410,8 +410,8 @@ public class ReflectUtil {
     }
     
     /**
-     * getField(»ñÈ¡ÊôĞÔ£¬°üÀ¨´Ó¸¸½Úµã»ñÈ¡)
-     * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+     * getField(è·å–å±æ€§ï¼ŒåŒ…æ‹¬ä»çˆ¶èŠ‚ç‚¹è·å–)
+     * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
      * @param clazz
      * @param propertyName
      * @return
@@ -432,8 +432,8 @@ public class ReflectUtil {
     }
     
     /**
-	 * getAllFields(»ñÈ¡ËùÓĞµÄÊôĞÔ£¬°üÀ¨¸¸Àà)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * getAllFields(è·å–æ‰€æœ‰çš„å±æ€§ï¼ŒåŒ…æ‹¬çˆ¶ç±»)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param clazz
 	 * @return
 	 *Field[]
@@ -448,11 +448,11 @@ public class ReflectUtil {
 	}
 	
 	/**
-	 * getAllFields(ÕâÀïÓÃÒ»¾ä»°ÃèÊöÕâ¸ö·½·¨µÄ×÷ÓÃ)
-	 * (ÕâÀïÃèÊöÕâ¸ö·½·¨ÊÊÓÃÌõ¼ş ¨C ¿ÉÑ¡)
+	 * getAllFields(è¿™é‡Œç”¨ä¸€å¥è¯æè¿°è¿™ä¸ªæ–¹æ³•çš„ä½œç”¨)
+	 * (è¿™é‡Œæè¿°è¿™ä¸ªæ–¹æ³•é€‚ç”¨æ¡ä»¶ â€“ å¯é€‰)
 	 * @param clazz
 	 * @param fieldsResult
-	 * @param fieldNamesList Ô¤·ÀÖØÃû£¬ÖØÃûÒÔ×ÓÀàÎª×¼
+	 * @param fieldNamesList é¢„é˜²é‡åï¼Œé‡åä»¥å­ç±»ä¸ºå‡†
 	 * @return
 	 *Field[]
 	 * @exception
@@ -469,7 +469,7 @@ public class ReflectUtil {
 		}
 		Class<?> superClass = (Class<?>) clazz.getSuperclass();
 		
-		//TODO runtime exception ÅÅ³ı
+		//TODO runtime exception æ’é™¤
 		if(RuntimeException.class.equals(superClass))return fieldsResult.toArray(new Field[]{});
 		
 		if(superClass != null){
@@ -479,20 +479,20 @@ public class ReflectUtil {
 	}
 	
 	/**
-	 * getFieldRealType(»ñÈ¡ÊôĞÔÕæÊµÀàĞÍ)
-	 * (ÊôĞÔ±ØĞëÖ±½Ó¶¨ÒåÔÚÀàÖĞ)
+	 * getFieldRealType(è·å–å±æ€§çœŸå®ç±»å‹)
+	 * (å±æ€§å¿…é¡»ç›´æ¥å®šä¹‰åœ¨ç±»ä¸­)
 	 * @param clazz
 	 * @param field
 	 * @return
 	 *Class<?>
 	 * @exception
 	 * @since  1.0.0
-	 * TODO Õâ¸ö·½·¨ËÆºõ²»Ì«Í¨ÓÃ£¬1.Ã»ÓĞ±éÀú¸¸Àà£¬2.¶ÔÓÚ±äÁ¿ĞÍ·ºĞÍµÄÃ»ÓĞ¿¼ÂÇ
+	 * TODO è¿™ä¸ªæ–¹æ³•ä¼¼ä¹ä¸å¤ªé€šç”¨ï¼Œ1.æ²¡æœ‰éå†çˆ¶ç±»ï¼Œ2.å¯¹äºå˜é‡å‹æ³›å‹çš„æ²¡æœ‰è€ƒè™‘
 	*/
 	public static Class<?> getFieldRealType(Class<?> clazz, Field field){
 		Type type = field.getGenericType();
 		if(type instanceof Class<?>)return (Class<?>) type;
-		//»ñÈ¡µ½Æä¶¨ÒåµÄ·ºĞÍ
+		//è·å–åˆ°å…¶å®šä¹‰çš„æ³›å‹
 		Type[] actualTypes = getTypeActualTypeArguments(clazz.getGenericSuperclass());
 		TypeVariable<?>[] superClassTypeVariable =   clazz.getSuperclass().getTypeParameters();
 		for(int i = 0, len = superClassTypeVariable.length; i < len; i++){
@@ -503,9 +503,9 @@ public class ReflectUtil {
 	}
     
     /**
-     * <p>description: »ù´¡ÀàĞÍ</p>
-     * <p>Date: 2013-9-19 ÏÂÎç02:10:52</p>
-     * <p>modify£º</p>
+     * <p>description: åŸºç¡€ç±»å‹</p>
+     * <p>Date: 2013-9-19 ä¸‹åˆ02:10:52</p>
+     * <p>modifyï¼š</p>
      * @author: Madgin
      * @version: 1.0
      */
@@ -539,10 +539,10 @@ public class ReflectUtil {
     
     /**
      *<p>Title: isBaseType</p>
-     *<p>Description:ÅĞ¶ÏOBJECTÊÇ·ñÎª»ù´¡ÀàĞÍ</p>
+     *<p>Description:åˆ¤æ–­OBJECTæ˜¯å¦ä¸ºåŸºç¡€ç±»å‹</p>
      * @param @param type
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  boolean ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  boolean è¿”å›ç±»å‹
      * @throws
     */
     private static boolean isBaseType(String type){
@@ -555,10 +555,10 @@ public class ReflectUtil {
     
     /**
      *<p>Title: whichBaseType</p>
-     *<p>Description:ÅĞ¶Ï»ù´¡ÀàĞÍ</p>
+     *<p>Description:åˆ¤æ–­åŸºç¡€ç±»å‹</p>
      * @param @param className
-     * @param @return Éè¶¨ÎÄ¼ş
-     * @return  BaseType ·µ»ØÀàĞÍ
+     * @param @return è®¾å®šæ–‡ä»¶
+     * @return  BaseType è¿”å›ç±»å‹
      * @throws
     */
     private static BaseType whichBaseType(String className){
