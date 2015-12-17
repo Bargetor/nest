@@ -31,7 +31,5 @@ public class DefaultDispatcherServlet extends DispatcherServlet{
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	
-	
 
 }
