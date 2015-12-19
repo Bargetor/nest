@@ -128,7 +128,7 @@ public class XmlUtil {
 	public static String beanToXml(Object bean, Class<?>... classes){
 		try {
 			if(bean == null)return null;
-			List<Class<?>> classList = new ArrayList<>();
+			List<Class<?>> classList = new ArrayList<Class<?>>();
 			classList.add(bean.getClass());
 			if(classes != null){
 				for(Class<?> clazz : classes){

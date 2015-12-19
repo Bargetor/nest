@@ -442,8 +442,8 @@ public class ReflectUtil {
 	*/
 	public static <T>Field[] getAllFields(Class<T> clazz){
 		if(clazz ==null)return null;
-		List<Field> fields = new ArrayList<>();
-		List<String> fieldNamesList = new ArrayList<>();
+		List<Field> fields = new ArrayList<Field>();
+		List<String> fieldNamesList = new ArrayList<String>();
 		return getAllFields(clazz, fields, fieldNamesList);
 	}
 	

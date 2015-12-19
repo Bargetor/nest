@@ -215,7 +215,7 @@ public class JsonUtil {
 	}
 	
 	public static void main(String[] args){
-		Test<String> test = new Test<>();
+		Test<String> test = new Test<String>();
 		test.setObj("b");
 		Field[] fields = ReflectUtil.getAllFields(test.getClass());
 		for(Field field : fields){

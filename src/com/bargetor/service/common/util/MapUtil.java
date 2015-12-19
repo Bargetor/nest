@@ -109,7 +109,7 @@ public class MapUtil {
 	*/
 	public static String concatParams(Map<String, String> params){
 		if(params == null || params.size() <= 0)return null;
-		List<String> pairs = new ArrayList<>();
+		List<String> pairs = new ArrayList<String>();
 		for(Entry<String, String> entry : params.entrySet()){
 			String key = entry.getKey();
 			String value = entry.getValue();
