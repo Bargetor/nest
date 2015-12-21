@@ -186,8 +186,8 @@ public class ReflectUtil {
      *<p>Title: getMethod</p>
      *<p>Description:根据方法名返回方法，包括从父节点继承</p>
      * @param @param clazz 类
-     * @param @param methodName 方法名
-     * @param @param parameterClass 参数数组
+     * @param methodName 方法名
+     * @param parameterClass 参数数组
      * @param @return 设定文件
      * @return  Method 返回类型
      * @throws
@@ -210,9 +210,8 @@ public class ReflectUtil {
     /**
      *<p>Title: getMethodForName</p>
      *<p>Description:只根据方法名称获取方法，不考虑参数</p>
-     * @param @param clazz
-     * @param @param methodName
-     * @param @return 设定文件
+     * @param clazz
+     * @param methodName
      * @return  Method 返回类型
      * @throws
     */
@@ -275,9 +274,8 @@ public class ReflectUtil {
     /**
      *<p>Title: isInterfaceToAchieve</p>
      *<p>Description:检查类是否实现了某个接口</p>
-     * @param @param clazz
-     * @param @param interfaceName
-     * @param @return 设定文件
+     * @param clazz
+     * @param interfaceName
      * @return  boolean 返回类型
      * @throws
     */
