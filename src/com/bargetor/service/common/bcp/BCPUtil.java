@@ -16,8 +16,11 @@ import java.nio.charset.Charset;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
+import com.bargetor.service.common.bcp.servlet.BCPServletRequest;
 import org.apache.log4j.Logger;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.json.JSONObject;
 import org.springframework.util.StreamUtils;
 
@@ -25,6 +28,7 @@ import com.bargetor.service.common.bcp.bean.BCPBaseRequestBody;
 import com.bargetor.service.common.bcp.bean.BCPBaseResponseBody;
 import com.bargetor.service.common.util.JsonUtil;
 import com.bargetor.service.common.util.StringUtil;
+import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  *
@@ -70,6 +74,9 @@ public class BCPUtil {
 		try {
 			input = request.getInputStream();
 			JSONObject requestBodyJson = getRequestBodyJson(input, request.getCharacterEncoding());
+			if(requestBodyJson == null){
+				return new BCPBaseRequestBody();
+			}
 			return JsonUtil.jsonToBean(BCPBaseRequestBody.class, requestBodyJson);
 		} catch (IOException e) {
 			logger.error("miss request body", e);
@@ -110,7 +117,66 @@ public class BCPUtil {
 	public static void writeResponse(ServletResponse response, BCPBaseResponseBody responseBody){
 		writeResponse(response, responseBody.toJsonString());
 	}
-	
+
+	public static BCPBaseRequestBody findBCPBaseRequestBody(NativeWebRequest webRequest){
+		BCPServletRequest request = findBCPServletRequest(webRequest);
+		if(request == null){
+			return buildBaseRequestBody(webRequest);
+		}
+		return request.getRequestBody();
+	}
+
+	/**
+	 * buildBaseRequestBody(获取request body)
+	 * (这里描述这个方法适用条件 – 可选)
+	 * @param webRequest
+	 * @return
+	 *BCPBaseRequestBody
+	 * @exception
+	 * @since  1.0.0
+	 */
+	public static BCPBaseRequestBody buildBaseRequestBody(NativeWebRequest webRequest){
+		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(servletRequest);
+		return requestBody;
+	}
+
+	/**
+	 * 查找bcp servlet request
+	 * @param webRequest
+	 * @return
+     */
+	public static BCPServletRequest findBCPServletRequest(NativeWebRequest webRequest){
+		if(webRequest == null)return null;
+		ServletRequest nativeRequest = (ServletRequest) webRequest.getNativeRequest();
+
+		if(nativeRequest == null)return null;
+
+		if(isBCPServletRequest(nativeRequest)){
+			return (BCPServletRequest) nativeRequest;
+		}
+
+		//对shiro的支持
+		if(ShiroHttpServletRequest.class.isAssignableFrom(nativeRequest.getClass())){
+			ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) webRequest.getNativeRequest();
+			if(isBCPServletRequest(shiroRequest.getRequest())){
+				return (BCPServletRequest) shiroRequest.getRequest();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * 判断是否为bcp servlet request
+	 * @param request
+	 * @return
+     */
+	private static boolean isBCPServletRequest(ServletRequest request){
+		if(request == null)return false;
+		return BCPServletRequest.class.isAssignableFrom(request.getClass());
+	}
+
 	/**
 	 * writeResponse(写入)
 	 * (这里描述这个方法适用条件 – 可选)

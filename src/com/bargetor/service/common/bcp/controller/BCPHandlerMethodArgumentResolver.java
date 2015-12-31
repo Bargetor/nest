@@ -55,7 +55,7 @@ public class BCPHandlerMethodArgumentResolver extends AbstractServletProcessor i
 		//非json数据不处理
 //		if(!MediaType.APPLICATION_JSON.isCompatibleWith(contentType))return null;
 		
-		BCPBaseRequestBody requestBody = this.buildBaseRequestBody(webRequest);
+		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(webRequest);
 		//TODO 是否校验bcp版本？
 		Object params = BCPUtil.buildRequestParams(requestBody, parameter.getParameterType());
 		return params;

@@ -9,6 +9,7 @@
  */
 package com.bargetor.service.common.bcp.controller;
 
+import com.bargetor.service.common.bcp.BCPUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -54,7 +55,7 @@ public class BCPHandlerMethodReturnValueHandler extends AbstractServletProcessor
 		
 		mavContainer.setRequestHandled(true);
 		
-		BCPBaseRequestBody requestBody = this.buildBaseRequestBody(webRequest);
+		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(webRequest);
 		BCPBaseResponseBody responseBody = new BCPBaseResponseBody();
 		responseBody.setId(requestBody.getId());
 		if(returnType == null){

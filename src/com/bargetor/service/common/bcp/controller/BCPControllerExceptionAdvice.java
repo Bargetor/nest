@@ -9,6 +9,10 @@
  */
 package com.bargetor.service.common.bcp.controller;
 
+import com.bargetor.service.common.bcp.BCPUtil;
+import com.bargetor.service.common.bcp.servlet.BCPServletRequest;
+import org.apache.log4j.Logger;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,6 +21,8 @@ import com.bargetor.service.common.bcp.bean.BCPBaseRequestBody;
 import com.bargetor.service.common.bcp.bean.BCPBaseResponseBody;
 import com.bargetor.service.common.bcp.bean.BCPResponseError;
 import com.bargetor.service.common.bcp.servlet.AbstractServletProcessor;
+
+import javax.servlet.ServletRequest;
 
 /**
  *
@@ -31,19 +37,20 @@ import com.bargetor.service.common.bcp.servlet.AbstractServletProcessor;
  */
 @ControllerAdvice
 public class BCPControllerExceptionAdvice extends AbstractServletProcessor {
+	private final static Logger logger = Logger.getLogger(BCPControllerExceptionAdvice.class);
 
 	@ExceptionHandler(BCPResponseError.class)
 	public void globalExceptionProcess(NativeWebRequest webRequest, BCPResponseError e){
-		
-		BCPBaseRequestBody requestBody = this.buildBaseRequestBody(webRequest);
+
+		BCPBaseRequestBody requestBody = BCPUtil.findBCPBaseRequestBody(webRequest);
 		BCPBaseResponseBody responseBody = new BCPBaseResponseBody();
-		
 		responseBody.setId(requestBody.getId());
 		
 		responseBody.setError(e);
 
 		this.writeResponse(webRequest, responseBody);
-		
+
+		logger.error(e.getMessage(), e);
 	}
 	
 }

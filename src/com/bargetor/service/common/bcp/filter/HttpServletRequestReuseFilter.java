@@ -7,7 +7,10 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.servlet;
+package com.bargetor.service.common.bcp.filter;
+
+import com.bargetor.service.common.bcp.servlet.BCPServletRequest;
+import com.bargetor.service.common.bcp.servlet.BodyReaderHttpServletRequestWrapper;
 
 import java.io.IOException;
 
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * HttpServletRequestReuseFilter
  * 主要用来解决spring mvc reqeust body 不能重复读取的问题
+ * 以及在 request 创建之初做一些基本处理
  * kin
  * kin
  * 2015年5月12日 下午11:51:14
@@ -49,9 +53,9 @@ public class HttpServletRequestReuseFilter implements Filter{
 			FilterChain chain) throws IOException, ServletException {
 		ServletRequest requestWrapper = null;  
         if(request instanceof HttpServletRequest) {  
-            requestWrapper = new BodyReaderHttpServletRequestWrapper((HttpServletRequest) request);  
+            requestWrapper = new BCPServletRequest((HttpServletRequest) request);
         }  
-        if(null == requestWrapper) {  
+        if(null == requestWrapper) {
             chain.doFilter(request, response);  
         } else {  
             chain.doFilter(requestWrapper, response);  

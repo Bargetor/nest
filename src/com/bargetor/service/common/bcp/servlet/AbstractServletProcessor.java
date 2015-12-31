@@ -38,20 +38,6 @@ import com.bargetor.service.common.bcp.bean.BCPBaseResponseBody;
 public abstract class AbstractServletProcessor {
 
 	protected static final Logger logger = Logger.getLogger(AbstractServletProcessor.class);
-	/**
-	 * buildBaseRequestBody(获取request body)
-	 * (这里描述这个方法适用条件 – 可选)
-	 * @param webRequest
-	 * @return
-	 *BCPBaseRequestBody
-	 * @exception
-	 * @since  1.0.0
-	*/
-	protected BCPBaseRequestBody buildBaseRequestBody(NativeWebRequest webRequest){
-		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(servletRequest);
-		return requestBody;
-	}
 	
 	/**
 	 * writeResponse(写入 response body)
