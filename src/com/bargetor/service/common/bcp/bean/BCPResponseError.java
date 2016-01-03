@@ -38,6 +38,10 @@ public class BCPResponseError extends RuntimeException{
 	public BCPResponseError() {
 		// TODO Auto-generated constructor stub
 	}
+
+	public BCPResponseError(Exception e) {
+		super(e);
+	}
 	
 	public BCPResponseError(int status, String msg){
 		this.status = status;
