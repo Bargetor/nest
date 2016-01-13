@@ -57,14 +57,37 @@ public class MathUtil {
 	 * @since  1.0.0
 	*/
 	public static double calcDistance(Location location1, Location location2) {
-		double radLat1 = rad(location1.getLat());
-		double radLat2 = rad(location2.getLat());
+		if(location1 == null || location2 == null)return 0;
+
+		return calcDistance(location1.getLat(), location1.getLng(), location2.getLat(), location2.getLng());
+		/********************* back *******************/
+//		double radLat1 = rad(location1.getLat());
+//		double radLat2 = rad(location2.getLat());
+//		double a = radLat1 - radLat2;
+//		double b = rad(location1.getLng()) - rad(location2.getLng());
+//
+//		return 2* Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+//						+ Math.cos(radLat1) * Math.cos(radLat2)
+//						* Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS * 1000;
+	}
+
+	/**
+	 * calcDistance(计算地球上两点距离,单位M)
+	 * @param lat1
+	 * @param lng1
+	 * @param lat2
+	 * @param lng2
+     * @return
+     */
+	public static double calcDistance(double lat1, double lng1, double lat2, double lng2) {
+		double radLat1 = rad(lat1);
+		double radLat2 = rad(lat2);
 		double a = radLat1 - radLat2;
-		double b = rad(location1.getLng()) - rad(location2.getLng());
+		double b = rad(lng1) - rad(lng2);
 
 		return 2* Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-						+ Math.cos(radLat1) * Math.cos(radLat2)
-						* Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS * 1000;
+				+ Math.cos(radLat1) * Math.cos(radLat2)
+				* Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS * 1000;
 	}
 	
 	

@@ -74,10 +74,12 @@ public class BCPUtil {
 		try {
 			input = request.getInputStream();
 			JSONObject requestBodyJson = getRequestBodyJson(input, request.getCharacterEncoding());
-			if(requestBodyJson == null){
-				return new BCPBaseRequestBody();
+			requestBody = JsonUtil.jsonToBean(BCPBaseRequestBody.class, requestBodyJson);
+
+			if(requestBody == null){
+				requestBody = new BCPBaseRequestBody();
 			}
-			return JsonUtil.jsonToBean(BCPBaseRequestBody.class, requestBodyJson);
+
 		} catch (IOException e) {
 			logger.error("miss request body", e);
 		}

@@ -55,7 +55,7 @@ public class BCPHandlerMethodReturnValueHandler extends AbstractServletProcessor
 		
 		mavContainer.setRequestHandled(true);
 		
-		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(webRequest);
+		BCPBaseRequestBody requestBody = BCPUtil.findBCPBaseRequestBody(webRequest);
 		BCPBaseResponseBody responseBody = new BCPBaseResponseBody();
 		responseBody.setId(requestBody.getId());
 		if(returnType == null){
