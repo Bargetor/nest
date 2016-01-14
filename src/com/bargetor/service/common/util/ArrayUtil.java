@@ -38,6 +38,15 @@ public class ArrayUtil {
         return result;
     }
 
+    /**
+     * 集合是否为空
+     * @param collection
+     * @return
+     */
+    public static boolean isCollectionNull(Collection<?> collection){
+        return collection == null || collection.size() <= 0;
+    }
+
 //    public static void main(String[] args){
 //        List<String> list = new ArrayList<>();
 //        for(int i = 0; i < 10; i++){
