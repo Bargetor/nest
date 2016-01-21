@@ -68,4 +68,37 @@ public class Polygon {
 		return this.points.size() >= 3;
 	}
 
+
+	public double getMaxX(){
+		double max = Double.MIN_VALUE;
+		for(Point point : this.points){
+			max = Math.max(max, point.getX());
+		}
+		return max;
+	}
+
+	public double getMaxY(){
+		double max = Double.MIN_VALUE;
+		for(Point point : this.points){
+			max = Math.max(max, point.getY());
+		}
+		return max;
+	}
+
+	public double getMinX(){
+		double min = Double.MAX_VALUE;
+		for(Point point : this.points){
+			min = Math.min(min, point.getX());
+		}
+		return min;
+	}
+
+	public double getMinY(){
+		double min = Double.MAX_VALUE;
+		for(Point point : this.points){
+			min = Math.min(min, point.getY());
+		}
+		return min;
+	}
+
 }
