@@ -1,13 +1,13 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp.version
+ * com.bargetor.service.common.bpc.version
  * BCPApiVesrsionCondition.java
  * 
  * 2015年6月16日-下午10:24:45
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.version;
+package com.bargetor.service.common.bpc.version;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,12 +26,12 @@ import com.bargetor.service.common.util.StringUtil;
  * @version 1.0.0
  *
  */
-public class BCPAPIVesrsionCondition implements RequestCondition<BCPAPIVesrsionCondition>{
+public class BPCAPIVersionCondition implements RequestCondition<BPCAPIVersionCondition>{
 	public static final String BCP_API_VERSION_HEADER_NAME = "api";
 	
 	private int apiVersion;
     
-    public BCPAPIVesrsionCondition(int apiVersion){
+    public BPCAPIVersionCondition(int apiVersion){
         this.apiVersion = apiVersion;
     }
 	
@@ -40,17 +40,17 @@ public class BCPAPIVesrsionCondition implements RequestCondition<BCPAPIVesrsionC
 	 * @see org.springframework.web.servlet.mvc.condition.RequestCondition#combine(java.lang.Object)
 	 */
 	@Override
-	public BCPAPIVesrsionCondition combine(BCPAPIVesrsionCondition other) {
-		return new BCPAPIVesrsionCondition(other.getApiVersion());
+	public BPCAPIVersionCondition combine(BPCAPIVersionCondition other) {
+		return new BPCAPIVersionCondition(other.getApiVersion());
 	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.condition.RequestCondition#getMatchingCondition(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
-	public BCPAPIVesrsionCondition getMatchingCondition(
+	public BPCAPIVersionCondition getMatchingCondition(
 			HttpServletRequest request) {
-		String versionStr = request.getHeader(BCPAPIVesrsionCondition.BCP_API_VERSION_HEADER_NAME);
+		String versionStr = request.getHeader(BPCAPIVersionCondition.BCP_API_VERSION_HEADER_NAME);
 		if(StringUtil.isNullStr(versionStr))return null;
 		int version = Integer.valueOf(versionStr);
 		if(version >= this.apiVersion){
@@ -63,7 +63,7 @@ public class BCPAPIVesrsionCondition implements RequestCondition<BCPAPIVesrsionC
 	 * @see org.springframework.web.servlet.mvc.condition.RequestCondition#compareTo(java.lang.Object, javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
-	public int compareTo(BCPAPIVesrsionCondition other,
+	public int compareTo(BPCAPIVersionCondition other,
 			HttpServletRequest request) {
 		return other.getApiVersion() - this.apiVersion;
 	}

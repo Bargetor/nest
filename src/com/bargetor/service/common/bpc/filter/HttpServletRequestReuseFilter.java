@@ -7,10 +7,9 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.filter;
+package com.bargetor.service.common.bpc.filter;
 
-import com.bargetor.service.common.bcp.servlet.BCPServletRequest;
-import com.bargetor.service.common.bcp.servlet.BodyReaderHttpServletRequestWrapper;
+import com.bargetor.service.common.bpc.servlet.BPCServletRequest;
 
 import java.io.IOException;
 
@@ -53,7 +52,7 @@ public class HttpServletRequestReuseFilter implements Filter{
 			FilterChain chain) throws IOException, ServletException {
 		ServletRequest requestWrapper = null;  
         if(request instanceof HttpServletRequest) {  
-            requestWrapper = new BCPServletRequest((HttpServletRequest) request);
+            requestWrapper = new BPCServletRequest((HttpServletRequest) request);
         }  
         if(null == requestWrapper) {
             chain.doFilter(request, response);  

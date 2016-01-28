@@ -1,13 +1,13 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp
- * BCPUtil.java
+ * com.bargetor.service.common.bpc
+ * BPCUtil.java
  * 
  * 2015年5月21日-下午4:31:21
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp;
+package com.bargetor.service.common.bpc;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,21 +18,21 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.bargetor.service.common.bcp.servlet.BCPServletRequest;
+import com.bargetor.service.common.bpc.servlet.BPCServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.json.JSONObject;
 import org.springframework.util.StreamUtils;
 
-import com.bargetor.service.common.bcp.bean.BCPBaseRequestBody;
-import com.bargetor.service.common.bcp.bean.BCPBaseResponseBody;
+import com.bargetor.service.common.bpc.bean.BPCBaseRequestBody;
+import com.bargetor.service.common.bpc.bean.BPCBaseResponseBody;
 import com.bargetor.service.common.util.JsonUtil;
 import com.bargetor.service.common.util.StringUtil;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  *
- * BCPUtil
+ * BPCUtil
  * 
  * kin
  * kin
@@ -41,8 +41,8 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @version 1.0.0
  *
  */
-public class BCPUtil {
-	protected static final Logger logger = Logger.getLogger(BCPUtil.class);
+public class BPCUtil {
+	protected static final Logger logger = Logger.getLogger(BPCUtil.class);
 	
 	/**
 	 * buildRequestParams(创建请求参数bean)
@@ -54,7 +54,7 @@ public class BCPUtil {
 	 * @exception
 	 * @since  1.0.0
 	*/
-	public static <T>T buildRequestParams(BCPBaseRequestBody requestBody, Class<T> paramsClass){
+	public static <T>T buildRequestParams(BPCBaseRequestBody requestBody, Class<T> paramsClass){
 		if(requestBody == null || StringUtil.isNullStr(requestBody.getParams()))return null;
 		return JsonUtil.jsonStrToBean(requestBody.getParams(), paramsClass);
 	}
@@ -64,20 +64,20 @@ public class BCPUtil {
 	 * (这里描述这个方法适用条件 – 可选)
 	 * @param request
 	 * @return
-	 * BCPBaseRequestBody
+	 * BPCBaseRequestBody
 	 * @exception
 	 * @since  1.0.0
 	*/
-	public static BCPBaseRequestBody buildBaseRequestBody(ServletRequest request){
+	public static BPCBaseRequestBody buildBaseRequestBody(ServletRequest request){
 		InputStream input;
-		BCPBaseRequestBody requestBody = null;
+		BPCBaseRequestBody requestBody = null;
 		try {
 			input = request.getInputStream();
 			JSONObject requestBodyJson = getRequestBodyJson(input, request.getCharacterEncoding());
-			requestBody = JsonUtil.jsonToBean(BCPBaseRequestBody.class, requestBodyJson);
+			requestBody = JsonUtil.jsonToBean(BPCBaseRequestBody.class, requestBodyJson);
 
 			if(requestBody == null){
-				requestBody = new BCPBaseRequestBody();
+				requestBody = new BPCBaseRequestBody();
 			}
 
 		} catch (IOException e) {
@@ -116,12 +116,12 @@ public class BCPUtil {
 	 * @exception
 	 * @since  1.0.0
 	*/
-	public static void writeResponse(ServletResponse response, BCPBaseResponseBody responseBody){
+	public static void writeResponse(ServletResponse response, BPCBaseResponseBody responseBody){
 		writeResponse(response, responseBody.toJsonString());
 	}
 
-	public static BCPBaseRequestBody findBCPBaseRequestBody(NativeWebRequest webRequest){
-		BCPServletRequest request = findBCPServletRequest(webRequest);
+	public static BPCBaseRequestBody findBCPBaseRequestBody(NativeWebRequest webRequest){
+		BPCServletRequest request = findBCPServletRequest(webRequest);
 		if(request == null){
 			return buildBaseRequestBody(webRequest);
 		}
@@ -133,13 +133,13 @@ public class BCPUtil {
 	 * (这里描述这个方法适用条件 – 可选)
 	 * @param webRequest
 	 * @return
-	 *BCPBaseRequestBody
+	 *BPCBaseRequestBody
 	 * @exception
 	 * @since  1.0.0
 	 */
-	public static BCPBaseRequestBody buildBaseRequestBody(NativeWebRequest webRequest){
+	public static BPCBaseRequestBody buildBaseRequestBody(NativeWebRequest webRequest){
 		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(servletRequest);
+		BPCBaseRequestBody requestBody = BPCUtil.buildBaseRequestBody(servletRequest);
 		return requestBody;
 	}
 
@@ -148,21 +148,21 @@ public class BCPUtil {
 	 * @param webRequest
 	 * @return
      */
-	public static BCPServletRequest findBCPServletRequest(NativeWebRequest webRequest){
+	public static BPCServletRequest findBCPServletRequest(NativeWebRequest webRequest){
 		if(webRequest == null)return null;
 		ServletRequest nativeRequest = (ServletRequest) webRequest.getNativeRequest();
 
 		if(nativeRequest == null)return null;
 
 		if(isBCPServletRequest(nativeRequest)){
-			return (BCPServletRequest) nativeRequest;
+			return (BPCServletRequest) nativeRequest;
 		}
 
 		//对shiro的支持
 		if(ShiroHttpServletRequest.class.isAssignableFrom(nativeRequest.getClass())){
 			ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) webRequest.getNativeRequest();
 			if(isBCPServletRequest(shiroRequest.getRequest())){
-				return (BCPServletRequest) shiroRequest.getRequest();
+				return (BPCServletRequest) shiroRequest.getRequest();
 			}
 		}
 
@@ -176,7 +176,7 @@ public class BCPUtil {
      */
 	private static boolean isBCPServletRequest(ServletRequest request){
 		if(request == null)return false;
-		return BCPServletRequest.class.isAssignableFrom(request.getClass());
+		return BPCServletRequest.class.isAssignableFrom(request.getClass());
 	}
 
 	/**

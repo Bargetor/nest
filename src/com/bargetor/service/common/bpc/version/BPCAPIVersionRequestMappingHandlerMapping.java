@@ -1,13 +1,13 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp.version
- * BCPAPIVersionRequestMappingHandlerMapping.java
+ * com.bargetor.service.common.bpc.version
+ * BPCAPIVersionRequestMappingHandlerMapping.java
  * 
  * 2015年6月16日-下午10:37:45
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.version;
+package com.bargetor.service.common.bpc.version;
 
 import java.lang.reflect.Method;
 
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 /**
  *
- * BCPAPIVersionRequestMappingHandlerMapping
+ * BPCAPIVersionRequestMappingHandlerMapping
  * 
  * kin
  * kin
@@ -26,14 +26,14 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * @version 1.0.0
  *
  */
-public class BCPAPIVersionRequestMappingHandlerMapping extends RequestMappingHandlerMapping{
+public class BPCAPIVersionRequestMappingHandlerMapping extends RequestMappingHandlerMapping{
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getCustomMethodCondition(java.lang.reflect.Method)
 	 */
 	@Override
-	protected RequestCondition<BCPAPIVesrsionCondition> getCustomMethodCondition(Method method) {
-		BCPAPIVersion apiVersion = AnnotationUtils.findAnnotation(method, BCPAPIVersion.class);
+	protected RequestCondition<BPCAPIVersionCondition> getCustomMethodCondition(Method method) {
+		BPCAPIVersion apiVersion = AnnotationUtils.findAnnotation(method, BPCAPIVersion.class);
 		return createCondition(apiVersion);
 	}
 	
@@ -42,11 +42,11 @@ public class BCPAPIVersionRequestMappingHandlerMapping extends RequestMappingHan
 	 */
 	@Override
 	protected RequestCondition<?> getCustomTypeCondition(Class<?> handlerType) {
-		BCPAPIVersion apiVersion = AnnotationUtils.findAnnotation(handlerType, BCPAPIVersion.class);
+		BPCAPIVersion apiVersion = AnnotationUtils.findAnnotation(handlerType, BPCAPIVersion.class);
 		return createCondition(apiVersion);
 	}
 	
-	private RequestCondition<BCPAPIVesrsionCondition> createCondition(BCPAPIVersion apiVersion) {
-        return apiVersion == null ? null : new BCPAPIVesrsionCondition(apiVersion.value());
+	private RequestCondition<BPCAPIVersionCondition> createCondition(BPCAPIVersion apiVersion) {
+        return apiVersion == null ? null : new BPCAPIVersionCondition(apiVersion.value());
     }
 }

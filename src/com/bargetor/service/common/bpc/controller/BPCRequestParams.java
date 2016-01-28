@@ -7,7 +7,7 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.controller;
+package com.bargetor.service.common.bpc.controller;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BCPRequestParams {
+public @interface BPCRequestParams {
 
 }

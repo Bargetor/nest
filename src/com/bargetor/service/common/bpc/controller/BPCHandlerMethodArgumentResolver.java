@@ -7,17 +7,17 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.controller;
+package com.bargetor.service.common.bpc.controller;
 
+import com.bargetor.service.common.bpc.bean.BPCBaseRequestBody;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.bargetor.service.common.bcp.BCPUtil;
-import com.bargetor.service.common.bcp.bean.BCPBaseRequestBody;
-import com.bargetor.service.common.bcp.servlet.AbstractServletProcessor;
+import com.bargetor.service.common.bpc.BPCUtil;
+import com.bargetor.service.common.bpc.servlet.AbstractServletProcessor;
 
 
 
@@ -32,14 +32,14 @@ import com.bargetor.service.common.bcp.servlet.AbstractServletProcessor;
  * @version 1.0.0
  *
  */
-public class BCPHandlerMethodArgumentResolver extends AbstractServletProcessor implements HandlerMethodArgumentResolver{
+public class BPCHandlerMethodArgumentResolver extends AbstractServletProcessor implements HandlerMethodArgumentResolver{
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.method.support.HandlerMethodArgumentResolver#supportsParameter(org.springframework.core.MethodParameter)
 	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasParameterAnnotation(BCPRequestParams.class);
+		return parameter.hasParameterAnnotation(BPCRequestParams.class);
 	}
 
 	/* (non-Javadoc)
@@ -55,9 +55,9 @@ public class BCPHandlerMethodArgumentResolver extends AbstractServletProcessor i
 		//非json数据不处理
 //		if(!MediaType.APPLICATION_JSON.isCompatibleWith(contentType))return null;
 		
-		BCPBaseRequestBody requestBody = BCPUtil.buildBaseRequestBody(webRequest);
+		BPCBaseRequestBody requestBody = BPCUtil.buildBaseRequestBody(webRequest);
 		//TODO 是否校验bcp版本？
-		Object params = BCPUtil.buildRequestParams(requestBody, parameter.getParameterType());
+		Object params = BPCUtil.buildRequestParams(requestBody, parameter.getParameterType());
 		return params;
 	}
 	

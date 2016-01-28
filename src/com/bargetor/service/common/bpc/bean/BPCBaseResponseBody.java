@@ -7,7 +7,7 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.bean;
+package com.bargetor.service.common.bpc.bean;
 
 import com.bargetor.service.common.util.JsonUtil;
 
@@ -22,13 +22,13 @@ import com.bargetor.service.common.util.JsonUtil;
  * @version 1.0.0
  *
  */
-public class BCPBaseResponseBody {
+public class BPCBaseResponseBody {
 	/**
-	 * bcp:Bargetor Communication Protocol, BCP
+	 * bpc:Bargetor Communication Protocol, BCP
 	 *
 	 * @since 1.0.0
 	 */
-	private String bcp = "1.0.0";
+	private String bpc = "1.0.0";
 	/**
 	 * id:调用ID
 	 *
@@ -40,30 +40,23 @@ public class BCPBaseResponseBody {
 	 *
 	 * @since 1.0.0
 	 */
-	private BCPResponseResult result;
+	private BPCResponseResult result;
 	
 	/**
 	 * error:协议错误
 	 *
 	 * @since 1.0.0
 	 */
-	private BCPResponseError error;
-	/**
-	 * bcp
-	 *
-	 * @return  the bcp
-	 * @since   1.0.0
-	 */
-	
-	public String getBcp() {
-		return bcp;
+	private BPCResponseError error;
+
+	public String getBpc() {
+		return bpc;
 	}
-	/**
-	 * @param bcp the bcp to set
-	 */
-	public void setBcp(String bcp) {
-		this.bcp = bcp;
+
+	public void setBpc(String bpc) {
+		this.bpc = bpc;
 	}
+
 	/**
 	 * id
 	 *
@@ -87,13 +80,13 @@ public class BCPBaseResponseBody {
 	 * @since   1.0.0
 	 */
 	
-	public BCPResponseResult getResult() {
+	public BPCResponseResult getResult() {
 		return result;
 	}
 	/**
 	 * @param result the result to set
 	 */
-	public void setResult(BCPResponseResult result) {
+	public void setResult(BPCResponseResult result) {
 		this.result = result;
 	}
 
@@ -104,13 +97,13 @@ public class BCPBaseResponseBody {
 	 * @since   1.0.0
 	 */
 	
-	public BCPResponseError getError() {
+	public BPCResponseError getError() {
 		return error;
 	}
 	/**
 	 * @param error the error to set
 	 */
-	public void setError(BCPResponseError error) {
+	public void setError(BPCResponseError error) {
 		this.error = error;
 	}
 

@@ -7,7 +7,7 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.bean;
+package com.bargetor.service.common.bpc.bean;
 
 /**
  *
@@ -20,13 +20,13 @@ package com.bargetor.service.common.bcp.bean;
  * @version 1.0.0
  *
  */
-public class BCPBaseRequestBody {
+public class BPCBaseRequestBody {
 	/**
-	 * bcp:Bargetor Communication Protocol, BCP
+	 * bpc:Bargetor Communication Protocol, BCP
 	 *
 	 * @since 1.0.0
 	 */
-	private String bcp;
+	private String bpc;
 	/**
 	 * id:调用ID
 	 *
@@ -39,22 +39,15 @@ public class BCPBaseRequestBody {
 	 * @since 1.0.0
 	 */
 	private String params;
-	/**
-	 * bcp
-	 *
-	 * @return  the bcp
-	 * @since   1.0.0
-	 */
-	
-	public String getBcp() {
-		return bcp;
+
+	public String getBpc() {
+		return bpc;
 	}
-	/**
-	 * @param bcp the bcp to set
-	 */
-	public void setBcp(String bcp) {
-		this.bcp = bcp;
+
+	public void setBpc(String bpc) {
+		this.bpc = bpc;
 	}
+
 	/**
 	 * id
 	 *

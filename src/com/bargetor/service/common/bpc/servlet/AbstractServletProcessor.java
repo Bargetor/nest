@@ -1,13 +1,13 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp
+ * com.bargetor.service.common.bpc
  * AbstractServletProcessor.java
  * 
  * 2015年5月13日-下午11:42:56
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.servlet;
+package com.bargetor.service.common.bpc.servlet;
 
 import java.io.IOException;
 
@@ -20,9 +20,8 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import com.bargetor.service.common.bcp.BCPUtil;
-import com.bargetor.service.common.bcp.bean.BCPBaseRequestBody;
-import com.bargetor.service.common.bcp.bean.BCPBaseResponseBody;
+import com.bargetor.service.common.bpc.BPCUtil;
+import com.bargetor.service.common.bpc.bean.BPCBaseResponseBody;
 
 /**
  *
@@ -48,9 +47,9 @@ public abstract class AbstractServletProcessor {
 	 * @exception
 	 * @since  1.0.0
 	*/
-	protected void writeResponse(NativeWebRequest webRequest, BCPBaseResponseBody responseBody){
+	protected void writeResponse(NativeWebRequest webRequest, BPCBaseResponseBody responseBody){
 		HttpServletResponse servletResponse = webRequest.getNativeResponse(HttpServletResponse.class);
-		BCPUtil.writeResponse(servletResponse, responseBody);
+		BPCUtil.writeResponse(servletResponse, responseBody);
 	}
 	
 	/**

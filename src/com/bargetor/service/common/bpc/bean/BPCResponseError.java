@@ -1,18 +1,18 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp
- * BCPResponseError.java
+ * com.bargetor.service.common.bpc
+ * BPCResponseError.java
  * 
  * 2015年5月13日-下午11:03:58
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.bean;
+package com.bargetor.service.common.bpc.bean;
 
 /**
  *
- * BCPResponseError
- * bcp 协议错误
+ * BPCResponseError
+ * bpc 协议错误
  * kin
  * kin
  * 2015年5月13日 下午11:03:58
@@ -20,7 +20,7 @@ package com.bargetor.service.common.bcp.bean;
  * @version 1.0.0
  *
  */
-public class BCPResponseError extends RuntimeException{
+public class BPCResponseError extends RuntimeException{
 	/**
 	 * serialVersionUID:TODO（用一句话描述这个变量表示什么）
 	 *
@@ -32,18 +32,18 @@ public class BCPResponseError extends RuntimeException{
 	private String msg;
 	
 	/**
-	 * 创建一个新的实例 BCPResponseError.
+	 * 创建一个新的实例 BPCResponseError.
 	 *
 	 */
-	public BCPResponseError() {
+	public BPCResponseError() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BCPResponseError(Exception e) {
+	public BPCResponseError(Exception e) {
 		super(e);
 	}
 	
-	public BCPResponseError(int status, String msg){
+	public BPCResponseError(int status, String msg){
 		this.status = status;
 		this.msg = msg;
 	}

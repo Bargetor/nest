@@ -1,17 +1,17 @@
 /**
  * bargetorCommon
- * com.bargetor.service.common.bcp
- * BCPResponseResultAndError.java
+ * com.bargetor.service.common.bpc
+ * BPCResponseResultAndError.java
  * 
  * 2015年5月13日-下午11:18:36
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.bean;
+package com.bargetor.service.common.bpc.bean;
 
 /**
  *
- * BCPResponseResultAndError
+ * BPCResponseResultAndError
  * 
  * kin
  * kin
@@ -20,9 +20,9 @@ package com.bargetor.service.common.bcp.bean;
  * @version 1.0.0
  *
  */
-public class BCPResponseResultAndError {
-	private BCPResponseResult result;
-	private BCPResponseError error;
+public class BPCResponseResultAndError {
+	private BPCResponseResult result;
+	private BPCResponseError error;
 	/**
 	 * result
 	 *
@@ -30,13 +30,13 @@ public class BCPResponseResultAndError {
 	 * @since   1.0.0
 	 */
 	
-	public BCPResponseResult getResult() {
+	public BPCResponseResult getResult() {
 		return result;
 	}
 	/**
 	 * @param result the result to set
 	 */
-	public void setResult(BCPResponseResult result) {
+	public void setResult(BPCResponseResult result) {
 		this.result = result;
 	}
 	/**
@@ -46,13 +46,13 @@ public class BCPResponseResultAndError {
 	 * @since   1.0.0
 	 */
 	
-	public BCPResponseError getError() {
+	public BPCResponseError getError() {
 		return error;
 	}
 	/**
 	 * @param error the error to set
 	 */
-	public void setError(BCPResponseError error) {
+	public void setError(BPCResponseError error) {
 		this.error = error;
 	}
 	

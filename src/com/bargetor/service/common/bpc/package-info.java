@@ -19,4 +19,4 @@
  * @version 1.0.0
  *
  */
-package com.bargetor.service.common.bcp;
+package com.bargetor.service.common.bpc;

@@ -7,7 +7,7 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.service.common.bcp.servlet;
+package com.bargetor.service.common.bpc.servlet;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
