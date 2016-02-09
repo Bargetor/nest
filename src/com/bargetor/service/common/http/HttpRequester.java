@@ -271,7 +271,7 @@ public class HttpRequester {
 //		//忽略掉ssl证书
 //		if("https".equals(url.getProtocol())){
 //			try {
-//				SslUtil.ignoreSsl();
+//				SSLUtil.ignoreSsl();
 //			} catch (Exception e) {
 //				logger.error("ssl ignore error", e);
 //			}
@@ -378,7 +378,7 @@ public class HttpRequester {
 		HttpResponse httpResponser = new HttpResponse();
 		try {
 			if("https".equals(urlConnection.getURL().getProtocol())){
-				SslUtil.defaultSsl();
+				SSLUtil.defaultSsl();
 			}
 			
 			

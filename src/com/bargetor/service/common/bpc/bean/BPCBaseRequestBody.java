@@ -33,6 +33,16 @@ public class BPCBaseRequestBody {
 	 * @since 1.0.0
 	 */
 	private String id;
+
+	/**
+	 * 接口版本
+	 */
+	private String version;
+
+	/**
+	 * 用户名
+	 */
+	private String username;
 	/**
 	 * params:参数，可以自定义为任何类型
 	 *
@@ -81,5 +91,19 @@ public class BPCBaseRequestBody {
 		this.params = params;
 	}
 
-	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

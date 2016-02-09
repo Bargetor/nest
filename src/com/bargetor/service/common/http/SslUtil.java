@@ -1,7 +1,7 @@
 /**
  * bargetorCommon
  * com.bargetor.service.common.http
- * SslUtil.java
+ * SSLUtil.java
  * 
  * 2015年6月20日-下午9:52:47
  *  2015Bargetor-版权所有
@@ -22,7 +22,7 @@ import javax.net.ssl.X509TrustManager;
 
 /**
  *
- * SslUtil
+ * SSLUtil
  * 
  * kin
  * kin
@@ -31,7 +31,7 @@ import javax.net.ssl.X509TrustManager;
  * @version 1.0.0
  *
  */
-public class SslUtil {
+public class SSLUtil {
 	private static HostnameVerifier defaultHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
 	
 	private static void trustAllHttpsCertificates() throws Exception {

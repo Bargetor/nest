@@ -37,5 +37,5 @@ public @interface BPCAPIVersion {
      * 版本号
      * @return
      */
-    int value();
+    String value();
 }

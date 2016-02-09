@@ -29,9 +29,13 @@ import com.bargetor.service.common.util.StringUtil;
 public class BPCAPIVersionCondition implements RequestCondition<BPCAPIVersionCondition>{
 	public static final String BCP_API_VERSION_HEADER_NAME = "api";
 	
-	private int apiVersion;
+	private String apiVersion;
+
+	public BPCAPIVersionCondition(BPCAPIVersion bpcApiVersion){
+		this.apiVersion = bpcApiVersion.value();
+	}
     
-    public BPCAPIVersionCondition(int apiVersion){
+    public BPCAPIVersionCondition(String apiVersion){
         this.apiVersion = apiVersion;
     }
 	
@@ -52,8 +56,7 @@ public class BPCAPIVersionCondition implements RequestCondition<BPCAPIVersionCon
 			HttpServletRequest request) {
 		String versionStr = request.getHeader(BPCAPIVersionCondition.BCP_API_VERSION_HEADER_NAME);
 		if(StringUtil.isNullStr(versionStr))return null;
-		int version = Integer.valueOf(versionStr);
-		if(version >= this.apiVersion){
+		if(versionStr.compareTo(this.getApiVersion()) >= 0){
 			return this;
 		}
 		return null;
@@ -65,7 +68,7 @@ public class BPCAPIVersionCondition implements RequestCondition<BPCAPIVersionCon
 	@Override
 	public int compareTo(BPCAPIVersionCondition other,
 			HttpServletRequest request) {
-		return other.getApiVersion() - this.apiVersion;
+		return other.getApiVersion().compareTo(other.getApiVersion());
 	}
 
 
@@ -76,7 +79,7 @@ public class BPCAPIVersionCondition implements RequestCondition<BPCAPIVersionCon
 	 * @since   1.0.0
 	 */
 	
-	public int getApiVersion() {
+	public String getApiVersion() {
 		return apiVersion;
 	}
 

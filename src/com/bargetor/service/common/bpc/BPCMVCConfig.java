@@ -20,7 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.bargetor.service.common.bpc.controller.BPCHandlerMethodArgumentResolver;
-import com.bargetor.service.common.bpc.version.BPCAPIVersionRequestMappingHandlerMapping;
 
 /**
  *
@@ -37,10 +36,11 @@ import com.bargetor.service.common.bpc.version.BPCAPIVersionRequestMappingHandle
 //自定义错误处理
 @ComponentScan(basePackageClasses = {BPCMVCConfig.class} , includeFilters = {@Filter(type = FilterType.ANNOTATION, value = {ControllerAdvice.class})})
 public class BPCMVCConfig extends WebMvcConfigurationSupport{
+
 	@Bean
-	public BPCAPIVersionRequestMappingHandlerMapping requestMappingHandlerMapping() {
-		//自定义request mapping handler mapping
-		BPCAPIVersionRequestMappingHandlerMapping handlerMapping = new BPCAPIVersionRequestMappingHandlerMapping();
+	public BPCRequestMappingHandlerMapping requestMappingHandlerMapping() {
+		//自定义request mapping handler mapping for api version
+		BPCRequestMappingHandlerMapping handlerMapping = new BPCRequestMappingHandlerMapping();
 		handlerMapping.setOrder(0);
 		handlerMapping.setInterceptors(getInterceptors());
 		return handlerMapping;

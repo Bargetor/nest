@@ -123,6 +123,10 @@ public class HttpResponse {
 	public String getUserInfo() {
 		return userInfo;
 	}
+
+	public boolean isSuccess(){
+		return 200 == this.getCode();
+	}
  
 }
 

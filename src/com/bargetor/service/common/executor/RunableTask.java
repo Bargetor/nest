@@ -33,7 +33,6 @@ public class RunableTask implements Runnable{
 	/**
 	 *<p>Title: execute</p>
 	 *<p>Description:线程执行体</p>
-	 * @param  设定文件
 	 * @return  void 返回类型
 	 * @throws
 	*/
