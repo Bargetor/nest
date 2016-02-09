@@ -1,5 +1,6 @@
 package com.bargetor.service.common.util;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -22,6 +23,35 @@ import com.bargetor.service.test.Test;
  * @version: 1.0
  */
 public class JsonUtil {
+
+	/**
+	 * 根据key获取到一个对象
+	 * @param json json对象
+	 * @param key ex.「ext.x.y」
+     * @return
+     */
+	public static Object getJsonByKey(JSONObject json, String key){
+		if(StringUtil.isNullStr(key) || json == null)return null;
+		String[] paths = key.trim().split("\\.");
+		Object current = json;
+
+		for(String path : paths){
+			if(current instanceof JSONObject){
+				try {
+					current = ((JSONObject)current).get(path);
+				}catch (JSONException e) {
+					return null;
+				}
+			}else{
+				return null;
+			}
+
+			if(current == null)return null;
+		}
+
+		return current;
+	}
+
 	
 	/**
 	 *<p>Title: beanToJson</p>
@@ -111,7 +141,6 @@ public class JsonUtil {
 	 *<p>Title: jsonToBean</p>
 	 *<p>Description:把json赋值到对象</p>
 	 * @param result
-	 * @param json
 	 * @return
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -171,7 +200,25 @@ public class JsonUtil {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * jsonArrayToCollection(将json数组赋值到集合中)
+	 * 支持嵌套
+	 * @param jsonArray
+	 * @param subClass 集合元素的Class
+	 * @return
+	 * List<T>
+	 */
+	public static <T>List<T> jsonArrayToCollection(JSONArray jsonArray, Class<T> subClass) {
+		List<Object> temp = jsonArrayToCollection(jsonArray, (Type) subClass);
+		if(ArrayUtil.isCollectionNull(temp))return null;
+		List<T> result = new ArrayList<>();
+		for(Object obj : temp){
+			result.add((T)obj);
+		}
+		return result;
+	}
+
 	/**
 	 * jsonArrayToCollection(将json数组赋值到集合中)
 	 * 支持嵌套
