@@ -349,7 +349,7 @@ public class HttpRequester {
 		if(response.getEntity().getContentEncoding() != null){
 			httpResponser.contentEncoding = response.getEntity().getContentEncoding().getValue();			
 		}
-//		httpResponser.code = response.getEntity().get
+		httpResponser.code = response.getStatusLine().getStatusCode();
 //		httpResponser.message = response.getEntity()
 		if(response.getEntity().getContentType() != null){
 			httpResponser.contentType = response.getEntity().getContentType().getValue();			
