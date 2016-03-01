@@ -26,7 +26,7 @@ public class RandomUtil {
 	
 	/**
 	 * randomIntByInterval(获取指定区间的随机数)
-	 * (这里描述这个方法适用条件 – 可选)
+	 * 会出现最小值,不会出现最大值
 	 * @param min
 	 * @param max
 	 * @return
@@ -42,6 +42,10 @@ public class RandomUtil {
 	public static double random(){
 		Random random = new Random();
 		return random.nextDouble();
+	}
+
+	public static void main(String[] args){
+		System.out.println(randomIntByInterval(0, 9));
 	}
 
 }
