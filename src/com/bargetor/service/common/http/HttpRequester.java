@@ -107,7 +107,7 @@ public class HttpRequester {
 		HttpGet httpget = new HttpGet(newUrl);
         
         
-        logger.info("executing request " + httpget.getURI());  
+        logger.info("executing request " + httpget.getURI());
         // 执行get请求.    
         CloseableHttpResponse response = httpClient.execute(httpget); 
 		

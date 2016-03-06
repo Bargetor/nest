@@ -13,8 +13,8 @@ public class Test {
 			request.setDefaultContentEncoding("UTF-8");
 			Map<String,String> pro = new HashMap<String, String>();
 			pro.put("Content-Length","0");
-			//HttpRespons hr = request.sendGet("http://www.kuaidi100.com/query?id=&postid=6381323593&valicode=&temp=0.5656136693471628&type=yuantong");
-			//HttpRespons hr = request.sendGet("http://www.kuaidi100.com/query?type=zhongtong&postid=718249611213&id=1&valicode=&temp=0.8486089082487187");
+			//HttpRespons hr = param.sendGet("http://www.kuaidi100.com/query?id=&postid=6381323593&valicode=&temp=0.5656136693471628&type=yuantong");
+			//HttpRespons hr = param.sendGet("http://www.kuaidi100.com/query?type=zhongtong&postid=718249611213&id=1&valicode=&temp=0.8486089082487187");
 			HttpResponse hr = request.sendPost("http://channel.api.duapp.com/rest/2.0/channel/channel/",pro,pro);
 			
 			System.out.println(hr.getUrlString());

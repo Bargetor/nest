@@ -28,7 +28,6 @@ public class XmlUtil {
 	 * xmlToBean(XML to bean)
 	 * (这里描述这个方法适用条件 – 可选)
 	 * @param xmlStr
-	 * @param clazz
 	 * @return
 	 * T
 	 * @exception
@@ -41,6 +40,7 @@ public class XmlUtil {
 			jc = JAXBContext.newInstance(classes);
 			return (T) xmlToBean(xmlStr, jc);
 		} catch (JAXBException e) {
+			logger.error("xml to bean error", e);
 			return null;
 		}
 	}

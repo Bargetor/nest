@@ -54,9 +54,9 @@ public class XMLTestBean {
 	}
 
 	/**
-	 * request
+	 * param
 	 *
-	 * @return  the request
+	 * @return  the param
 	 * @since   1.0.0
 	 */
 	@XmlTransient
@@ -65,7 +65,7 @@ public class XMLTestBean {
 	}
 
 	/**
-	 * @param request the request to set
+	 * @param request the param to set
 	 */
 	public void setRequest(XMLTestHotelRequest request) {
 		this.request = request;
