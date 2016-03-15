@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
+	public static final String oldStyleFormatStr = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
 	public static final Calendar cal = Calendar.getInstance();
 	
@@ -76,6 +78,16 @@ public class DateUtil {
 	*/
 	public static String getStart(Date date){
 		return new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(date);
+	}
+
+	public static Date getTodayStart(){
+		String startStr = getStart(new Date());
+		try {
+			return timeFormat.parse(startStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -151,9 +163,34 @@ public class DateUtil {
 		}
 
 	}
+
+	public static Date strToDate(String dateStr){
+		if(StringUtil.isNullStr(dateStr))return null;
+		try {
+			return timeFormat.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static TimeZone getTimeZone(){
+		return TimeZone.getDefault();
+	}
+
+	public static String getMSStyleDateStr(Date date){
+		if(date == null)return null;
+		SimpleDateFormat format =  new SimpleDateFormat(oldStyleFormatStr);
+		String temp = format.format(date);
+		StringBuffer buffer = new StringBuffer(temp);
+		buffer.insert(buffer.length() - 2, ":");
+		return buffer.toString();
+	}
 	
 	public static void main(String[] arg){
 		System.out.println(getWeek());
 		System.out.println(includeTime("2012-05-29 00:00:00", "2012-05-29 16:33:00"));
+
+		System.out.println(getMSStyleDateStr(new Date()));
 	}
 }

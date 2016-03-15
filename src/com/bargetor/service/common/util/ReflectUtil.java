@@ -1,10 +1,6 @@
 package com.bargetor.service.common.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -119,15 +115,29 @@ public class ReflectUtil {
      * @return  Object 返回类型
      * @throws
     */
-    public static Object getProperty(Object bean, String propertyName) { 
+    public static Object getProperty(Object bean, String propertyName) {
+		if(bean == null || StringUtil.isNullStr(propertyName))return null;
     	Class<?> clazz = bean.getClass();
+
         try {
-            Method method = getGetterMethod(propertyName, clazz);
-            return (method == null)?null:method.invoke(bean, new Object[] {});
+			Field field = clazz.getField(propertyName);
+			return getProperty(bean, field);
         } catch (Exception e) {
+			e.printStackTrace();
         }
         return null;
     }
+
+	public static Object getProperty(Object bean, Field field){
+		if(bean == null || field == null)return null;
+		Method method = getMethod(bean.getClass(), getGetterName(field), new Class[]{});
+		try {
+			return (method == null)?null:method.invoke(bean, new Object[] {});
+		} catch (IllegalAccessException |InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
     
     /**
      *<p>Title: getSetterMethod</p>
@@ -168,6 +178,21 @@ public class ReflectUtil {
         String method = "get" + propertyName.substring(0, 1).toUpperCase()+ propertyName.substring(1);
         return method;
     }
+
+	public static String getGetterName(Field field){
+		if(field == null)return null;
+		BaseType baseType = whichBaseType(field.getType());
+		String propertyName = field.getName();
+		String prefix = "get";
+		if(BaseType.Boolean.equals(baseType)){
+			if(propertyName.startsWith("is")){
+				return propertyName;
+			}else{
+				prefix = "is";
+			}
+		}
+		return prefix + propertyName.substring(0, 1).toUpperCase()+ propertyName.substring(1);
+	}
 
     /**
      *<p>Title: getSetterName</p>
@@ -356,7 +381,6 @@ public class ReflectUtil {
     /**
      * whichBaseType(判断是哪一个基础类型)
      * (这里描述这个方法适用条件 – 可选)
-     * @param type
      * @return
      *BaseType
      * @exception
