@@ -1,4 +1,4 @@
-import org.gradle.plugins.ide.eclipse.model.Facet
+//import org.gradle.plugins.ide.eclipse.model.Facet
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -22,22 +22,22 @@ repositories {
 }
 
 dependencies {  
-    compile (  
-        "javax.servlet:javax.servlet-api:3.1-b07",  
-        "org.slf4j:slf4j-log4j12:1.7.5",  
-        "org.slf4j:slf4j-jdk14:1.7.5",  
-        "mysql:mysql-connector-java:5.1.24",
-        "org.json:json:20140107",
-        "org.springframework:spring-context:4.1.6.RELEASE",
-        "org.springframework:spring-webmvc:4.1.6.RELEASE",
-        "org.springframework:spring-jdbc:4.1.6.RELEASE",
-        "org.mybatis:mybatis:3.2.8",
-        "org.mybatis:mybatis-spring:1.2.2",
-        "com.sun.xml.bind:jaxb-impl:2.2.11",
-        "com.sun.xml.bind:jaxb-core:2.2.11",
-        "org.freemarker:freemarker:2.3.20",
-        "org.apache.httpcomponents:httpclient:4.5",
-            "org.apache.shiro:shiro-all:1.2.3",
-            "com.alibaba:fastjson:1.2.8"
+    compile (
+        'javax.servlet:javax.servlet-api:3.1-b07',  
+        'org.slf4j:slf4j-log4j12:1.7.5',
+        'org.slf4j:slf4j-jdk14:1.7.5',
+        'mysql:mysql-connector-java:5.1.24',
+        'org.json:json:20140107',
+        'com.alibaba:fastjson:1.2.8',
+        'org.springframework:spring-context:4.1.6.RELEASE',
+        'org.springframework:spring-webmvc:4.1.6.RELEASE',
+        'org.springframework:spring-jdbc:4.1.6.RELEASE',
+        'org.mybatis:mybatis:3.2.8',
+        'org.mybatis:mybatis-spring:1.2.2',
+        'com.sun.xml.bind:jaxb-impl:2.2.11',
+        'com.sun.xml.bind:jaxb-core:2.2.11',
+        'org.freemarker:freemarker:2.3.20',
+        'org.apache.httpcomponents:httpclient:4.5',
+        'org.apache.shiro:shiro-all:1.2.3'
     )
 }
