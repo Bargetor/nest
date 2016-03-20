@@ -6,7 +6,8 @@ apply plugin: 'eclipse-wtp'
 
 sourceSets.main.java.srcDir 'src'   // 设置 Java 源码所在目录
 sourceSets.main.java.srcDir 'test'   // 设置 Java 源码所在目录
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8   // 设置 JDK 版本
+targetCompatibility = 1.8
 
 //自定义属性
 version = '1.0'

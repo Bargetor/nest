@@ -120,7 +120,7 @@ public class ReflectUtil {
     	Class<?> clazz = bean.getClass();
 
         try {
-			Field field = clazz.getField(propertyName);
+			Field field = clazz.getDeclaredField(propertyName);
 			return getProperty(bean, field);
         } catch (Exception e) {
 			e.printStackTrace();
