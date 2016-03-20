@@ -1,13 +1,18 @@
 package com.bargetor.service.bpc.bean;
 
+import com.bargetor.service.common.check.param.ParamCheck;
+
 /**
  * Created by Bargetor on 16/3/20.
  */
 public class BPCRequestBean {
+    @ParamCheck(isRequired = true)
     private String id;
+    @ParamCheck(isRequired = true)
     private String bpc;
     private String username;
     private String params;
+    @ParamCheck(isRequired = true)
     private String method;
 
     public String getId() {

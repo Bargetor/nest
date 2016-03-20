@@ -4,13 +4,18 @@ import static org.springframework.util.ClassUtils.convertClassNameToResourcePath
 import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bargetor.service.bpc.annotation.BPCService;
 import com.bargetor.service.bpc.bean.BPCRequestBean;
+import com.bargetor.service.bpc.bean.BPCResponseBean;
 import com.bargetor.service.bpc.bean.BPCServiceMethod;
 import com.bargetor.service.bpc.bean.BPCServiceProxyBean;
 import com.bargetor.service.bpc.handler.BPCExceptionHandler;
+import com.bargetor.service.bpc.handler.BPCRequestProcessHandler;
 import com.bargetor.service.bpc.handler.BPCReturnValueHandler;
 import com.bargetor.service.bpc.manager.BPCDispatchManager;
+import com.bargetor.service.common.bpc.BPCUtil;
+import com.bargetor.service.common.check.param.ParamCheckUtil;
 import com.bargetor.service.common.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
@@ -48,6 +53,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	private ApplicationContext applicationContext;
 	private BPCReturnValueHandler returnValueHandler;
 	private BPCExceptionHandler exceptionHandler;
+	private BPCRequestProcessHandler processHandler;
 
 	private String[] scanPackages;
 
@@ -59,6 +65,12 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		if(this.exceptionHandler == null){
 			this.exceptionHandler = new BPCExceptionHandler();
 		}
+
+
+		this.processHandler = new BPCRequestProcessHandler();
+		processHandler.setExceptionHandler(this.exceptionHandler);
+		processHandler.setReturnValueHandler(this.returnValueHandler);
+
 	}
 
 	@Override
@@ -82,23 +94,35 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 		String requestBody = new String(StreamUtils.copyToByteArray(req.getInputStream()));
 		BPCRequestBean requestBean = JSON.parseObject(requestBody, BPCRequestBean.class);
-		requestBean.setId(StringUtil.getUUID());
-		try {
-			Object returnValue = this.invokeMethod(req.getRequestURI().toString(), requestBean);
-			this.returnValueHandler.process(req, resp, requestBean, returnValue);
-		}catch (Throwable e){
-			this.exceptionHandler.process(req, resp, requestBean, e);
+
+		//检查参数合法性
+		if(!ParamCheckUtil.check(requestBean)){
+			JSONObject invalidRequestJson = new JSONObject();
+			JSONObject error = new JSONObject();
+			error.put("message", "Invalid request");
+			invalidRequestJson.put("error", error);
+			BPCUtil.writeResponse(resp, invalidRequestJson.toJSONString());
+			return;
 		}
 
+		//创建bpc request
+		BPCRequest request = new BPCRequest(req, requestBean);
+
+		//创建 bpc response
+		BPCResponseBean responseBean = new BPCResponseBean();
+		responseBean.setId(requestBean.getId());
+		responseBean.setBpc(requestBean.getBpc());
+		BPCResponse response = new BPCResponse(resp, responseBean);
+
+		this.processHandler.process(request, response);
+
 	}
 
-	private Object invokeMethod(String url, BPCRequestBean requestBean) throws Throwable {
-		logger.info(String.format("bpc invoke method {%s}", requestBean.getMethod()));
-		BPCServiceMethod method = BPCDispatchManager.getInstance().getServiceMethod(url, requestBean.getMethod());
-		if(method == null)return null;
-		return method.invoke(requestBean);
-	}
-
+	/**
+	 * 在此,主要用于扫描和注册 BPC 服务
+	 * @param beanFactory
+	 * @throws BeansException
+     */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		if(this.scanPackages == null || this.scanPackages.length == 0){
@@ -118,7 +142,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 					if(annotationMetadata.hasAnnotation(bpcServiceAnnotationName)){
 						logger.info(String.format("bpc load service %s", classMetadata.getClassName()));
 						String url = (String) annotationMetadata.getAnnotationAttributes(bpcServiceAnnotationName).get("url");
-						this.registerBPCService((DefaultListableBeanFactory)beanFactory, classMetadata.getClassName(), url);
+						this.registerBPCService(defaultListableBeanFactory, classMetadata.getClassName(), url);
 					}
 				}
 			}catch (Exception e){
