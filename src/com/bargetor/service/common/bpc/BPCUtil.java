@@ -188,7 +188,7 @@ public class BPCUtil {
 	 * @exception
 	 * @since  1.0.0
 	*/
-	private static void writeResponse(ServletResponse response, String data){
+	public static void writeResponse(ServletResponse response, String data){
 		try {
 			response.setContentType("application/json;charset=utf-8");
 			OutputStream outputStream = response.getOutputStream();
