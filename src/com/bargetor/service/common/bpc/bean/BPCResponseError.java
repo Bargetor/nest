@@ -42,8 +42,17 @@ public class BPCResponseError extends RuntimeException{
 	public BPCResponseError(Exception e) {
 		super(e);
 	}
+
+	public BPCResponseError(String msg) {
+		super(msg);
+	}
+
+	public BPCResponseError(Exception e, String msg) {
+		super(msg, e);
+	}
 	
 	public BPCResponseError(int status, String msg){
+		super(msg);
 		this.status = status;
 		this.msg = msg;
 	}
