@@ -1,6 +1,6 @@
 package com.bargetor.servlet;
 
-import com.bargetor.service.common.servlet.ServletProcessorManager;
+import com.bargetor.nest.common.servlet.ServletProcessorManager;
 
 public class Test {
 

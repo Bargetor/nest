@@ -1,8 +1,8 @@
 package com.bargetor.common.test;
 
-import com.bargetor.service.common.config.AllCommonConfigsLoader;
-import com.bargetor.service.common.config.configBeans.CommonConfig;
-import com.bargetor.service.common.util.JsonUtil;
+import com.bargetor.nest.common.config.AllCommonConfigsLoader;
+import com.bargetor.nest.common.config.configBeans.CommonConfig;
+import com.bargetor.nest.common.util.JsonUtil;
 
 public class ConfigTest {
 	public static void main(String[] args){

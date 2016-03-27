@@ -9,7 +9,7 @@
  */
 package com.bargetor.common.test.xml;
 
-import com.bargetor.service.common.util.XmlUtil;
+import com.bargetor.nest.common.util.XmlUtil;
 
 /**
  *

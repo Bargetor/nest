@@ -2,7 +2,7 @@ package com.bargetor.other;
 
 import com.alibaba.fastjson.JSON;
 import com.bargetor.other.bean.Food;
-import com.bargetor.service.common.util.JsonUtil;
+import com.bargetor.nest.common.util.JsonUtil;
 
 /**
  * Created by Bargetor on 16/3/17.

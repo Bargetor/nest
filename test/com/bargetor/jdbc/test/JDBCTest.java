@@ -1,6 +1,6 @@
 package com.bargetor.jdbc.test;
 
-import com.bargetor.service.common.jdbc.connection.DBConnectionManager;
+import com.bargetor.nest.common.jdbc.connection.DBConnectionManager;
 
 public class JDBCTest {
 

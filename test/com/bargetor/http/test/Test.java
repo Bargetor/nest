@@ -3,8 +3,8 @@ package com.bargetor.http.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bargetor.service.common.http.HttpRequester;
-import com.bargetor.service.common.http.HttpResponse;
+import com.bargetor.nest.common.http.HttpRequester;
+import com.bargetor.nest.common.http.HttpResponse;
  
 public class Test {
 	public static void main(String[] args) {
