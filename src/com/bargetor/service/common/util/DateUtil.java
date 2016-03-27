@@ -20,7 +20,12 @@ public class DateUtil {
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
 	public static final Calendar cal = Calendar.getInstance();
 	
-	
+
+	public static String getStr(String formatStr, Date date){
+		SimpleDateFormat timeFormat = new SimpleDateFormat(formatStr);
+		return timeFormat.format(date);
+	}
+
 	/**
 	 *<p>Title: getNow</p>
 	 *<p>Description:得到当前时间</p>

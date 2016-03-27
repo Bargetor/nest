@@ -1,6 +1,7 @@
 package com.bargetor.service.common.check.param;
 
 import com.bargetor.service.common.util.ReflectUtil;
+import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -9,6 +10,7 @@ import java.lang.reflect.Field;
  * Created by Bargetor on 16/3/15.
  */
 public class ParamCheckUtil {
+    private static final Logger logger = Logger.getLogger(ParamCheckUtil.class);
 
     /**
      * 通过标注验证参数bean的有效性
@@ -27,6 +29,7 @@ public class ParamCheckUtil {
             boolean isRequired = checkAnnotation.isRequired();
             Object value = ReflectUtil.getProperty(paramsBean, field);
             if(isRequired && value == null){
+                logger.info(String.format("the %s is required", field.getName()));
                 return false;
             }
         }
