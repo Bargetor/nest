@@ -1,20 +1,24 @@
 package com.bargetor.nest.redis;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bargetor.nest.common.util.StringUtil;
+import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisManager {
+	private static final Logger logger = Logger.getLogger(RedisManager.class);
 	
-	private String host = "127.0.0.1";
+	private String host;
 	
-	private int port = 6379;
+	private int port;
 	
 	// 0 - never expire
 	private int expire = 0;
@@ -22,28 +26,21 @@ public class RedisManager {
 	//timeout for jedis try to connect to redis server, not expire time! In milliseconds
 	private int timeout = 0;
 	
-	private String password = "";
+	private String password;
+
+	private int database = 0;
 	
-	private static JedisPool jedisPool = null;
-	
-	public RedisManager(){
-		
-	}
+	private JedisPool jedisPool = null;
 	
 	/**
 	 * 初始化方法
 	 */
 	public void init(){
-		if(jedisPool == null){
-			if(password != null && !"".equals(password)){
-				jedisPool = new JedisPool(new JedisPoolConfig(), host, port, timeout, password);
-			}else if(timeout != 0){
-				jedisPool = new JedisPool(new JedisPoolConfig(), host, port,timeout);
-			}else{
-				jedisPool = new JedisPool(new JedisPoolConfig(), host, port);
-			}
-			
+		if(this.jedisPool != null){
+			this.jedisPool.destroy();
+			this.jedisPool = null;
 		}
+		this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, timeout, password, database);
 	}
 	
 	/**
@@ -154,7 +151,7 @@ public class RedisManager {
 	public byte[] set(byte[] key,byte[] value,int expire){
 		Jedis jedis = jedisPool.getResource();
 		try{
-			jedis.set(key,value);
+			jedis.set(key, value);
 			if(expire != 0){
 				jedis.expire(key, expire);
 		 	}
@@ -226,6 +223,49 @@ public class RedisManager {
 		}
 		return keys;
 	}
+
+	public Object getObject(String key){
+		if(StringUtil.isNullStr(key))return null;
+		byte[] value = this.get(key.getBytes());
+		return toObject(value);
+	}
+
+	public Object putObject(String key, Object value){
+		if(StringUtil.isNullStr(key) || value == null)return null;
+		this.set(key.getBytes(), toByteArray(value));
+		return value;
+	}
+
+	private Object toObject(byte[] bytes) {
+		if(bytes == null)return null;
+		Object obj = null;
+		try {
+			ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			obj = ois.readObject();
+			ois.close();
+			bis.close();
+		} catch (IOException | ClassNotFoundException ex) {
+			logger.error("cache to object error", ex);
+		}
+		return obj;
+	}
+
+	private byte[] toByteArray(Object obj) {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(obj);
+			oos.flush();
+			bytes = bos.toByteArray();
+			oos.close();
+			bos.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return bytes;
+	}
 	
 	public String getHost() {
 		return host;
@@ -266,7 +306,12 @@ public class RedisManager {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
+
+	public int getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(int database) {
+		this.database = database;
+	}
 }
