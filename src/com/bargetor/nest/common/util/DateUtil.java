@@ -16,7 +16,6 @@ import java.util.TimeZone;
  */
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
-	public static final String oldStyleFormatStr = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
 	public static final Calendar cal = Calendar.getInstance();
 	
@@ -47,6 +46,10 @@ public class DateUtil {
 	*/
 	public static String getNowToLate(long ms){
 		return timeFormat.format(new Date(System.currentTimeMillis() + ms));
+	}
+
+	public static String getDateStr(Date date){
+		return getStr("yyyy-MM-dd", date);
 	}
 	
 	/**
@@ -147,6 +150,18 @@ public class DateUtil {
 		if(startTime == null || includeTime == null || endTime == null)return false;
 		return includeTime.compareTo(startTime)>=0 && endTime.compareTo(includeTime)>=0;
 	}
+
+	/**
+	 * 更早的时间
+	 * @param date1
+	 * @param date2
+     * @return
+     */
+	public static Date early(Date date1, Date date2){
+		if(date1 == null)return date2;
+		if(date2 == null)return date1;
+		return date1.getTime() >= date2.getTime() ? date2 : date1;
+	}
 	
 	/**
 	 *<p>Title: timeLack</p>
@@ -179,23 +194,25 @@ public class DateUtil {
 		}
 	}
 
-	public static TimeZone getTimeZone(){
-		return TimeZone.getDefault();
+	public static Date strToDate(String dateStr, String formatStr){
+		if(StringUtil.isNullStr(dateStr) || StringUtil.isNullStr(formatStr))return null;
+		SimpleDateFormat format =  new SimpleDateFormat(formatStr);
+		try {
+			return format.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	public static String getMSStyleDateStr(Date date){
-		if(date == null)return null;
-		SimpleDateFormat format =  new SimpleDateFormat(oldStyleFormatStr);
-		String temp = format.format(date);
-		StringBuffer buffer = new StringBuffer(temp);
-		buffer.insert(buffer.length() - 2, ":");
-		return buffer.toString();
+	public static TimeZone getTimeZone(){
+		return TimeZone.getDefault();
 	}
 	
 	public static void main(String[] arg){
 		System.out.println(getWeek());
 		System.out.println(includeTime("2012-05-29 00:00:00", "2012-05-29 16:33:00"));
 
-		System.out.println(getMSStyleDateStr(new Date()));
+//		System.out.println(getMSStyleDateStr(new Date()));
 	}
 }
