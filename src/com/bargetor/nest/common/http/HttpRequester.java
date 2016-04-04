@@ -178,7 +178,7 @@ public class HttpRequester {
 	public HttpResponse sendPost(String urlString, String requestBody,
 			Map<String, String> properties){
 		
-		logger.info("发起HTTP POST 请求：" + urlString);
+		logger.info("launch http POST request:" + urlString);
 		HttpPost httpPost = new HttpPost(urlString);
 		
 		if(properties != null){
@@ -302,7 +302,7 @@ public class HttpRequester {
 // 
 //		return this.makeContent(urlString, urlConnection);
 		
-		logger.info("发起HTTP " + method + " 请求：" + urlString);
+		logger.info("launch http " + method + " request:" + urlString);
 		HttpRequestBase request;
 		if("GET".equals(method)){
 			request = new HttpGet(urlString);
@@ -426,7 +426,7 @@ public class HttpRequester {
  
 			return httpResponser;
 		} catch (IOException e) {
-			logger.info("HTTP请求错误", e);
+			logger.info("http error", e);
 			throw e;
 		} finally {
 			if (urlConnection != null)

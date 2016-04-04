@@ -2,9 +2,7 @@ package com.bargetor.nest.common.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 
 /**
@@ -17,7 +15,6 @@ import java.util.TimeZone;
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
-	public static final Calendar cal = Calendar.getInstance();
 	
 
 	public static String getStr(String formatStr, Date date){
@@ -118,6 +115,7 @@ public class DateUtil {
 	 * @throws
 	*/
 	public static int getWeek(){
+		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
 		return week == 0 ? 7:week;
@@ -182,6 +180,33 @@ public class DateUtil {
 			return 0;
 		}
 
+	}
+
+	/**
+	 * 获取两个日期之间,日期字符串的列表
+	 * 比如 start 2016-04-04 end 2016-04-06, 返回 <2016-04-04, 2016-04-05, 2016-04-06>
+	 * @param startDate
+	 * @param endDate
+     * @return
+     */
+	public static List<String> getIntervalDateStrList(Date startDate, Date endDate){
+		if(startDate == null || endDate == null)return null;
+		if(endDate.getTime() < startDate.getTime())return null;
+
+		List<String> result = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		while (cal.getTime().getTime() <= endDate.getTime()){
+			result.add(getDateStr(cal.getTime()));
+			cal.add(Calendar.DATE, 1);
+		}
+
+		return result;
 	}
 
 	public static Date strToDate(String dateStr){

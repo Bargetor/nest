@@ -14,7 +14,7 @@ public class ArrayUtil {
      * @param groupCount
      * @return
      */
-        public static <T> List<List<T>> split(List<T> list, int groupCount){
+    public static <T> List<List<T>> split(List<T> list, int groupCount){
         List<List<T>> result = new ArrayList<>();
         if(list == null)return null;
 
@@ -45,6 +45,39 @@ public class ArrayUtil {
      */
     public static boolean isCollectionNull(Collection<?> collection){
         return collection == null || collection.size() <= 0;
+    }
+
+    /**
+     * 是否包含
+     * @param main
+     * @param include
+     * @return
+     */
+    public static boolean isInclude(Collection<?> main, Collection<?> include){
+        if(ArrayUtil.isCollectionNull(include))return true;
+        if(ArrayUtil.isCollectionNull(main))return false;
+
+        for (Object in : include) {
+            if(!main.contains(in))return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 减
+     * @param minuend
+     * @param subtrahend
+     * @param <T>
+     * @return
+     */
+    public static <T>Collection<T> subtract(Collection<T> minuend, Collection<T> subtrahend){
+        if(ArrayUtil.isCollectionNull(minuend))return minuend;
+        if(ArrayUtil.isCollectionNull(subtrahend))return minuend;
+
+        List<T> result = new ArrayList<>(minuend);
+        subtrahend.forEach(sub -> result.remove(sub));
+        return result;
     }
 
 //    public static void main(String[] args){

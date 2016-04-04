@@ -37,6 +37,11 @@ public class BaseThread extends Thread{
 	 * sleepTime:休眠时长
 	 */
 	private long sleepTime = 0;
+
+	/**
+	 * 执行延迟 ms
+	 */
+	private int delay = 0;
 	
 	public BaseThread() {
 		super();
@@ -72,7 +77,7 @@ public class BaseThread extends Thread{
 				}else{
 					break;
 				}
-				sleep(256);//缓解CPU压力，即唤醒线程需要至多512ms
+				this.sleep(this.delay);//缓解CPU压力，即唤醒线程需要至多512ms
 			}
 		}
 		isRun = false;
@@ -93,7 +98,6 @@ public class BaseThread extends Thread{
 	/**
 	 *<p>Title: execute</p>
 	 *<p>Description:线程执行体</p>
-	 * @param  设定文件
 	 * @return  void 返回类型
 	 * @throws
 	*/
@@ -104,7 +108,6 @@ public class BaseThread extends Thread{
 	/**
 	 *<p>Title: kill</p>
 	 *<p>Description:结束线程</p>
-	 * @param  设定文件
 	 * @return  void 返回类型
 	 * @throws
 	*/
@@ -118,7 +121,6 @@ public class BaseThread extends Thread{
 	/**
 	 *<p>Title: halt</p>
 	 *<p>Description:暂停进程，非休眠</p>
-	 * @param  设定文件
 	 * @return  void 返回类型
 	 * @throws
 	*/
@@ -130,7 +132,6 @@ public class BaseThread extends Thread{
 	/**
 	 *<p>Title: reStart</p>
 	 *<p>Description:重新执行线程</p>
-	 * @param  设定文件
 	 * @return  void 返回类型
 	 * @throws
 	*/
@@ -193,5 +194,13 @@ public class BaseThread extends Thread{
 	*/
 	public long getSleepTime() {
 		return sleepTime;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 }

@@ -71,10 +71,10 @@ public class StringUtil {
 	 * @exception
 	 * @since  1.0.0
 	*/
-	public static String joinList(List<String> list, String joinStr){
+	public static String joinList(List<?> list, String joinStr){
 		if(list == null || list.size() <= 0)return "";
 		if(isNullStr(joinStr))return "";
-		StringBuffer buffer = new StringBuffer(list.get(0)); 
+		StringBuffer buffer = new StringBuffer(list.get(0).toString());
 		for(int i = 1, len = list.size(); i < len; i++){
 			buffer.append(joinStr);
 			buffer.append(list.get(i));
