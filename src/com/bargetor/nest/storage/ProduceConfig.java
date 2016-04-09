@@ -14,7 +14,7 @@ public class ProduceConfig {
      * 消费频率,即一秒内能处理多少个任务
      */
     @ParamCheck(isRequired = true)
-    private int frequency = 1;
+    private double frequency = 1;
 
     private String cron;
 
@@ -34,11 +34,11 @@ public class ProduceConfig {
         this.producerClass = producerClass;
     }
 
-    public int getFrequency() {
+    public double getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(int frequency) {
+    public void setFrequency(double frequency) {
         this.frequency = frequency;
     }
 

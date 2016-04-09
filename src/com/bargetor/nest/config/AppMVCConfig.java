@@ -7,9 +7,15 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.nest.common.bpc;
+package com.bargetor.nest.config;
 
+import com.bargetor.nest.common.bpc.BPCRequestMappingHandlerMapping;
 import com.bargetor.nest.common.bpc.controller.BPCHandlerMethodReturnValueHandler;
+import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import com.bargetor.nest.task.TaskMapper;
+import org.apache.log4j.Logger;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -34,8 +40,9 @@ import com.bargetor.nest.common.bpc.controller.BPCHandlerMethodArgumentResolver;
  */
 @Configuration
 //自定义错误处理
-@ComponentScan(basePackageClasses = {BPCMVCConfig.class} , includeFilters = {@Filter(type = FilterType.ANNOTATION, value = {ControllerAdvice.class})})
-public class BPCMVCConfig extends WebMvcConfigurationSupport{
+@ComponentScan(basePackages = {"com.bargetor.nest"}, basePackageClasses = {AppMVCConfig.class} , includeFilters = {@Filter(type = FilterType.ANNOTATION, value = {ControllerAdvice.class})})
+public class AppMVCConfig extends WebMvcConfigurationSupport{
+	private static final Logger logger = Logger.getLogger(AppMVCConfig.class);
 
 	@Bean
 	public BPCRequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -56,5 +63,7 @@ public class BPCMVCConfig extends WebMvcConfigurationSupport{
 		
 		return adapter;
 	}
+
+
 
 }

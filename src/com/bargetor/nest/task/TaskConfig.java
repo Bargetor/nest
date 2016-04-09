@@ -1,11 +1,10 @@
-package com.bargetor.nest.storage;
+package com.bargetor.nest.task;
 
 import com.bargetor.nest.common.check.param.ParamCheck;
-
 /**
- * Created by Bargetor on 16/4/3.
+ * Created by Bargetor on 16/4/9.
  */
-public class ConsumeConfig {
+public class TaskConfig {
     /**
      * 消费线程数
      */
@@ -24,7 +23,7 @@ public class ConsumeConfig {
     private String cron;
 
     @ParamCheck(isRequired = true)
-    private Class<? extends ConsumeCommand> consumerClass;
+    private Class<? extends  TaskCommand> taskCommandClass;
 
     public int getCount() {
         return count;
@@ -32,14 +31,6 @@ public class ConsumeConfig {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public Class<? extends ConsumeCommand> getConsumerClass() {
-        return consumerClass;
-    }
-
-    public void setConsumerClass(Class<? extends ConsumeCommand> consumerClass) {
-        this.consumerClass = consumerClass;
     }
 
     public double getFrequency() {
@@ -56,5 +47,13 @@ public class ConsumeConfig {
 
     public void setCron(String cron) {
         this.cron = cron;
+    }
+
+    public Class<? extends TaskCommand> getTaskCommandClass() {
+        return taskCommandClass;
+    }
+
+    public void setTaskCommandClass(Class<? extends TaskCommand> taskCommandClass) {
+        this.taskCommandClass = taskCommandClass;
     }
 }

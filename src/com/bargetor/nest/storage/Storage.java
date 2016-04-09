@@ -47,7 +47,7 @@ public class Storage implements InitializingBean{
         this.producerExecutorService = Executors.newFixedThreadPool(this.producerConfig.getCount());
 
         if(StringUtil.isNullStr(this.producerConfig.getCron())){
-            this.registrar.addFixedDelayTask(() -> this.commitProduceCommand(), 1000);
+            this.registrar.addFixedDelayTask(() -> this.commitProduceCommand(), (int)(1000D / this.producerConfig.getFrequency()));
         }else {
             this.registrar.addCronTask(() -> this.commitProduceCommand(), this.producerConfig.getCron());
         }
@@ -58,7 +58,7 @@ public class Storage implements InitializingBean{
         this.consumerExecutorService = Executors.newFixedThreadPool(this.consumerConfig.getCount());
 
         if(StringUtil.isNullStr(this.consumerConfig.getCron())){
-            this.registrar.addFixedDelayTask(() -> this.commitConsumeCommand(), 1000);
+            this.registrar.addFixedDelayTask(() -> this.commitConsumeCommand(), (int)(1000D / this.consumerConfig.getFrequency()));
         }else {
             this.registrar.addCronTask(() -> this.commitConsumeCommand(), this.consumerConfig.getCron());
         }
@@ -70,17 +70,14 @@ public class Storage implements InitializingBean{
     }
 
     public void commitConsumeCommand(){
-        for (int i = 0; i < this.consumerConfig.getFrequency(); i++) {
-            ConsumeCommand command = (ConsumeCommand) this.getRunableTaskInstance(this.consumerConfig.getConsumerClass());
-            this.consumerExecutorService.execute(command);
-        }
+        ConsumeCommand command = (ConsumeCommand) this.getRunableTaskInstance(this.consumerConfig.getConsumerClass());
+        this.consumerExecutorService.execute(command);
+
     }
 
     public void commitProduceCommand() {
-        for (int i = 0; i < this.producerConfig.getFrequency(); i++) {
-            ProduceCommand command = (ProduceCommand) this.getRunableTaskInstance(this.producerConfig.getProducerClass());
-            this.producerExecutorService.execute(command);
-        }
+        ProduceCommand command = (ProduceCommand) this.getRunableTaskInstance(this.producerConfig.getProducerClass());
+        this.producerExecutorService.execute(command);
     }
 
 

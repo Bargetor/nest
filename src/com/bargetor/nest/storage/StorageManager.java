@@ -6,6 +6,7 @@ import java.util.Collection;
  * Created by Bargetor on 16/4/3.
  */
 public interface StorageManager<T> {
+
     /**
      * 是否可以进行生产
      * @return
