@@ -10,10 +10,14 @@ public class BPCRequestBean {
     private String id;
     @ParamCheck(isRequired = true)
     private String bpc;
-    private String username;
+    private int userid;
     private String params;
     @ParamCheck(isRequired = true)
     private String method;
+    /**
+     * API version
+     */
+    private String api;
 
     public String getId() {
         return id;
@@ -29,14 +33,6 @@ public class BPCRequestBean {
 
     public void setBpc(String bpc) {
         this.bpc = bpc;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getParams() {
@@ -55,14 +51,31 @@ public class BPCRequestBean {
         this.method = method;
     }
 
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public String getApi() {
+        return api;
+    }
+
+    public void setApi(String api) {
+        this.api = api;
+    }
+
     @Override
     public String toString() {
         return "BPCRequestBean{" +
                 "id='" + id + '\'' +
                 ", bpc='" + bpc + '\'' +
-                ", username='" + username + '\'' +
+                ", userid=" + userid +
                 ", params='" + params + '\'' +
                 ", method='" + method + '\'' +
+                ", api='" + api + '\'' +
                 '}';
     }
 }

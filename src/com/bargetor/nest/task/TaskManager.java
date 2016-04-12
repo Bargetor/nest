@@ -72,7 +72,8 @@ public class TaskManager implements InitializingBean{
     public void commitTaskConfig(TaskConfig config){
         if(!ParamCheckUtil.check(config))throw new NestTaskConfigException();
         if(StringUtil.isNullStr(config.getCron())){
-            this.registrar.addFixedDelayTask(() -> this.commitTaskCommand(config), (int)(1000D / config.getFrequency()));
+            int delay = (int)(1000.0 / config.getFrequency());
+            this.registrar.addFixedDelayTask(() -> this.commitTaskCommand(config), delay);
         }else {
             this.registrar.addCronTask(() -> this.commitTaskCommand(config), config.getCron());
         }
