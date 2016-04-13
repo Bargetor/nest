@@ -20,6 +20,7 @@ public final class BPCRequestProcessHandler {
             Object returnValue = this.invokeMethod(request.getMethod(), request.getRequestBean());
             this.returnValueHandler.process(request.getHttpRequest(), response.getHttpResponse(), request.getRequestBean(), returnValue);
         }catch (Throwable e){
+            logger.error("process error", e);
             this.exceptionHandler.process(request.getHttpRequest(), response.getHttpResponse(), request.getRequestBean(), e);
         }
     }
