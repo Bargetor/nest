@@ -44,3 +44,7 @@ dependencies {
     )
     compile 'org.springframework.data:spring-data-redis:1.6.4.RELEASE'
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

@@ -50,16 +50,15 @@ public class BPCServiceMethod {
     }
 
     private Object buildParamValue(JSONObject paramValueJson, Parameter parameter){
+        if(paramValueJson == null || parameter == null)return null;
         String paramName = parameter.getName();
         ReflectUtil.BaseType baseType = ReflectUtil.whichBaseType(parameter.getType());
         Object value = null;
 
         if(baseType == null){
             //如果不是基础类型参数,则toBean
-            Object valueJson = paramValueJson.get(paramName);
-            if(valueJson != null){
-                value = JSON.parseObject(valueJson.toString(), parameter.getType());
-            }
+            value = JSON.parseObject(paramValueJson.toJSONString(), parameter.getType());
+
         }else{
             switch (baseType) {
                 case String:

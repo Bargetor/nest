@@ -68,7 +68,7 @@ public class JsonUtil {
 		if(fields == null)return null;
 		for(Field field : fields){
 			String name = field.getName();
-			Object value = ReflectUtil.getProperty(bean, name);
+			Object value = ReflectUtil.getProperty(bean, field);
 			try {
 				if(ReflectUtil.isBaseType(field)){
 					json.put(name, value);

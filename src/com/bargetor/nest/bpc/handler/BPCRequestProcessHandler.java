@@ -26,7 +26,7 @@ public final class BPCRequestProcessHandler {
     }
 
     private Object invokeMethod(BPCServiceMethod method, BPCRequestBean requestBean) throws Throwable {
-        logger.info(String.format("bpc invoke method {%s}", requestBean.getMethod()));
+        logger.info(String.format("%s -> bpc invoke method {%s}", requestBean.getId(), requestBean.getMethod()));
         if(method == null)return null;
         return method.invoke(requestBean);
     }

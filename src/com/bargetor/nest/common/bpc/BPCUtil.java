@@ -190,7 +190,8 @@ public class BPCUtil {
 	*/
 	public static void writeResponse(ServletResponse response, String data){
 		try {
-			response.setContentType("application/json;charset=utf-8");
+			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
 			OutputStream outputStream = response.getOutputStream();
 			outputStream.write(data.getBytes());
 			outputStream.flush();
@@ -244,6 +245,7 @@ public class BPCUtil {
 	 * @since  1.0.0
 	*/
 	private static JSONObject getRequestBodyJson(InputStream input, String charsetName) throws IOException{
+		if(StringUtil.isNullStr(charsetName))charsetName = "UTF-8";
 		Charset charset = Charset.forName(charsetName);
 		return getRequestBodyJson(input, charset);
 	}
