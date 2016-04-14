@@ -9,12 +9,14 @@ import com.bargetor.nest.bpc.annotation.BPCService;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
 import com.bargetor.nest.bpc.bean.BPCServiceProxyBean;
+import com.bargetor.nest.bpc.filter.BPCFilter;
 import com.bargetor.nest.bpc.handler.BPCExceptionHandler;
 import com.bargetor.nest.bpc.handler.BPCRequestProcessHandler;
 import com.bargetor.nest.bpc.handler.BPCReturnValueHandler;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
 import com.bargetor.nest.common.bpc.BPCUtil;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
+import com.bargetor.nest.common.util.ArrayUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -39,6 +41,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by Bargetor on 16/3/20.
@@ -54,6 +57,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	private BPCRequestProcessHandler processHandler;
 
 	private String[] scanPackages;
+	private Set<BPCFilter> filterSet;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -111,6 +115,8 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		responseBean.setId(requestBean.getId());
 		responseBean.setBpc(requestBean.getBpc());
 		BPCResponse response = new BPCResponse(resp, responseBean);
+
+		if(!this.doFilter(request, response))return;
 
 		this.processHandler.process(request, response);
 
@@ -178,6 +184,21 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		return CLASSPATH_URL_PREFIX + convertClassNameToResourcePath(scanPackage) + "/**/*.class";
 	}
 
+	private boolean doFilter(BPCRequest request, BPCResponse response){
+		if(ArrayUtil.isCollectionNull(this.filterSet))return true;
+		for (BPCFilter filter: this.filterSet) {
+			if(!filter.pass(request, response)){
+				logger.info(String.format("bpc filter {%s} no pass -> %s",
+						filter.getClass().getName(),
+						request.getRequestBean())
+				);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/****************************************** getter and setter *******************************************/
 
 	public ApplicationContext getApplicationContext() {
@@ -211,5 +232,21 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	public void setExceptionHandler(BPCExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler;
+	}
+
+	public Set<BPCFilter> getFilterSet() {
+		return filterSet;
+	}
+
+	public void setFilterSet(Set<BPCFilter> filterSet) {
+		this.filterSet = filterSet;
+	}
+
+	public BPCRequestProcessHandler getProcessHandler() {
+		return processHandler;
+	}
+
+	public void setProcessHandler(BPCRequestProcessHandler processHandler) {
+		this.processHandler = processHandler;
 	}
 }

@@ -18,6 +18,7 @@ public class BPCRequestBean {
      * API version
      */
     private String api;
+    private String token;
 
     public String getId() {
         return id;
@@ -67,6 +68,14 @@ public class BPCRequestBean {
         this.api = api;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "BPCRequestBean{" +
@@ -76,6 +85,7 @@ public class BPCRequestBean {
                 ", params='" + params + '\'' +
                 ", method='" + method + '\'' +
                 ", api='" + api + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
