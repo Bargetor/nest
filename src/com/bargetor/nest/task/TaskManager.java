@@ -82,7 +82,7 @@ public class TaskManager implements InitializingBean{
 
     protected final void commitTaskCommand(TaskConfig config){
         for (int i = 0; i < config.getCount(); i++) {
-            RunableTask command = this.getRunableTaskInstance(config.getTaskCommandClass());
+            TaskCommand command = this.getRunableTaskInstance(config.getTaskCommandClass());
             this.executorService.execute(command);
         }
     }
@@ -147,9 +147,9 @@ public class TaskManager implements InitializingBean{
         this.executorService.shutdown();
     }
 
-    private RunableTask getRunableTaskInstance(Class<? extends RunableTask> clazz){
+    private TaskCommand getRunableTaskInstance(Class<? extends TaskCommand> clazz){
         try {
-            RunableTask runableTask = (RunableTask) SpringApplicationUtil.getBean(clazz);
+            TaskCommand runableTask = (TaskCommand) SpringApplicationUtil.getBean(clazz);
             if(runableTask == null){
                 runableTask = clazz.newInstance();
             }
