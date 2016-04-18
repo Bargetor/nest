@@ -264,7 +264,7 @@ public class ObjectClone {
     	Field[] fields = getter.getClass().getDeclaredFields();
     	for(int i = 0,len = fields.length;i<len;i++){
     		Field field = fields[i];
-    		Object thisFieldValue = ReflectUtil.getProperty(getter, field.getName());
+    		Object thisFieldValue = ReflectUtil.getProperty(getter, field);
     		if(thisFieldValue == null)continue;
     		if(!ReflectUtil.isBaseType(thisFieldValue) && !ReflectUtil.isDate(field))continue;
     		ReflectUtil.setProperty(setter, fields[i].getName(), thisFieldValue);

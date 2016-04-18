@@ -1,8 +1,6 @@
 package com.bargetor.nest.common.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Bargetor on 16/1/2.
@@ -80,14 +78,73 @@ public class ArrayUtil {
         return result;
     }
 
-//    public static void main(String[] args){
-//        List<String> list = new ArrayList<>();
-//        for(int i = 0; i < 10; i++){
-//            list.add(String.valueOf(i));
-//        }
-//
-//        List<List<String>> result = ArrayUtil.split(list, 55);
-//
-//        System.out.print(result);
-//    }
+
+    /**
+     * 获取 list 里有多少个不同的key
+     * @param list
+     * @param distincter
+     * @param <E>
+     * @param <K>
+     * @return
+     */
+    public static <E, K>Collection<K> distinct(Collection<E> list, Distincter<E, K> distincter){
+        if(isCollectionNull(list))return null;
+        if(distincter == null)return null;
+        Set<K> distinctSet = new TreeSet<>();
+        for (E item: list) {
+            K key = distincter.getKey(item);
+            if(key == null)continue;
+            distinctSet.add(key);
+        }
+        return distinctSet;
+    }
+
+
+
+    public interface Distincter<E, K>{
+        K getKey(E one);
+    }
+
+    /**
+     * 将list转换成另一个list
+     * @param fromList
+     * @param oneToOne
+     * @param <T>
+     * @param <V>
+     * @return
+     */
+    public static <T, V>List<V>list2List(List<T> fromList, OneToOne<T, V> oneToOne){
+        if(ArrayUtil.isCollectionNull(fromList))return null;
+        List<V> toList = new ArrayList<>();
+        for(T from : fromList){
+            V to = oneToOne.one2One(from);
+            if(to == null)continue;
+            toList.add(to);
+        }
+        return toList;
+    }
+
+    public interface OneToOne<T, V>{
+        public V one2One(T one);
+    }
+
+
+    public static <E, K>Collection<E> gather(Collection<E> list, K key, Gather<E, K> gather){
+        if(ArrayUtil.isCollectionNull(list))return null;
+        if(key == null)return null;
+        if(gather == null)return null;
+        List<E> result = new ArrayList<>();
+
+        list.forEach((item) -> {
+            K itemKey = gather.getKey(item);
+            if(key.equals(itemKey)){
+                result.add(item);
+            }
+        });
+        return result;
+    }
+
+    public interface Gather<T, V>{
+        V getKey(T one);
+    }
 }
