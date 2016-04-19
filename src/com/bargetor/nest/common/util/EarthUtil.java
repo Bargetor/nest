@@ -22,7 +22,7 @@ import com.bargetor.nest.common.ui.Location;
  * @version 1.0.0
  *
  */
-public class MathUtil {
+public class EarthUtil {
 
 	
 	/**
@@ -60,15 +60,6 @@ public class MathUtil {
 		if(location1 == null || location2 == null)return 0;
 
 		return calcDistance(location1.getLat(), location1.getLng(), location2.getLat(), location2.getLng());
-		/********************* back *******************/
-//		double radLat1 = rad(location1.getLat());
-//		double radLat2 = rad(location2.getLat());
-//		double a = radLat1 - radLat2;
-//		double b = rad(location1.getLng()) - rad(location2.getLng());
-//
-//		return 2* Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-//						+ Math.cos(radLat1) * Math.cos(radLat2)
-//						* Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS * 1000;
 	}
 
 	/**

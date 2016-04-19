@@ -9,6 +9,9 @@
  */
 package com.bargetor.nest.common.ui;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.bargetor.nest.common.util.CoordTransformUtil;
+
 /**
  *
  * Location
@@ -21,6 +24,8 @@ package com.bargetor.nest.common.ui;
  *
  */
 public class Location {
+	@JSONField(serialize = false, deserialize = false)
+	private Type type = Type.GCJ02;
 	private double lng;
 	private double lat;
 	/**
@@ -74,5 +79,53 @@ public class Location {
 	public String toString() {
 		return lat + "," + lng;
 	}
-	
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public Location to(Type type){
+		switch (this.type){
+			case WGS84:
+				switch (type){
+					case WGS84:
+						return this;
+					case GCJ02:
+						return CoordTransformUtil.wgs84Togcj02(this.lng, this.lat);
+					case BD09:
+						Location gcj02 = CoordTransformUtil.wgs84Togcj02(this.lng, this.lat);
+						return CoordTransformUtil.gcj02Tobd09(gcj02.getLng(), gcj02.getLat());
+				}
+			case GCJ02:
+				switch (type){
+					case WGS84:
+						return CoordTransformUtil.gcj02Towgs84(this.lng, this.lat);
+					case GCJ02:
+						return this;
+					case BD09:
+						return CoordTransformUtil.gcj02Tobd09(this.lng, this.lat);
+				}
+			case BD09:
+				switch (type){
+					case WGS84:
+						Location gcj02 = CoordTransformUtil.bd09Togcj02(this.lng, this.lat);
+						return CoordTransformUtil.gcj02Towgs84(gcj02.getLng(), gcj02.getLat());
+					case GCJ02:
+						return CoordTransformUtil.bd09Togcj02(this.lng, this.lat);
+					case BD09:
+						return this;
+				}
+		}
+		return this;
+	}
+
+	public enum Type{
+		WGS84,
+		GCJ02,
+		BD09
+	}
 }
