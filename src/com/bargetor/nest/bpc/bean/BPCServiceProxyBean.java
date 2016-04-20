@@ -33,6 +33,7 @@ public class BPCServiceProxyBean implements InitializingBean, ApplicationContext
                 methodBean.setMethod(method);
                 methodBean.setService(this.target);
                 methodBean.setMethodName(methodAnnotation.name());
+                methodBean.setTest(methodAnnotation.isTest());
 
                 BPCDispatchManager.getInstance().registerMethod(this.url, methodBean);
             }

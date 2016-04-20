@@ -59,6 +59,8 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	private String[] scanPackages;
 	private Set<BPCFilter> filterSet;
 
+	private boolean isDebug = false;
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if(this.returnValueHandler == null){
@@ -185,6 +187,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	}
 
 	private boolean doFilter(BPCRequest request, BPCResponse response){
+		if(request.getMethod().isTest() && this.isDebug)return true;
 		if(ArrayUtil.isCollectionNull(this.filterSet))return true;
 		for (BPCFilter filter: this.filterSet) {
 			if(!filter.pass(request, response)){
@@ -248,5 +251,13 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	public void setProcessHandler(BPCRequestProcessHandler processHandler) {
 		this.processHandler = processHandler;
+	}
+
+	public boolean isDebug() {
+		return isDebug;
+	}
+
+	public void setDebug(boolean debug) {
+		isDebug = debug;
 	}
 }

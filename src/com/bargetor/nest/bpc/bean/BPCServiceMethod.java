@@ -20,6 +20,8 @@ public class BPCServiceMethod {
     private Object service;
     private Method method;
 
+    private boolean isTest = false;
+
     public Object invoke(BPCRequestBean requestBean) throws Throwable {
         try {
             Object[] params = buildInvokeParams(requestBean);
@@ -123,5 +125,13 @@ public class BPCServiceMethod {
 
     public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public boolean isTest() {
+        return isTest;
+    }
+
+    public void setTest(boolean test) {
+        isTest = test;
     }
 }

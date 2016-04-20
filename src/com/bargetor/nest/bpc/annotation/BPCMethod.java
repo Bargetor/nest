@@ -10,4 +10,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface BPCMethod {
     String name();
+    boolean isTest() default false;
 }
