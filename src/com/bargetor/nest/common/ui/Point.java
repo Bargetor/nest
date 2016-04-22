@@ -26,7 +26,9 @@ public class Point {
 	private double y;
 	
 	
-	
+	public Point(){
+
+	}
 	
 	/**
 	 * 创建一个新的实例 Point.

@@ -83,7 +83,7 @@ public class TaskManager implements InitializingBean{
     protected final void commitTaskCommand(TaskConfig config){
         for (int i = 0; i < config.getCount(); i++) {
             TaskCommand command = this.getRunableTaskInstance(config.getTaskCommandClass());
-            this.executorService.execute(command);
+            this.executeCommand(command);
         }
     }
 
@@ -158,6 +158,11 @@ public class TaskManager implements InitializingBean{
             logger.error("nest storage init produce command error", e);
             return null;
         }
+    }
+
+    public void executeCommand(Runnable command){
+        if(command == null)return;
+        this.executorService.execute(command);
     }
 
     /********************************* getter and setter ***********************************/
