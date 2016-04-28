@@ -2,28 +2,17 @@ package com.bargetor.nest.task;
 
 import com.alibaba.fastjson.JSON;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
-import com.bargetor.nest.common.executor.RunableTask;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
-import com.bargetor.nest.common.util.ArrayUtil;
 import com.bargetor.nest.common.util.StringUtil;
-import com.bargetor.nest.storage.ConsumeCommand;
-import com.bargetor.nest.storage.exception.NestStorageConfigException;
 import com.bargetor.nest.task.bean.Task;
 import com.bargetor.nest.task.bean.TaskError;
 import com.bargetor.nest.task.exception.NestTaskConfigException;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.swing.*;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

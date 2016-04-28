@@ -45,6 +45,10 @@ public class ArrayUtil {
         return collection == null || collection.size() <= 0;
     }
 
+    public static boolean isCollectionNotNull(Collection<?> collection){
+        return !isCollectionNull(collection);
+    }
+
     /**
      * 是否包含
      * @param main
