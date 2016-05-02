@@ -22,6 +22,10 @@ repositories {
     mavenCentral() // 中央库
 }
 
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
 dependencies {  
     compile (
         'javax.servlet:javax.servlet-api:3.1-b07',  
