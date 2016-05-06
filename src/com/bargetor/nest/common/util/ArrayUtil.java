@@ -1,6 +1,10 @@
 package com.bargetor.nest.common.util;
 
+import com.bargetor.nest.forkjoin.ForkJoinManager;
+
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Created by Bargetor on 16/1/2.
@@ -118,14 +122,44 @@ public class ArrayUtil {
      * @return
      */
     public static <T, V>List<V>list2List(List<T> fromList, OneToOne<T, V> oneToOne){
+        return list2List(fromList, oneToOne, false);
+    }
+
+    /**
+     * 将list转换成另一个list
+     * @param fromList
+     * @param oneToOne
+     * @param <T>
+     * @param <V>
+     * @return
+     */
+
+    /**
+     * 将list转换成另一个list
+     * @param fromList
+     * @param oneToOne
+     * @param isParallelStream 是否使用平行流处理
+     * @param <T>
+     * @param <V>
+     * @return
+     */
+    public static <T, V>List<V>list2List(List<T> fromList, OneToOne<T, V> oneToOne, boolean isParallelStream){
         if(ArrayUtil.isCollectionNull(fromList))return null;
-        List<V> toList = new ArrayList<>();
-        for(T from : fromList){
-            V to = oneToOne.one2One(from);
-            if(to == null)continue;
-            toList.add(to);
+
+
+        if(isParallelStream){
+//            Stream<T> stream = fromList.parallelStream();
+//            stream.forEach(action);
+            return ForkJoinManager.getInstance().parallelTask(fromList, one -> oneToOne.one2One(one));
+        }else{
+            List<V> toList = new ArrayList<>();
+            fromList.forEach(one -> {
+                V to = oneToOne.one2One(one);
+                if(to == null)return;
+                toList.add(to);
+            });
+            return toList;
         }
-        return toList;
     }
 
     public interface OneToOne<T, V>{
