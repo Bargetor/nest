@@ -33,7 +33,7 @@ dependencies {
         'org.slf4j:slf4j-jdk14:1.7.5',
         'mysql:mysql-connector-java:5.1.24',
         'org.json:json:20140107',
-        'com.alibaba:fastjson:1.2.8',
+        'com.alibaba:fastjson:1.2.11',
         'org.springframework:spring-context:4.1.6.RELEASE',
         'org.springframework:spring-webmvc:4.1.6.RELEASE',
         'org.springframework:spring-jdbc:4.1.6.RELEASE',
