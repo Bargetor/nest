@@ -1,5 +1,8 @@
 package com.bargetor.nest.bpc.exception;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * Created by Bargetor on 16/4/13.
  */
@@ -71,5 +74,12 @@ public class BPCException extends RuntimeException {
      */
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public JSON toJson(){
+        JSONObject json = new JSONObject();
+        json.put("status", this.status);
+        json.put("msg", this.msg);
+        return json;
     }
 }

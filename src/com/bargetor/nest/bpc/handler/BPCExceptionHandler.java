@@ -3,6 +3,7 @@ package com.bargetor.nest.bpc.handler;
 import com.alibaba.fastjson.JSON;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
+import com.bargetor.nest.bpc.exception.BPCException;
 import com.bargetor.nest.common.bpc.BPCUtil;
 import com.bargetor.nest.common.util.JsonUtil;
 
@@ -17,8 +18,13 @@ public class BPCExceptionHandler {
         BPCResponseBean responseBean = new BPCResponseBean();
         responseBean.setId(requestBean.getId());
         responseBean.setBpc(requestBean.getBpc());
-        responseBean.setError(e);
-        String responseJsonString = JsonUtil.beanToJson(responseBean).toString();
+        if(BPCException.class.isAssignableFrom(e.getClass())){
+            JSON errorJson = ((BPCException)e).toJson();
+            responseBean.setError(errorJson);
+        }else {
+            responseBean.setError(e);
+        }
+        String responseJsonString = JSON.toJSONString(responseBean);
         BPCUtil.writeResponse(resp, responseJsonString);
     }
 }

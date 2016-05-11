@@ -47,7 +47,7 @@ public class BPCBaseResponseBody {
 	 *
 	 * @since 1.0.0
 	 */
-	private BPCResponseError error;
+	private Object error;
 
 	public String getBpc() {
 		return bpc;
@@ -97,13 +97,13 @@ public class BPCBaseResponseBody {
 	 * @since   1.0.0
 	 */
 	
-	public BPCResponseError getError() {
+	public Object getError() {
 		return error;
 	}
 	/**
 	 * @param error the error to set
 	 */
-	public void setError(BPCResponseError error) {
+	public void setError(Object error) {
 		this.error = error;
 	}
 

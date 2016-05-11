@@ -26,7 +26,7 @@ public class RunableTask implements Runnable{
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
-	public final void run() {
+	public void run() {
 		this.execute();
 	}
 	
