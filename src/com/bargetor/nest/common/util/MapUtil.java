@@ -10,13 +10,7 @@
 package com.bargetor.nest.common.util;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -117,6 +111,30 @@ public class MapUtil {
 		}
 		
 		return StringUtil.joinList(pairs, "&");
+	}
+
+	public static boolean isMapNull(Map<?, ?> map){
+		return map == null || map.size() <= 0;
+	}
+
+	public static boolean isMapNotNull(Map<?, ?> map){
+		return !isMapNull(map);
+	}
+
+	public static <K, V> Map<K, V>list2Map(List<V> list, GetKey<K, V> getKey){
+		if(list == null || list.size() <= 0)return null;
+		if(getKey == null)return null;
+		Map<K, V> result = new HashMap<>();
+		for (V v : list) {
+			K key = getKey.getKey(v);
+			if(key == null)continue;
+			result.put(key, v);
+		}
+		return result;
+	}
+
+	public interface GetKey<K, V>{
+		public K getKey(V entry);
 	}
 		
 }

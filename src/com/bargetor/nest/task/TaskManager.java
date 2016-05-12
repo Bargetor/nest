@@ -76,7 +76,7 @@ public class TaskManager implements InitializingBean{
         }
     }
 
-    public BigInteger commitTask(String taskType, Object params, String tag){
+    public Task commitTask(String taskType, Object params, String tag){
         if(StringUtil.isNullStr(taskType))return null;
 
         Task task = new Task();
@@ -89,7 +89,7 @@ public class TaskManager implements InitializingBean{
 
         this.taskMapper.createTask(task);
         logger.info(String.format("the %s task builded -> %s", task.getType(), task.getTaskId().toString()));
-        return task.getTaskId();
+        return task;
     }
 
     public void taskError(BigInteger taskId, TaskError error){

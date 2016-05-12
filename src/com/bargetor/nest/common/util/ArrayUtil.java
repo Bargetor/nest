@@ -72,8 +72,8 @@ public class ArrayUtil {
 
     /**
      * 减
-     * @param minuend
-     * @param subtrahend
+     * @param minuend 被减数
+     * @param subtrahend 减数
      * @param <T>
      * @return
      */
@@ -121,18 +121,9 @@ public class ArrayUtil {
      * @param <V>
      * @return
      */
-    public static <T, V>List<V>list2List(List<T> fromList, OneToOne<T, V> oneToOne){
+    public static <T, V>List<V>list2List(Collection<T> fromList, OneToOne<T, V> oneToOne){
         return list2List(fromList, oneToOne, false);
     }
-
-    /**
-     * 将list转换成另一个list
-     * @param fromList
-     * @param oneToOne
-     * @param <T>
-     * @param <V>
-     * @return
-     */
 
     /**
      * 将list转换成另一个list
@@ -143,7 +134,7 @@ public class ArrayUtil {
      * @param <V>
      * @return
      */
-    public static <T, V>List<V>list2List(List<T> fromList, OneToOne<T, V> oneToOne, boolean isParallelStream){
+    public static <T, V>List<V>list2List(Collection<T> fromList, OneToOne<T, V> oneToOne, boolean isParallelStream){
         if(ArrayUtil.isCollectionNull(fromList))return null;
 
 

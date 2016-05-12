@@ -17,13 +17,9 @@ public abstract class TaskCommand implements Runnable{
     @Override
     public final void run() {
         Task task = this.getOneTask();
-        BigInteger taskId = null;
+        if(task == null || task.getTaskId() == null)return;
 
-        if(task != null){
-            taskId = task.getTaskId();
-        }else{
-            taskId = TaskManager.getInstance().commitTask("unknow", null, null);
-        }
+        BigInteger taskId = task.getTaskId();
 
         TaskManager.getInstance().taskRuning(taskId);
         try{
