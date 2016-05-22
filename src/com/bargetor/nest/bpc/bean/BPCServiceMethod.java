@@ -94,7 +94,7 @@ public class BPCServiceMethod {
                     value = null;
             }
             if(value == null){
-                throw new BPCBaseTypeValueIsNull();
+                throw new BPCBaseTypeValueIsNull(paramName);
             }
         }
         return value;

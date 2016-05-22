@@ -7,7 +7,7 @@ import com.bargetor.nest.common.bpc.bean.BPCResponseError;
  */
 public class BPCBaseTypeValueIsNull extends BPCException {
 
-    public BPCBaseTypeValueIsNull(){
-        super("base type value is null");
+    public BPCBaseTypeValueIsNull(String paramName){
+        super(paramName + " base type value is null");
     }
 }

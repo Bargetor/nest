@@ -87,9 +87,22 @@ public class HttpRequester {
 	*/
 	public HttpResponse sendGet(String urlString, Map<String, String> params,
 			Map<String, String> propertys) throws IOException {
+		String newUrl = this.concatParams(urlString, params);
+		
+		HttpGet httpget = new HttpGet(newUrl);
+        
+        
+        logger.info("executing request " + httpget.getURI());
+        // 执行get请求.    
+        CloseableHttpResponse response = httpClient.execute(httpget); 
+		
+		return this.makeContent(urlString, httpget, response);
+	}
+
+	public String concatParams(String url, Map<String, String> params){
 		StringBuffer paramBuffer = new StringBuffer();
-		String newUrl = urlString;
- 
+		String newUrl = url;
+
 		//拼接GET参数
 		if (params != null) {
 			int i = 0;
@@ -103,15 +116,8 @@ public class HttpRequester {
 			}
 			newUrl += paramBuffer;
 		}
-		
-		HttpGet httpget = new HttpGet(newUrl);
-        
-        
-        logger.info("executing request " + httpget.getURI());
-        // 执行get请求.    
-        CloseableHttpResponse response = httpClient.execute(httpget); 
-		
-		return this.makeContent(urlString, httpget, response);
+
+		return newUrl;
 	}
  
 	/**
