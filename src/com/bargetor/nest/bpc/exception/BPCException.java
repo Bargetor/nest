@@ -76,7 +76,7 @@ public class BPCException extends RuntimeException {
         this.msg = msg;
     }
 
-    public JSON toJson(){
+    public JSONObject toJson(){
         JSONObject json = new JSONObject();
         json.put("status", this.status);
         json.put("msg", this.msg);
