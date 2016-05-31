@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 public class BPCReturnValueHandler {
 
     public void process(HttpServletRequest req, HttpServletResponse resp, BPCRequestBean requestBean, Object returnValue){
-        resp.setContentType("application/json;charset=utf-8");
         BPCResponseBean responseBean = new BPCResponseBean();
         responseBean.setId(requestBean.getId());
         responseBean.setBpc(requestBean.getBpc());

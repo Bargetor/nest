@@ -190,8 +190,8 @@ public class BPCUtil {
 	*/
 	public static void writeResponse(ServletResponse response, String data){
 		try {
-			response.setContentType("application/json");
-			response.setCharacterEncoding("utf-8");
+			response.setContentType("application/json;charset=utf-8");
+//			response.setCharacterEncoding("utf-8");
 			OutputStream outputStream = response.getOutputStream();
 			outputStream.write(data.getBytes());
 			outputStream.flush();
