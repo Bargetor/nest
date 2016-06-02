@@ -113,6 +113,12 @@ public class ArrayUtil {
         K getKey(E one);
     }
 
+    public static <T>void listForeach(Collection<T> list, Consumer<T> action){
+        if(isCollectionNull(list))return;
+        Stream<T> stream = list.parallelStream();
+        stream.forEach(action);
+    }
+
     /**
      * 将list转换成另一个list
      * @param fromList
