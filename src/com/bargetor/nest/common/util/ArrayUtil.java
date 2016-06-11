@@ -1,6 +1,7 @@
 package com.bargetor.nest.common.util;
 
 import com.bargetor.nest.forkjoin.ForkJoinManager;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -10,6 +11,17 @@ import java.util.stream.Stream;
  * Created by Bargetor on 16/1/2.
  */
 public class ArrayUtil {
+
+    public static <T> List<T> array2List(T[] array){
+        if(array == null)return null;
+        List<T> list = new ArrayList<>();
+        for(T item : array){
+            list.add(item);
+        }
+        return list;
+    }
+
+
     /**
      * 拆分集合
      * @param list
