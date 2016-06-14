@@ -80,4 +80,7 @@ public class ForkJoinManager implements InitializingBean {
     }
 
 
+    public void destroy(){
+        this.forkJoinPool.shutdown();
+    }
 }
