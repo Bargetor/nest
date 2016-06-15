@@ -37,12 +37,24 @@ public class DateUtil {
 	 *<p>Title: getNowToLate</p>
 	 *<p>Description:获取当前时间之后ms秒的时间</p>
 	 * @param @param ms
-	 * @param @return 
-	 * @return  String 
+	 * @param @return
+	 * @return  String
 	 * @throws
-	*/
-	public static String getNowToLate(long ms){
+	 */
+	public static String getNowToLateForStr(long ms){
 		return timeFormat.format(new Date(System.currentTimeMillis() + ms));
+	}
+
+	/**
+	 *<p>Title: getNowToLate</p>
+	 *<p>Description:获取当前时间之后ms秒的时间</p>
+	 * @param @param ms
+	 * @param @return
+	 * @return  Date
+	 * @throws
+	 */
+	public static Date getNowToLate(long ms){
+		return new Date(System.currentTimeMillis() + ms);
 	}
 
 	public static String getDateStr(Date date){
