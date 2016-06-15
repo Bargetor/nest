@@ -33,7 +33,7 @@ public class AppConfig{
         return factoryBean;
     }
 
-    @Bean
+    @Bean(destroyMethod = "destroy")
     public TaskManager taskManager(){
         TaskManager taskManager = new TaskManager();
         try {
