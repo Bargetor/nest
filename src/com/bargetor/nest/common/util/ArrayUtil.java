@@ -107,16 +107,22 @@ public class ArrayUtil {
      * @param <K>
      * @return
      */
-    public static <E, K>Collection<K> distinct(Collection<E> list, Distincter<E, K> distincter){
+    public static <E, K>Map<K, List<E>> distinct(Collection<E> list, Distincter<E, K> distincter){
         if(isCollectionNull(list))return null;
         if(distincter == null)return null;
-        Set<K> distinctSet = new TreeSet<>();
+        Map<K, List<E>> distinctMap = new HashMap<>();
         for (E item: list) {
             K key = distincter.getKey(item);
             if(key == null)continue;
-            distinctSet.add(key);
+
+            List<E> itemList = distinctMap.get(key);
+            if(itemList == null){
+                itemList = new ArrayList<>();
+                distinctMap.put(key, itemList);
+            }
+            itemList.add(item);
         }
-        return distinctSet;
+        return distinctMap;
     }
 
 
