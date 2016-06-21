@@ -128,4 +128,12 @@ public class Location {
 		GCJ02,
 		BD09
 	}
+
+	public static void main(String[] args){
+		Location location = new Location(104.0572849207874, 30.673247127022755);
+		location.setType(Type.BD09);
+
+		System.out.println("the original location is:" + location.toString());
+		System.out.println("the transfrom location is: " + location.to(Type.GCJ02));
+	}
 }
