@@ -32,10 +32,12 @@ public class BPCException extends RuntimeException {
 
     public BPCException(String msg) {
         super(msg);
+        this.msg = msg;
     }
 
     public BPCException(Exception e, String msg) {
         super(msg, e);
+        this.msg = msg;
     }
 
     public BPCException(int status, String msg){

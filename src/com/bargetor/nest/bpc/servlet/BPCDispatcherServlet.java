@@ -9,6 +9,8 @@ import com.bargetor.nest.bpc.annotation.BPCService;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
 import com.bargetor.nest.bpc.bean.BPCServiceProxyBean;
+import com.bargetor.nest.bpc.exception.BPCMetaParamInvalidException;
+import com.bargetor.nest.bpc.exception.BPCMethodNotFoundException;
 import com.bargetor.nest.bpc.filter.BPCFilter;
 import com.bargetor.nest.bpc.handler.BPCExceptionHandler;
 import com.bargetor.nest.bpc.handler.BPCRequestProcessHandler;
@@ -101,16 +103,18 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 		//检查参数合法性
 		if(!ParamCheckUtil.check(requestBean)){
-			JSONObject invalidRequestJson = new JSONObject();
-			JSONObject error = new JSONObject();
-			error.put("message", "Invalid request");
-			invalidRequestJson.put("error", error);
-			BPCUtil.writeResponse(resp, invalidRequestJson.toJSONString());
+			BPCUtil.writeResponse(resp, new BPCMetaParamInvalidException().toJson().toJSONString());
 			return;
 		}
 
 		//创建bpc request
 		BPCRequest request = new BPCRequest(req, requestBean);
+
+		//检查request
+		if(request.getMethod() == null){
+			BPCUtil.writeResponse(resp, new BPCMethodNotFoundException(requestBean.getMethod()).toJson().toJSONString());
+			return;
+		}
 
 		//创建 bpc response
 		BPCResponseBean responseBean = new BPCResponseBean();
