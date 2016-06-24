@@ -72,10 +72,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 			this.exceptionHandler = new BPCExceptionHandler();
 		}
 
-
 		this.processHandler = new BPCRequestProcessHandler();
-		processHandler.setExceptionHandler(this.exceptionHandler);
-		processHandler.setReturnValueHandler(this.returnValueHandler);
 
 	}
 
@@ -98,35 +95,45 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 			return;
 		}
 
+		//创建bpc request
 		String requestBody = new String(StreamUtils.copyToByteArray(req.getInputStream()));
 		BPCRequestBean requestBean = JSON.parseObject(requestBody, BPCRequestBean.class);
-
-		//检查参数合法性
-		if(!ParamCheckUtil.check(requestBean)){
-			BPCUtil.writeResponse(resp, new BPCMetaParamInvalidException().toJson().toJSONString());
-			return;
-		}
-
-		//创建bpc request
-		BPCRequest request = new BPCRequest(req, requestBean);
-
-		//检查request
-		if(request.getMethod() == null){
-			BPCUtil.writeResponse(resp, new BPCMethodNotFoundException(requestBean.getMethod()).toJson().toJSONString());
-			return;
-		}
+		BPCRequest bpcRequest = new BPCRequest(req, requestBean);
 
 		//创建 bpc response
 		BPCResponseBean responseBean = new BPCResponseBean();
 		responseBean.setId(requestBean.getId());
 		responseBean.setBpc(requestBean.getBpc());
-		BPCResponse response = new BPCResponse(resp, responseBean);
+		BPCResponse bpcResponse = new BPCResponse(resp, responseBean);
 
-		if(!this.doFilter(request, response))return;
-
-		this.processHandler.process(request, response);
+		try {
+			this.serviceExecutor(req, resp, bpcRequest, bpcResponse);
+		}catch (Throwable e){
+			logger.error("process error", e);
+			this.exceptionHandler.process(bpcRequest, bpcResponse, e);
+		}
 
 	}
+
+	protected void serviceExecutor(HttpServletRequest req, HttpServletResponse resp, BPCRequest bpcRequest, BPCResponse bpcResponse) throws Throwable {
+		if(bpcRequest == null || bpcResponse == null)return;
+
+		//检查参数合法性
+		if(!ParamCheckUtil.check(bpcRequest.getRequestBean()))
+			throw new BPCMetaParamInvalidException();
+
+		//检查request
+		if(bpcRequest.getMethod() == null)
+			throw new BPCMethodNotFoundException(bpcRequest.getRequestBean().getMethod());
+
+
+		if(!this.doFilter(bpcRequest, bpcResponse))return;
+
+		Object returnValue = this.processHandler.process(bpcRequest, bpcResponse);
+
+		this.returnValueHandler.process(bpcRequest, bpcResponse, returnValue);
+	}
+
 
 	/**
 	 * 在此,主要用于扫描和注册 BPC 服务
