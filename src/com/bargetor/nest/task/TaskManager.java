@@ -98,7 +98,7 @@ public class TaskManager implements InitializingBean{
         if(error != null){
             this.taskMapper.updateTaskErrorJson(taskId, JSON.toJSONString(error));
         }
-        logger.info(String.format("the task error -> %s", taskId.toString()));
+        logger.info(String.format("the task error -> %s : %s", taskId.toString(), error.getMsg()));
     }
 
     public void taskRuning(BigInteger taskId){
