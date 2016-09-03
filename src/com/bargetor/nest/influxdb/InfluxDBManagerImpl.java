@@ -3,6 +3,7 @@ package com.bargetor.nest.influxdb;
 import com.bargetor.nest.common.check.param.ParamCheck;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import org.apache.log4j.Logger;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
  * Created by Bargetor on 16/9/3.
  */
 public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
+    private static final Logger logger = Logger.getLogger(InfluxDBManagerImpl.class);
 
     @ParamCheck(isRequired = true)
     private String serverUrl;
@@ -29,16 +31,21 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
     @Override
     public void afterPropertiesSet() throws Exception {
         if(!ParamCheckUtil.check(this)){
-            throw new Exception("influxdb params miss error");
+            logger.error("influxdb params miss error", new Exception("influxdb params miss error"));
+            return;
         }
 
         this.db = InfluxDBFactory.connect(this.serverUrl, this.userName, this.password);
-        if(this.db == null)throw new Exception("influxdb connect error");
+        if(this.db == null){
+            logger.error("influxdb connect error");
+            return;
+        }
 
         this.db.createDatabase(this.databaseName);
     }
 
     public void writePoint(Point point){
+        if(this.db == null)return;
         this.db.write(this.databaseName, this.retentionPolicy, point);
     }
 
