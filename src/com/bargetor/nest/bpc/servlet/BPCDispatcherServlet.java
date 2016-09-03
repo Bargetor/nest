@@ -19,7 +19,10 @@ import com.bargetor.nest.bpc.manager.BPCDispatchManager;
 import com.bargetor.nest.common.bpc.BPCUtil;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
+import com.bargetor.nest.influxdb.InfluxDBManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.net.SyslogAppender;
+import org.influxdb.dto.Point;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -44,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Bargetor on 16/3/20.
@@ -62,6 +66,9 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	private Set<BPCFilter> filterSet;
 
 	private boolean isDebug = false;
+
+	private InfluxDBManager influxDBManager;
+	private String pointMeasurement = "bpc";
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -99,6 +106,9 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		String requestBody = new String(StreamUtils.copyToByteArray(req.getInputStream()));
 		BPCRequestBean requestBean = JSON.parseObject(requestBody, BPCRequestBean.class);
 		BPCRequest bpcRequest = new BPCRequest(req, requestBean);
+
+		//打点
+		this.point(bpcRequest);
 
 		//创建 bpc response
 		BPCResponseBean responseBean = new BPCResponseBean();
@@ -213,6 +223,21 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		return true;
 	}
 
+	/**
+	 * 记录调用打点
+	 * @return
+	 */
+	private void point(BPCRequest request){
+		if(request == null)return;
+		if(request.getMethod() == null)return;
+		Point point = Point.measurement(this.pointMeasurement)
+				.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+				.addField(request.getMethod().getMethodName(), 1)
+				.build();
+
+		this.influxDBManager.writePoint(point);
+	}
+
 	/****************************************** getter and setter *******************************************/
 
 	public ApplicationContext getApplicationContext() {
@@ -270,5 +295,21 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	public void setDebug(boolean debug) {
 		isDebug = debug;
+	}
+
+	public InfluxDBManager getInfluxDBManager() {
+		return influxDBManager;
+	}
+
+	public void setInfluxDBManager(InfluxDBManager influxDBManager) {
+		this.influxDBManager = influxDBManager;
+	}
+
+	public String getPointMeasurement() {
+		return pointMeasurement;
+	}
+
+	public void setPointMeasurement(String pointMeasurement) {
+		this.pointMeasurement = pointMeasurement;
 	}
 }
