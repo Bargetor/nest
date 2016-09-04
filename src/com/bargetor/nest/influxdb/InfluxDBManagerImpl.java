@@ -3,6 +3,7 @@ package com.bargetor.nest.influxdb;
 import com.bargetor.nest.common.check.param.ParamCheck;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import com.bargetor.nest.common.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
@@ -30,18 +31,23 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(!ParamCheckUtil.check(this)){
+        if(!ParamCheckUtil.check(this) || StringUtil.isNullStr(this.serverUrl)){
             logger.error("influxdb params miss error", new Exception("influxdb params miss error"));
             return;
         }
-
-        this.db = InfluxDBFactory.connect(this.serverUrl, this.userName, this.password);
-        if(this.db == null){
-            logger.error("influxdb connect error");
+        try {
+            this.db = InfluxDBFactory.connect(this.serverUrl, this.userName, this.password);
+            this.db.createDatabase(this.databaseName);
+        }catch (Exception e){
+            this.db = null;
+            logger.error("influxdb connect error", e);
             return;
         }
 
-        this.db.createDatabase(this.databaseName);
+        if(this.db == null){
+            logger.error("influxdb unknow error");
+            return;
+        }
     }
 
     public void writePoint(Point point){

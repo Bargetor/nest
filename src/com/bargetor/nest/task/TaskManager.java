@@ -13,6 +13,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -87,6 +88,7 @@ public class TaskManager implements InitializingBean{
         }
         task.setStatus(Task.TaskStatus.created.name());
 
+        task.setCreateTime(new Date());
         this.taskMapper.createTask(task);
         logger.info(String.format("the %s task builded -> %s", task.getType(), task.getTaskId().toString()));
         return task;
