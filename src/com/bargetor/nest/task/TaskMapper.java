@@ -58,7 +58,7 @@ public interface TaskMapper {
 	@Select("select errorJson from TBL_TASK where taskId = #{taskId}")
 	public String getTaskErrorJson(@Param("taskId") BigInteger taskId);
 
-	@Insert("insert into TBL_TASK(taskId, type, tag, status, attributeJson, errorJson) values (#{taskId}, #{type}, #{tag}, #{status}, #{attributeJson}, #{errorJson})")
+	@Insert("insert into TBL_TASK(taskId, type, tag, status, attributeJson, errorJson, createTime) values (#{taskId}, #{type}, #{tag}, #{status}, #{attributeJson}, #{errorJson}, #{createTime})")
 	@Options(useGeneratedKeys = true, keyProperty = "taskId", keyColumn = "taskId")
 	public int createTask(Task task);
 	
