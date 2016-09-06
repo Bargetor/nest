@@ -135,6 +135,6 @@ public class Task {
 	}
 
 	public enum TaskStatus{
-		created, running, done, error
+		created, running, done, error, retry
 	}
 }

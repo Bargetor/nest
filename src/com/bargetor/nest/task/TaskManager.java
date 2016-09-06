@@ -103,6 +103,15 @@ public class TaskManager implements InitializingBean{
         logger.info(String.format("the task error -> %s : %s", taskId.toString(), error.getMsg()));
     }
 
+    public void taskRetry(BigInteger taskId, TaskError error){
+        if(taskId == null)return;
+        this.taskMapper.updateTaskStatus(taskId, Task.TaskStatus.retry.name());
+        if(error != null){
+            this.taskMapper.updateTaskErrorJson(taskId, JSON.toJSONString(error));
+        }
+        logger.info(String.format("the task retry -> %s , error msg is : %s", taskId.toString(), error.getMsg()));
+    }
+
     public void taskRuning(BigInteger taskId){
         if(taskId == null)return;
         this.taskMapper.updateTaskStatus(taskId, Task.TaskStatus.running.name());
@@ -114,6 +123,8 @@ public class TaskManager implements InitializingBean{
         this.taskMapper.updateTaskStatus(taskId, Task.TaskStatus.done.name());
         logger.info(String.format("the task done -> %s", taskId.toString()));
     }
+
+
 
     public <T>T getTaskParams(BigInteger taskId, Class<T> paramsClass){
         if(taskId == null)return null;
@@ -130,8 +141,27 @@ public class TaskManager implements InitializingBean{
     }
 
     public Task getOneCreatedTaskByType(String type){
+        return this.getOneTask(type, Task.TaskStatus.created);
+    }
+
+    /**
+     * 根据status的顺序获取task,直至有满足的task
+     * @param type
+     * @param status 必填, 状态优先序列,
+     * @return
+     */
+    public Task getOneTask(String type, Task.TaskStatus... status){
         if(StringUtil.isNullStr(type))return null;
-        return this.taskMapper.getOneTaskByTypeStatus(type, Task.TaskStatus.created.name());
+        if(status == null || status.length <= 0)return null;
+        Task task = null;
+        for (Task.TaskStatus state: status) {
+            task = this.taskMapper.getOneTaskByTypeStatus(type, state.name());
+            if(task != null){
+                break;
+            }
+        }
+
+        return task;
     }
 
     public void destroy(){
