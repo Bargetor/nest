@@ -1,10 +1,14 @@
 package com.bargetor.nest.task;
 
 import com.bargetor.nest.common.executor.RunableTask;
+import com.bargetor.nest.common.util.ArrayUtil;
+import com.bargetor.nest.common.util.ExceptionUtil;
 import com.bargetor.nest.task.bean.Task;
 import com.bargetor.nest.task.bean.TaskError;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bargetor on 16/4/9.
@@ -36,7 +40,13 @@ public abstract class TaskCommand implements Runnable{
             TaskManager.getInstance().taskDone(taskId);
         }catch (Exception e){
             TaskError taskError = new TaskError();
-            taskError.setMsg(String.format("[%s]->%s", e.getClass().getName(), e.getMessage()));
+
+            taskError.setMsg(String.format(
+                    "[%s]->%s, stack:%s",
+                    e.getClass().getName(),
+                    e.getMessage(),
+                    ExceptionUtil.getExceptionStackTraceString(e))
+            );
 
             if(this.isInRetryExceptions(this.getRetryExceptionClasses(), e)){
                 TaskManager.getInstance().taskRetry(taskId, taskError);

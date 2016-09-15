@@ -56,4 +56,14 @@ public class TaskConfig {
     public void setTaskCommandClass(Class<? extends TaskCommand> taskCommandClass) {
         this.taskCommandClass = taskCommandClass;
     }
+
+    @Override
+    public String toString() {
+        return "TaskConfig{" +
+                "count=" + count +
+                ", frequency=" + frequency +
+                ", cron='" + cron + '\'' +
+                ", taskCommandClass=" + taskCommandClass +
+                '}';
+    }
 }

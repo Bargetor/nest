@@ -51,7 +51,10 @@ public class ForkJoinManager implements InitializingBean {
      */
     public <I, R>List<R> parallelTask(Collection<I> inputs, ParallelTask.Worker<I, R> worker){
         ParallelTask<I, R> parallelTask = new ParallelTask<>(inputs, worker);
-        List<Future<R>> future = this.forkJoinPool.invokeAll(parallelTask.getWorkers());
+        List<ParallelTask<I, R>.ParallelTaskWorker<I, R>> workers = parallelTask.getWorkers();
+        if(ArrayUtil.isCollectionNull(workers))return null;
+
+        List<Future<R>> future = this.forkJoinPool.invokeAll(workers);
         return ArrayUtil.list2List(future, one -> {
             try {
                 return one.get();

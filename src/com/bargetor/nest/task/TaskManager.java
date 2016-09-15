@@ -3,7 +3,9 @@ package com.bargetor.nest.task;
 import com.alibaba.fastjson.JSON;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import com.bargetor.nest.common.util.ObjectClone;
 import com.bargetor.nest.common.util.StringUtil;
+import com.bargetor.nest.forkjoin.ForkJoinManager;
 import com.bargetor.nest.task.bean.Task;
 import com.bargetor.nest.task.bean.TaskError;
 import com.bargetor.nest.task.exception.NestTaskConfigException;
@@ -13,7 +15,9 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,6 +65,8 @@ public class TaskManager implements InitializingBean{
 
     public void commitTaskConfig(TaskConfig config){
         if(!ParamCheckUtil.check(config))throw new NestTaskConfigException();
+        logger.info(String.format("task manager will commit config -> %s", config.toString()));
+
         if(StringUtil.isNullStr(config.getCron())){
             int delay = (int)(1000.0 / config.getFrequency());
             this.registrar.addFixedDelayTask(() -> this.commitTaskCommand(config), delay);
@@ -71,10 +77,25 @@ public class TaskManager implements InitializingBean{
 
 
     protected final void commitTaskCommand(TaskConfig config){
+        if(config.getCount() <= 0 )return;
+
+        //同步平行处理任务,保证任务不积压
+        List<Object> inputs = new ArrayList<>();
         for (int i = 0; i < config.getCount(); i++) {
-            TaskCommand command = this.getRunableTaskInstance(config.getTaskCommandClass());
-            this.executeCommand(command);
+            inputs.add(new Object());
         }
+
+        ForkJoinManager.getInstance().parallelTask(inputs, input -> {
+            TaskCommand command = this.getRunableTaskInstance(config.getTaskCommandClass());
+            command.run();
+            return null;
+        });
+
+
+//        for (int i = 0; i < config.getCount(); i++) {
+//            TaskCommand command = this.getRunableTaskInstance(config.getTaskCommandClass());
+//            this.executeCommand(command);
+//        }
     }
 
     public Task commitTask(String taskType, Object params, String tag){
