@@ -65,13 +65,14 @@ public class TaskManager implements InitializingBean{
 
     public void commitTaskConfig(TaskConfig config){
         if(!ParamCheckUtil.check(config))throw new NestTaskConfigException();
-        logger.info(String.format("task manager will commit config -> %s", config.toString()));
 
         if(StringUtil.isNullStr(config.getCron())){
-            int delay = (int)(1000.0 / config.getFrequency());
+            int delay = config.getDelay() < 100 ? 100 : config.getDelay();
             this.registrar.addFixedDelayTask(() -> this.commitTaskCommand(config), delay);
+            logger.info(String.format("task manager commit delay config -> %s", config.toString()));
         }else {
             this.registrar.addCronTask(() -> this.commitTaskCommand(config), config.getCron());
+            logger.info(String.format("task manager commit corn config -> %s", config.toString()));
         }
     }
 

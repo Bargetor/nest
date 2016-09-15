@@ -12,10 +12,10 @@ public class TaskConfig {
     private int count = 1;
 
     /**
-     * 消费频率,即一秒内能处理多少个任务
+     * 延迟ms, 默认值为100, 避免无delay导致机器跑死
      */
     @ParamCheck(isRequired = true)
-    private double frequency = 1;
+    private int delay = 100;
 
     /**
      * 定时任务
@@ -33,12 +33,12 @@ public class TaskConfig {
         this.count = count;
     }
 
-    public double getFrequency() {
-        return frequency;
+    public int getDelay() {
+        return delay;
     }
 
-    public void setFrequency(double frequency) {
-        this.frequency = frequency;
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     public String getCron() {
@@ -61,7 +61,7 @@ public class TaskConfig {
     public String toString() {
         return "TaskConfig{" +
                 "count=" + count +
-                ", frequency=" + frequency +
+                ", delay=" + delay +
                 ", cron='" + cron + '\'' +
                 ", taskCommandClass=" + taskCommandClass +
                 '}';
