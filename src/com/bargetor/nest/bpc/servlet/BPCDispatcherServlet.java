@@ -107,9 +107,6 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		BPCRequestBean requestBean = JSON.parseObject(requestBody, BPCRequestBean.class);
 		BPCRequest bpcRequest = new BPCRequest(req, requestBean);
 
-		//打点
-		this.point(bpcRequest);
-
 		//创建 bpc response
 		BPCResponseBean responseBean = new BPCResponseBean();
 		responseBean.setId(requestBean.getId());
@@ -118,9 +115,15 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 		try {
 			this.serviceExecutor(req, resp, bpcRequest, bpcResponse);
+
+			//调用成功打点
+			this.point(bpcRequest, true);
 		}catch (Throwable e){
 			logger.error("process error", e);
 			this.exceptionHandler.process(bpcRequest, bpcResponse, e);
+
+			//调用失败打点
+			this.point(bpcRequest, false);
 		}
 
 	}
@@ -225,14 +228,15 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	/**
 	 * 记录调用打点
-	 * @return
+	 * @param request
+	 * @param isSuccess 调用是否成功
 	 */
-	private void point(BPCRequest request){
+	private void point(BPCRequest request, boolean isSuccess){
 		if(request == null)return;
 		if(request.getMethod() == null)return;
 		Point point = Point.measurement(this.pointMeasurement)
 				.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField(request.getMethod().getMethodName(), 1)
+				.addField(request.getMethod().getMethodName(), isSuccess)
 				.build();
 
 		this.influxDBManager.writePoint(point);
