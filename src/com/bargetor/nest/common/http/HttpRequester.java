@@ -12,6 +12,8 @@ import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -329,9 +331,25 @@ public class HttpRequester {
 			HttpPost httpPost = (HttpPost) request;
 			httpPost.setEntity(entity);
 		}
-		
-		CloseableHttpResponse response = httpClient.execute(request);
-		return this.makeContent(urlString, request, response);
+
+		// 重试3次
+		int retry = 0;
+		do {
+			try {
+				CloseableHttpResponse response = httpClient.execute(request);
+				return this.makeContent(urlString, request, response);
+			} catch (IOException e) {
+				request.abort();
+				logger.info("io exception when send http.", e);
+			} finally {
+				request.releaseConnection();
+			}
+			logger.info("send http fail, retry:" + retry);
+		} while (++retry < 3);
+
+		logger.error("send http fail after retry 3 times, url=" + urlString);
+		return null;
+
 	}
 	
 	private HttpResponse makeContent(String urlString, HttpRequestBase request, CloseableHttpResponse response) throws IOException {

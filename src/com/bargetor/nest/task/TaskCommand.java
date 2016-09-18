@@ -54,7 +54,11 @@ public abstract class TaskCommand implements Runnable{
                 TaskManager.getInstance().taskError(taskId, taskError);
             }
         }
+
+        this.finallyMethod();
     }
+
+    public void finallyMethod(){}
 
     /**
      * 判断exception是否在retry exceptions中
