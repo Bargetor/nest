@@ -3,9 +3,11 @@ package com.bargetor.nest.task;
 import com.bargetor.nest.common.executor.RunableTask;
 import com.bargetor.nest.common.util.ArrayUtil;
 import com.bargetor.nest.common.util.ExceptionUtil;
+import com.bargetor.nest.task.annotation.TaskRetryExceptions;
 import com.bargetor.nest.task.bean.Task;
 import com.bargetor.nest.task.bean.TaskError;
 
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +19,6 @@ public abstract class TaskCommand implements Runnable{
     public abstract Task getOneTask();
 
     public abstract void execute(Task task);
-
-    /**
-     * 当任务在执行过程中发生了一个已知异常,并希望发生此异常后,任务可以重试
-     * 可以重写此方法,并在返回值中返回希望重试的异常
-     * @return
-     */
-    public Class<? extends Exception>[] getRetryExceptionClasses(){
-        return new Class[]{};
-    }
 
     @Override
     public final void run() {
@@ -48,7 +41,7 @@ public abstract class TaskCommand implements Runnable{
                     ExceptionUtil.getExceptionStackTraceString(e))
             );
 
-            if(this.isInRetryExceptions(this.getRetryExceptionClasses(), e)){
+            if(this.isInRetryExceptions(this.getRetryExceptions(), e)){
                 TaskManager.getInstance().taskRetry(taskId, taskError);
             }else{
                 TaskManager.getInstance().taskError(taskId, taskError);
@@ -59,6 +52,16 @@ public abstract class TaskCommand implements Runnable{
     }
 
     public void finallyMethod(){}
+
+    private Class<? extends Exception>[] getRetryExceptions(){
+        try {
+            Method executeMethod = this.getClass().getMethod("execute", Task.class);
+            TaskRetryExceptions retryAnnotation = executeMethod.getAnnotation(TaskRetryExceptions.class);
+            return retryAnnotation.value();
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
 
     /**
      * 判断exception是否在retry exceptions中
