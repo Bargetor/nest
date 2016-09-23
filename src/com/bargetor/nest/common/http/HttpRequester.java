@@ -38,6 +38,7 @@ public class HttpRequester {
 	private static final Logger logger = Logger.getLogger(HttpRequester.class);
 	
 	private static CloseableHttpClient httpClient = HttpClients.createDefault();
+	private static RequestConfig requestConfig = HttpRequester.buildDefaultRequestConfig();
 	
 	/**
 	 * defaultContentEncoding:默认内容编码
@@ -319,6 +320,8 @@ public class HttpRequester {
 		}else{
 			return null;
 		}
+
+		request.setConfig(requestConfig);
 		
 		if(properties != null){
 			for (Entry<String, String> propetry : properties.entrySet()) {
@@ -456,6 +459,14 @@ public class HttpRequester {
 			if (urlConnection != null)
 				urlConnection.disconnect();
 		}
+	}
+
+	public static RequestConfig buildDefaultRequestConfig(){
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setConnectTimeout(10000)
+				.setConnectionRequestTimeout(10000)
+				.setSocketTimeout(10000).build();
+		return requestConfig;
 	}
  
 	/**
