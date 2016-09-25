@@ -15,7 +15,7 @@ import java.util.*;
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
-	
+
 
 	public static String getStr(String formatStr, Date date){
 		SimpleDateFormat timeFormat = new SimpleDateFormat(formatStr);
@@ -54,7 +54,9 @@ public class DateUtil {
 	 * @throws
 	 */
 	public static Date getNowToLate(long ms){
-		return new Date(System.currentTimeMillis() + ms);
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(System.currentTimeMillis() + ms);
+		return cal.getTime();
 	}
 
 	public static String getDateStr(Date date){
