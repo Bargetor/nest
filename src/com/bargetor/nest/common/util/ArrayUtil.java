@@ -53,6 +53,27 @@ public class ArrayUtil {
     }
 
     /**
+     * 最终的取值为[from, to]
+     * @param list
+     * @param from
+     * @param to
+     * @param <T>
+     * @return
+     */
+    public static <T>List<T> subList(List<T> list, int from, int to){
+        if(isCollectionNull(list))return null;
+        if(from < 0 || to < 0)return null;
+        int start = from >= list.size() ? list.size() - 1 : from;
+        start = start < 0 ? 0 : start;
+
+        int end = to >= list.size() ? list.size() - 1 : to;
+        end = end < 0 ? 0 : end;
+        end += 1;
+
+        return list.subList(start, end);
+    }
+
+    /**
      * 集合是否为空
      * @param collection
      * @return
