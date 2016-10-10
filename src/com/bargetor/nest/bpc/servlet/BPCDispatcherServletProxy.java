@@ -1,5 +1,8 @@
 package com.bargetor.nest.bpc.servlet;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.util.ASMClassLoader;
+import com.bargetor.nest.bpc.bean.BPCResponseBean;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 
 import javax.servlet.*;
@@ -10,6 +13,15 @@ import java.io.IOException;
  * Created by Bargetor on 16/3/20.
  */
 public class BPCDispatcherServletProxy extends HttpServlet {
+    static {
+        //此处相当于一个启动预热
+        //fast json 预热
+        BPCResponseBean responseBean = new BPCResponseBean();
+        responseBean.setId("fast json preheating");
+        JSON.parseObject(JSON.toJSONString(responseBean), BPCResponseBean.class);
+    }
+
+
     private BPCDispatcherServlet target;
     @Override
     public void init(ServletConfig config) throws ServletException {
