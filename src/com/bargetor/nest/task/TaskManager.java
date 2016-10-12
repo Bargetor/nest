@@ -24,7 +24,6 @@ import java.util.concurrent.Executors;
 /**
  * Created by Bargetor on 16/4/9.
  */
-@Service
 public class TaskManager implements InitializingBean{
     private final static Logger logger = Logger.getLogger(TaskManager.class);
     private static TaskManager instance;
