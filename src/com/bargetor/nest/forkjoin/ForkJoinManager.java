@@ -3,7 +3,9 @@ package com.bargetor.nest.forkjoin;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.concurrent.Future;
 /**
  * Created by Bargetor on 16/5/6.
  */
-public class ForkJoinManager implements InitializingBean {
+@Component
+public class ForkJoinManager implements InitializingBean, DisposableBean {
     private static final Logger logger = Logger.getLogger(ForkJoinManager.class);
     private static ForkJoinManager instance;
 
