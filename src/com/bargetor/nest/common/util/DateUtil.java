@@ -88,37 +88,55 @@ public class DateUtil {
 	}
 	
 	/**
-	 *<p>Title: getStart</p>
+	 *<p>Title: getDayStartStr</p>
 	 *<p>Description:获取一天的开始</p>
 	 * @param @param date
 	 * @param @return 设定文件
 	 * @return  String 返回类型
 	 * @throws
 	*/
-	public static String getStart(Date date){
-		return new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(date);
+	public static String getDayStartStr(Date date){
+		return timeFormat.format(getDayStart(date));
+	}
+
+	public static Date getDayStart(Date date){
+		if(date == null)return null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		return cal.getTime();
 	}
 
 	public static Date getTodayStart(){
-		String startStr = getStart(new Date());
-		try {
-			return timeFormat.parse(startStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return getDayStart(new Date());
 	}
 	
 	/**
-	 *<p>Title: getEnd</p>
+	 *<p>Title: getDayEnd</p>
 	 *<p>Description:获取一天的结束</p>
 	 * @param @param date
 	 * @param @return 设定文件
-	 * @return  String 返回类型
+	 * @return  Date 返回类型
 	 * @throws
 	*/
-	public static String getEnd(Date date){
-		return new SimpleDateFormat("yyyy-MM-dd 23:59:59").format(date);
+	public static Date getDayEnd(Date date){
+		if(date == null)return null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+
+		return cal.getTime();
+	}
+
+	public static String getDayEndStr(Date date){
+		return timeFormat.format(getDayEnd(date));
 	}
 	
 	/**
@@ -249,9 +267,13 @@ public class DateUtil {
 	}
 	
 	public static void main(String[] arg){
-		System.out.println(getWeek());
-		System.out.println(includeTime("2012-05-29 00:00:00", "2012-05-29 16:33:00"));
+//		System.out.println(getWeek());
+//		System.out.println(includeTime("2012-05-29 00:00:00", "2012-05-29 16:33:00"));
 
 //		System.out.println(getMSStyleDateStr(new Date()));
+
+		long startTime = System.currentTimeMillis();
+		System.out.println(getDayEndStr(new Date()));
+		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
 	}
 }
