@@ -35,4 +35,8 @@ public class ParamCheckUtil {
 
         return isPass;
     }
+
+    public static <T>boolean checkFail(T paramsBean){
+        return !check(paramsBean);
+    }
 }
