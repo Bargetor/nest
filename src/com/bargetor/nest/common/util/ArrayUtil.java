@@ -12,6 +12,16 @@ import java.util.stream.Stream;
  */
 public class ArrayUtil {
 
+    public static <T> List<T> add(Collection<T> c1, Collection<T> c2){
+        if(c1 == null && c2 == null)return null;
+        List<T> result = new ArrayList<>();
+
+        if(c1 != null)result.addAll(c1);
+        if(c2 != null)result.addAll(c2);
+
+        return result;
+    }
+
     public static <T> List<T> array2List(T[] array){
         if(array == null)return null;
         List<T> list = new ArrayList<>();
