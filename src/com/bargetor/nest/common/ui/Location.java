@@ -12,6 +12,8 @@ package com.bargetor.nest.common.ui;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.bargetor.nest.common.util.CoordTransformUtil;
 
+import java.io.Serializable;
+
 /**
  *
  * Location
@@ -23,7 +25,7 @@ import com.bargetor.nest.common.util.CoordTransformUtil;
  * @version 1.0.0
  *
  */
-public class Location {
+public class Location implements Serializable {
 	@JSONField(serialize = false, deserialize = false)
 	private Type type = Type.GCJ02;
 	private double lng;
@@ -77,7 +79,7 @@ public class Location {
 	 */
 	@Override
 	public String toString() {
-		return lat + "," + lng;
+		return lng + "," + lat;
 	}
 
 	public Type getType() {
@@ -121,6 +123,10 @@ public class Location {
 				}
 		}
 		return this;
+	}
+
+	public String toWKTString(){
+		return String.format("Point(%s %s)", this.lng, this.lat);
 	}
 
 	public enum Type{

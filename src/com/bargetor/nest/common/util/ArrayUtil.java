@@ -3,6 +3,7 @@ package com.bargetor.nest.common.util;
 import com.bargetor.nest.forkjoin.ForkJoinManager;
 import org.apache.commons.collections.ArrayStack;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -12,12 +13,19 @@ import java.util.stream.Stream;
  */
 public class ArrayUtil {
 
-    public static <T> List<T> add(Collection<T> c1, Collection<T> c2){
-        if(c1 == null && c2 == null)return null;
+    public static <T>List<T> addAll(Collection<? extends Collection<T>> cc){
+        if(isCollectionNull(cc))return null;
+        return add(list2Array(cc));
+    }
+
+    public static <T> List<T> add(Collection<T>... cs){
+        if(cs == null)return null;
+        if(cs.length <= 0)return null;
         List<T> result = new ArrayList<>();
 
-        if(c1 != null)result.addAll(c1);
-        if(c2 != null)result.addAll(c2);
+        for (Collection<T> c : cs) {
+            if(c != null)result.addAll(c);
+        }
 
         return result;
     }
@@ -29,6 +37,16 @@ public class ArrayUtil {
             list.add(item);
         }
         return list;
+    }
+
+    public static <T>T[] list2Array(Collection<T> c){
+        if(isCollectionNull(c))return null;
+        T obj = c.iterator().next();
+
+        Class<T> clazz = (Class<T>) obj.getClass();
+        T[] targetArray = (T[]) Array.newInstance(clazz, c.size());
+
+        return c.toArray(targetArray);
     }
 
 

@@ -47,6 +47,10 @@ public class ExecutorManager {
 	public void commitTask(RunableTask task){
 		this.executorService.execute(task);
 	}
+
+	public void commitRunable(Runnable runnable){
+		this.executorService.execute(runnable);
+	}
 	
 	
 	public static void main(String[] args){
