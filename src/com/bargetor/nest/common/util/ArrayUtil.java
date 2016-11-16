@@ -13,6 +13,17 @@ import java.util.stream.Stream;
  */
 public class ArrayUtil {
 
+    public static <T>T randomValue(Collection<T> c){
+        if(isCollectionNull(c))return null;
+        int randomIndex = RandomUtil.randomIntByInterval(0, c.size());
+        Iterator<T> it = c.iterator();
+        for (int i = 0; i < randomIndex; i++) {
+            it.next();
+        }
+
+        return it.next();
+    }
+
     public static <T>List<T> addAll(Collection<? extends Collection<T>> cc){
         if(isCollectionNull(cc))return null;
         return add(list2Array(cc));
@@ -248,5 +259,18 @@ public class ArrayUtil {
 
     public interface Gather<T, V>{
         V getKey(T one);
+    }
+
+
+    public static void main(String[] args){
+        List<Integer> intList = new ArrayList<>();
+
+        intList.add(0);
+        intList.add(1);
+        intList.add(2);
+
+        System.out.println(System.currentTimeMillis());
+        System.out.println(randomValue(intList));
+        System.out.println(System.currentTimeMillis());
     }
 }
