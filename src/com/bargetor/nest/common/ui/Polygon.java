@@ -9,6 +9,8 @@
  */
 package com.bargetor.nest.common.ui;
 
+import com.bargetor.nest.common.util.ArrayUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -99,6 +101,20 @@ public class Polygon {
 			min = Math.min(min, point.getY());
 		}
 		return min;
+	}
+
+	public Point getCenter(){
+		if(ArrayUtil.isCollectionNull(this.points))return null;
+		double totalx = 0;
+		double totaly = 0;
+		int count = this.points.size();
+
+		for (Point point : this.points) {
+			totalx += point.getX();
+			totaly += point.getY();
+		}
+
+		return new Point(totalx / count, totaly / count);
 	}
 
 }
