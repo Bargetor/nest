@@ -1,11 +1,14 @@
 package com.bargetor.nest.common.http;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -18,14 +21,20 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.bargetor.nest.common.util.StringUtil;
- 
+
+import javax.net.ssl.SSLHandshakeException;
+
 
 /**
  * <p>description: HTTP请求对象</p>
@@ -37,8 +46,8 @@ import com.bargetor.nest.common.util.StringUtil;
 public class HttpRequester {
 	private static final Logger logger = Logger.getLogger(HttpRequester.class);
 	
-	private static CloseableHttpClient httpClient = HttpClients.createDefault();
-	private static RequestConfig requestConfig = HttpRequester.buildDefaultRequestConfig();
+	private CloseableHttpClient httpClient;
+	private RequestConfig requestConfig = HttpRequester.buildDefaultRequestConfig();
 	
 	/**
 	 * defaultContentEncoding:默认内容编码
@@ -46,7 +55,22 @@ public class HttpRequester {
 	private String defaultContentEncoding;
  
 	public HttpRequester() {
+		this(null, null);
+	}
+
+	/**
+	 *
+	 * @param keyStore 信任证书
+	 * @param keyStorePassword
+	 */
+	public HttpRequester(File keyStore, String keyStorePassword){
 		this.defaultContentEncoding = Charset.defaultCharset().name();
+
+		if(keyStore == null){
+			this.httpClient = HttpClients.createDefault();
+		}else {
+			this.httpClient = SSLUtil.buildClientByKeyStore(keyStore, keyStorePassword);
+		}
 	}
  
 	/**
@@ -97,9 +121,10 @@ public class HttpRequester {
         
         logger.info("executing request " + httpget.getURI());
         // 执行get请求.    
-        CloseableHttpResponse response = httpClient.execute(httpget); 
-		
-		return this.makeContent(urlString, httpget, response);
+//        CloseableHttpResponse response = httpClient.execute(httpget);
+//		return this.makeContent(urlString, httpget, response);
+
+		return this.send(urlString, "GET", params, propertys);
 	}
 
 	public String concatParams(String url, Map<String, String> params){
@@ -310,7 +335,7 @@ public class HttpRequester {
 //		
 // 
 //		return this.makeContent(urlString, urlConnection);
-		
+
 		logger.info("launch http " + method + " request:" + urlString);
 		HttpRequestBase request;
 		if("GET".equals(method)){
@@ -320,6 +345,15 @@ public class HttpRequester {
 		}else{
 			return null;
 		}
+
+		//忽略掉ssl证书
+//		if("https".equals(request.getURI().getScheme().toLowerCase())){
+//			try {
+//				SSLUtil.ignoreSsl();
+//			} catch (Exception e) {
+//				logger.error("ssl ignore error", e);
+//			}
+//		}
 
 		request.setConfig(requestConfig);
 		
@@ -341,6 +375,9 @@ public class HttpRequester {
 			try {
 				CloseableHttpResponse response = httpClient.execute(request);
 				return this.makeContent(urlString, request, response);
+			} catch (SSLHandshakeException e){
+				//https证书校验失败
+				logger.error("ssl error", e);
 			} catch (IOException e) {
 				request.abort();
 				logger.info("io exception when send http.", e);
