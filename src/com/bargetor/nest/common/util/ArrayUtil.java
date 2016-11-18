@@ -1,10 +1,10 @@
 package com.bargetor.nest.common.util;
 
 import com.bargetor.nest.forkjoin.ForkJoinManager;
-import org.apache.commons.collections.ArrayStack;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -259,6 +259,22 @@ public class ArrayUtil {
 
     public interface Gather<T, V>{
         V getKey(T one);
+    }
+
+    public static <T>Collection<T> filter(Collection<T> c, ArrayFilter<T> filter){
+        if(isCollectionNull(c))return null;
+        if(filter == null)return c;
+
+        Collection<T> filterC = new CopyOnWriteArrayList<>();
+        listForeach(c, one -> {
+            if(filter.filter(one))filterC.add(one);
+        });
+
+        return filterC;
+    }
+
+    public interface  ArrayFilter<T>{
+        boolean filter(T one);
     }
 
 
