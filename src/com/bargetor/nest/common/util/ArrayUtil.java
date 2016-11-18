@@ -221,10 +221,7 @@ public class ArrayUtil {
     public static <T, V>List<V>list2List(Collection<T> fromList, OneToOne<T, V> oneToOne, boolean isParallelStream){
         if(ArrayUtil.isCollectionNull(fromList))return null;
 
-
         if(isParallelStream){
-//            Stream<T> stream = fromList.parallelStream();
-//            stream.forEach(action);
             return ForkJoinManager.getInstance().parallelTask(fromList, one -> oneToOne.one2One(one));
         }else{
             List<V> toList = new ArrayList<>();

@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
+import com.bargetor.nest.common.util.MapUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.client.config.RequestConfig;
@@ -114,36 +115,17 @@ public class HttpRequester {
 	*/
 	public HttpResponse sendGet(String urlString, Map<String, String> params,
 			Map<String, String> propertys) throws IOException {
-		String newUrl = this.concatParams(urlString, params);
-		
-		HttpGet httpget = new HttpGet(newUrl);
-        
-        
-        logger.info("executing request " + httpget.getURI());
-        // 执行get请求.    
-//        CloseableHttpResponse response = httpClient.execute(httpget);
-//		return this.makeContent(urlString, httpget, response);
-
 		return this.send(urlString, "GET", params, propertys);
 	}
 
-	public String concatParams(String url, Map<String, String> params){
-		StringBuffer paramBuffer = new StringBuffer();
-		String newUrl = url;
+	public String urlEncodeParams(Map<String, String> params){
+		return MapUtil.concatParams(params);
+	}
 
-		//拼接GET参数
-		if (params != null) {
-			int i = 0;
-			for (String key : params.keySet()) {
-				if (i == 0)
-					paramBuffer.append("?");
-				else
-					paramBuffer.append("&");
-				paramBuffer.append(key).append("=").append(params.get(key));
-				i++;
-			}
-			newUrl += paramBuffer;
-		}
+	public String concatParams(String url, Map<String, String> params){
+		String newUrl = url;
+		String urlEncodeParams = this.urlEncodeParams(params);
+		if(StringUtil.isNotNullStr(urlEncodeParams)) newUrl += "?" + urlEncodeParams;
 
 		return newUrl;
 	}
@@ -187,16 +169,7 @@ public class HttpRequester {
 	*/
 	public HttpResponse sendPost(String urlString, Map<String, String> parameters,
 			Map<String, String> propertys) throws IOException {
-		StringBuffer paramBuffer = new StringBuffer();
-		//拼接request body
-		if (parameters != null) {
-			for (Entry<String, String> param : parameters.entrySet()) {
-				if(paramBuffer.length() > 0)paramBuffer.append("&");
-				paramBuffer.append(param.getKey()).append("=").append(param.getValue());
-			}
-		}
-		
-		return this.sendPost(urlString, paramBuffer.toString(), propertys);
+		return this.sendPost(urlString, this.urlEncodeParams(parameters), propertys);
 	}
 	
 	/**
@@ -210,31 +183,9 @@ public class HttpRequester {
 	 * @since  1.0.0
 	*/
 	public HttpResponse sendPost(String urlString, String requestBody,
-			Map<String, String> properties){
-		
-		logger.info("launch http POST request:" + urlString);
-		HttpPost httpPost = new HttpPost(urlString);
-		
-		if(properties != null){
-			for (Entry<String, String> propetry : properties.entrySet()) {
-				httpPost.setHeader(propetry.getKey(), propetry.getValue());
-			}
-		}
-		
-		try {
-			if(StringUtil.isNotNullStr(requestBody)){
-				HttpEntity entity;
-					entity = new ByteArrayEntity(requestBody.getBytes(this.defaultContentEncoding));
-				httpPost.setEntity(entity);
-			}
-			CloseableHttpResponse response = httpClient.execute(httpPost);
-			return this.makeContent(urlString, httpPost, response);
-			
-		} catch (IOException e) {
-			logger.error("http post error", e);
-			return null;
-		}
-		
+			Map<String, String> properties) throws IOException {
+
+		return this.send(urlString, "POST", requestBody, properties);
 	}
  
 	/**
@@ -252,33 +203,20 @@ public class HttpRequester {
 	public HttpResponse send(String urlString, String method,
 			Map<String, String> parameters, Map<String, String> properties)
 			throws IOException {
-		StringBuffer paramBuffer = new StringBuffer();
 		String newUrl = urlString;
- 
+
 		//拼接GET参数
 		if (method.equalsIgnoreCase("GET") && parameters != null) {
-			int i = 0;
-			for (String key : parameters.keySet()) {
-				if (i == 0)
-					paramBuffer.append("?");
-				else
-					paramBuffer.append("&");
-				paramBuffer.append(key).append("=").append(parameters.get(key));
-				i++;
-			}
-			newUrl += paramBuffer;
+			newUrl = this.concatParams(urlString, parameters);
 		}
-		
  
 		//拼接request body
+		String requestBody = null;
 		if (method.equalsIgnoreCase("POST") && parameters != null) {
-			for (Entry<String, String> param : parameters.entrySet()) {
-				if(paramBuffer.length() > 0)paramBuffer.append("&");
-				paramBuffer.append(param.getKey()).append("=").append(param.getValue());
-			}
+			requestBody = this.urlEncodeParams(parameters);
 		}
  
-		return this.send(newUrl, method, paramBuffer.toString(), properties);
+		return this.send(newUrl, method, requestBody, properties);
 	}
 	
 	/**
@@ -296,85 +234,39 @@ public class HttpRequester {
 	*/
 	public HttpResponse send(String urlString, String method,
 			String requestBody, Map<String, String> properties) throws IOException{
-//		HttpURLConnection urlConnection = null;
-// 
-//		
-//		logger.info("发起HTTP " + method + " 请求：" + urlString);
-//		URL url = new URL(urlString);
-//		
-//		//忽略掉ssl证书
-//		if("https".equals(url.getProtocol())){
-//			try {
-//				SSLUtil.ignoreSsl();
-//			} catch (Exception e) {
-//				logger.error("ssl ignore error", e);
-//			}
-//		}
-//
-//		
-//		urlConnection = (HttpURLConnection) url.openConnection();
-// 
-//		urlConnection.setRequestMethod(method);
-//		urlConnection.setDoOutput(true);
-//		urlConnection.setDoInput(true);
-//		urlConnection.setUseCaches(false);
-// 
-//		if (properties != null)
-//			for (Entry<String, String> propetry : properties.entrySet()) {
-//				urlConnection.addRequestProperty(propetry.getKey(), propetry.getValue());
-//			}
-// 
-//		if(StringUtil.isNotNullStr(requestBody)){
-//			urlConnection.addRequestProperty("Content-Length", String.valueOf(requestBody.length()));
-//			
-//			urlConnection.getOutputStream().write(requestBody.getBytes());
-//			urlConnection.getOutputStream().flush();
-//			urlConnection.getOutputStream().close();			
-//		}
-//		logger.info("请求参数：" + requestBody);
-//		
-// 
-//		return this.makeContent(urlString, urlConnection);
-
-		logger.info("launch http " + method + " request:" + urlString);
 		HttpRequestBase request;
 		if("GET".equals(method)){
 			request = new HttpGet(urlString);
 		}else if("POST".equals(method)){
 			request = new HttpPost(urlString);
+
+			if(StringUtil.isNotNullStr(requestBody)){
+				HttpEntity entity = new ByteArrayEntity(requestBody.getBytes(this.defaultContentEncoding));
+				HttpPost httpPost = (HttpPost) request;
+				httpPost.setEntity(entity);
+			}
 		}else{
 			return null;
 		}
-
-		//忽略掉ssl证书
-//		if("https".equals(request.getURI().getScheme().toLowerCase())){
-//			try {
-//				SSLUtil.ignoreSsl();
-//			} catch (Exception e) {
-//				logger.error("ssl ignore error", e);
-//			}
-//		}
-
-		request.setConfig(requestConfig);
 		
-		if(properties != null){
-			for (Entry<String, String> propetry : properties.entrySet()) {
-				request.setHeader(propetry.getKey(), propetry.getValue());
+		if(MapUtil.isMapNotNull(properties)){
+			for (Entry<String, String> entry : properties.entrySet()) {
+				request.setHeader(entry.getKey(), entry.getValue());
 			}
 		}
-		
-		if(StringUtil.isNotNullStr(requestBody) && "POST".equals(method)){
-			HttpEntity entity = new ByteArrayEntity(requestBody.getBytes(this.defaultContentEncoding));
-			HttpPost httpPost = (HttpPost) request;
-			httpPost.setEntity(entity);
-		}
 
+		return this.request(request);
+	}
+
+	private HttpResponse request(HttpRequestBase request){
+		logger.info("launch http " + request.getMethod() + " request:" + request.getURI());
+		request.setConfig(requestConfig);
 		// 重试3次
 		int retry = 0;
 		do {
 			try {
 				CloseableHttpResponse response = httpClient.execute(request);
-				return this.makeContent(urlString, request, response);
+				return this.makeContent(request.getURI().toString(), request, response);
 			} catch (SSLHandshakeException e){
 				//https证书校验失败
 				logger.error("ssl error", e);
@@ -387,9 +279,8 @@ public class HttpRequester {
 			logger.info("send http fail, retry:" + retry);
 		} while (++retry < 3);
 
-		logger.error("send http fail after retry 3 times, url=" + urlString);
+		logger.error("send http fail after retry 3 times, url=" + request.getURI());
 		return null;
-
 	}
 	
 	private HttpResponse makeContent(String urlString, HttpRequestBase request, CloseableHttpResponse response) throws IOException {
