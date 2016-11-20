@@ -1,5 +1,6 @@
 package com.bargetor.nest.common.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -258,6 +259,16 @@ public class DateUtil {
 			return format.parse(dateStr);
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Date parse(DateFormat format, String dateStr){
+		if(format == null)return null;
+		if(StringUtil.isNullStr(dateStr))return null;
+		try {
+			return format.parse(dateStr);
+		} catch (ParseException e) {
 			return null;
 		}
 	}
