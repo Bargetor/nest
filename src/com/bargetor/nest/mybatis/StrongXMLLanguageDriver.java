@@ -18,7 +18,7 @@ public class StrongXMLLanguageDriver extends XMLLanguageDriver implements Langua
     public SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType) {
         Matcher matcher = inPattern.matcher(script);
         if (matcher.find()) {
-            script = matcher.replaceAll("(<foreach collection=\"$1\" item=\"__item\" separator=\",\" >#{__item}</foreach>)");
+            script = matcher.replaceAll("(<foreach collection=\"$1\" item=\"__$1_item\" separator=\",\" >#{__$1_item}</foreach>)");
         }
         script = "<script>" + script + "</script>";
         return super.createSqlSource(configuration, script, parameterType);

@@ -20,7 +20,7 @@ import com.bargetor.nest.common.ui.Location;
  *   国际标准，谷歌国外地图、osm地图等国外的地图一般都是这个
  */
 public class CoordTransformUtil {
-    public static final double x_pi = Math.PI * 3000 / 180;
+    public static final double x_pi = Math.PI * 3000D / 180D;
     /**
      * 长半轴
      */
