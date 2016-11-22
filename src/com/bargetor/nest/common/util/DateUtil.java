@@ -104,7 +104,7 @@ public class DateUtil {
 		if(date == null)return null;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
@@ -128,7 +128,7 @@ public class DateUtil {
 		if(date == null)return null;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND, 59);
 		cal.set(Calendar.MILLISECOND, 999);
@@ -152,6 +152,17 @@ public class DateUtil {
 		cal.setTime(new Date());
 		int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
 		return week == 0 ? 7:week;
+	}
+
+	/**
+	 * 获取时间部分，日期部分将会被抹去，设置为1970-01-01
+	 * @return
+	 */
+	public static Date getTimePart(Date date){
+		long time = date.getTime();
+		long timePart = time % 86400000L;
+
+		return new Date(timePart);
 	}
 	
 	/**
@@ -286,5 +297,9 @@ public class DateUtil {
 		long startTime = System.currentTimeMillis();
 		System.out.println(getDayEndStr(new Date()));
 		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
+
+//		Date date = getTimePart(new Date());
+//		System.out.println(timeFormat.format(date));
+//		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
 	}
 }

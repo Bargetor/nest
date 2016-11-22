@@ -258,11 +258,11 @@ public class ArrayUtil {
         V getKey(T one);
     }
 
-    public static <T>Collection<T> filter(Collection<T> c, ArrayFilter<T> filter){
+    public static <T>List<T> filter(Collection<T> c, ArrayFilter<T> filter){
         if(isCollectionNull(c))return null;
-        if(filter == null)return c;
+        if(filter == null)return new ArrayList<>(c);
 
-        Collection<T> filterC = new CopyOnWriteArrayList<>();
+        List<T> filterC = new CopyOnWriteArrayList<>();
         listForeach(c, one -> {
             if(filter.filter(one))filterC.add(one);
         });
