@@ -7,7 +7,9 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.nest.common.ui;
+package com.bargetor.nest.common.geometry;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  *
@@ -20,14 +22,14 @@ package com.bargetor.nest.common.ui;
  * @version 1.0.0
  *
  */
-public class Point {
-	
-	private double x;
-	private double y;
-	
-	
-	public Point(){
+public class Point extends Geometry<Coordinate>{
 
+	public Point(){
+		this(0, 0);
+	}
+
+	public Point(Coordinate coordinate){
+		this(coordinate.getX(), coordinate.getY());
 	}
 	
 	/**
@@ -37,9 +39,8 @@ public class Point {
 	 * @param y
 	 */
 	public Point(double x, double y) {
-		super();
-		this.x = x;
-		this.y = y;
+		this.type = Type.Point;
+		this.coordinates = new Coordinate(x, y);
 	}
 	/**
 	 * x
@@ -49,13 +50,13 @@ public class Point {
 	 */
 	
 	public double getX() {
-		return x;
+		return this.coordinates.getX();
 	}
 	/**
 	 * @param x the x to set
 	 */
 	public void setX(double x) {
-		this.x = x;
+		this.coordinates.setX(x);
 	}
 	/**
 	 * y
@@ -65,22 +66,19 @@ public class Point {
 	 */
 	
 	public double getY() {
-		return y;
+		return this.coordinates.getY();
 	}
 	/**
 	 * @param y the y to set
 	 */
 	public void setY(double y) {
-		this.y = y;
+		this.setY(y);
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Point [x=" + x + ", y=" + y + "]";
-	}
-	
-	
 
+
+	public static void main(String[] args){
+		Point point = new Point();
+		point.setX(1);
+		System.out.println(JSON.toJSONString(point));
+	}
 }

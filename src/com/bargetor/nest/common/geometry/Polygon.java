@@ -7,7 +7,7 @@
  *  2015Bargetor-版权所有
  *
  */
-package com.bargetor.nest.common.ui;
+package com.bargetor.nest.common.geometry;
 
 import com.bargetor.nest.common.util.ArrayUtil;
 
@@ -25,9 +25,13 @@ import java.util.List;
  * @version 1.0.0
  *
  */
-public class Polygon {
+public class Polygon extends Geometry<List<Coordinate>> {
 
-	private List<Point> points = new ArrayList<Point>();
+	public Polygon(){
+		this.type = Type.Polygon;
+		this.coordinates = new ArrayList<>();
+	}
+
 	/**
 	 * points
 	 *
@@ -36,7 +40,7 @@ public class Polygon {
 	 */
 	
 	public List<Point> getPoints() {
-		return points;
+		return ArrayUtil.list2List(this.coordinates, coordinate -> new Point(coordinate));
 	}
 
 	/**
@@ -47,15 +51,16 @@ public class Polygon {
 	 * @since  1.0.0
 	*/
 	public void clearAllPoints(){
-		this.points.clear();
+		this.coordinates.clear();
 	}
 	
 	public void addPoint(Point point){
-		this.points.add(point);
+		this.coordinates.add(point.getCoordinates());
 	}
 	
 	public void addPoints(Collection<Point> points){
-		this.points.addAll(points);
+		if(ArrayUtil.isCollectionNull(points))return;
+		points.forEach(point -> this.addPoint(point));
 	}
 	
 	/**
@@ -67,54 +72,54 @@ public class Polygon {
 	 * @since  1.0.0
 	*/
 	public boolean isPolygon(){
-		return this.points.size() >= 3;
+		return this.coordinates.size() >= 3;
 	}
 
 
 	public double getMaxX(){
 		double max = Double.MIN_VALUE;
-		for(Point point : this.points){
-			max = Math.max(max, point.getX());
+		for(Coordinate coordinate : this.coordinates){
+			max = Math.max(max, coordinate.getX());
 		}
 		return max;
 	}
 
 	public double getMaxY(){
 		double max = Double.MIN_VALUE;
-		for(Point point : this.points){
-			max = Math.max(max, point.getY());
+		for(Coordinate coordinate : this.coordinates){
+			max = Math.max(max, coordinate.getY());
 		}
 		return max;
 	}
 
 	public double getMinX(){
 		double min = Double.MAX_VALUE;
-		for(Point point : this.points){
-			min = Math.min(min, point.getX());
+		for(Coordinate coordinate : this.coordinates){
+			min = Math.min(min, coordinate.getX());
 		}
 		return min;
 	}
 
 	public double getMinY(){
 		double min = Double.MAX_VALUE;
-		for(Point point : this.points){
-			min = Math.min(min, point.getY());
+		for(Coordinate coordinate : this.coordinates){
+			min = Math.min(min, coordinate.getY());
 		}
 		return min;
 	}
 
 	public Point getCenter(){
-		if(ArrayUtil.isCollectionNull(this.points))return null;
-		double totalx = 0;
-		double totaly = 0;
-		int count = this.points.size();
+		if(ArrayUtil.isCollectionNull(this.coordinates))return null;
+		double totalX = 0;
+		double totalY = 0;
+		int count = this.coordinates.size();
 
-		for (Point point : this.points) {
-			totalx += point.getX();
-			totaly += point.getY();
+		for (Coordinate coordinate : this.coordinates) {
+			totalX += coordinate.getX();
+			totalY += coordinate.getY();
 		}
 
-		return new Point(totalx / count, totaly / count);
+		return new Point(totalX / count, totalY / count);
 	}
 
 }
