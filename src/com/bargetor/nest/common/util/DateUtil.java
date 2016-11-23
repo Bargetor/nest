@@ -15,7 +15,9 @@ import java.util.*;
  */
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
+	public static final String timePartFormatStr = "HH:mm:ss";
 	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
+	public static final SimpleDateFormat timePartFormat = new SimpleDateFormat(timePartFormatStr);
 
 
 	public static String getStr(String formatStr, Date date){
@@ -55,9 +57,11 @@ public class DateUtil {
 	 * @throws
 	 */
 	public static Date getNowToLate(long ms){
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(System.currentTimeMillis() + ms);
-		return cal.getTime();
+		return getLate(new Date(), ms);
+	}
+
+	public static Date getLate(Date date, long ms){
+		return new Date(date.getTime() + ms);
 	}
 
 	public static String getDateStr(Date date){
@@ -101,15 +105,19 @@ public class DateUtil {
 	}
 
 	public static Date getDayStart(Date date){
-		if(date == null)return null;
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
+//		if(date == null)return null;
+//		Calendar cal = Calendar.getInstance();
+//		cal.setTime(date);
+//		cal.set(Calendar.HOUR_OF_DAY, 0);
+//		cal.set(Calendar.MINUTE, 0);
+//		cal.set(Calendar.SECOND, 0);
+//		cal.set(Calendar.MILLISECOND, 0);
+//
+//		return cal.getTime();
 
-		return cal.getTime();
+		long day = date.getTime() / 86400000L;
+		long time = day * 86400000L - getTimeZone().getRawOffset();
+		return new Date(time);
 	}
 
 	public static Date getTodayStart(){
@@ -125,15 +133,20 @@ public class DateUtil {
 	 * @throws
 	*/
 	public static Date getDayEnd(Date date){
-		if(date == null)return null;
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
-		cal.set(Calendar.MILLISECOND, 999);
+//		if(date == null)return null;
+//		Calendar cal = Calendar.getInstance();
+//		cal.setTime(date);
+//		cal.set(Calendar.HOUR_OF_DAY, 23);
+//		cal.set(Calendar.MINUTE, 59);
+//		cal.set(Calendar.SECOND, 59);
+//		cal.set(Calendar.MILLISECOND, 999);
+//
+//		return cal.getTime();
 
-		return cal.getTime();
+		long day = date.getTime() / 86400000L;
+		long time = (day + 1) * 86400000L - getTimeZone().getRawOffset();
+		time -= 1;
+		return new Date(time);
 	}
 
 	public static String getDayEndStr(Date date){
@@ -164,6 +177,7 @@ public class DateUtil {
 
 		return new Date(timePart);
 	}
+
 	
 	/**
 	 *<p>Title: includeTime</p>
@@ -191,6 +205,11 @@ public class DateUtil {
 	public static boolean includeTime(String startTime,String includeTime,String endTime){
 		if(startTime == null || includeTime == null || endTime == null)return false;
 		return includeTime.compareTo(startTime)>=0 && endTime.compareTo(includeTime)>=0;
+	}
+
+	public static boolean includeTime(Date startTime, Date time, Date endTime){
+		if(startTime == null || time == null || endTime == null)return false;
+		return time.compareTo(startTime) >= 0 && endTime.compareTo(time) >= 0;
 	}
 
 	/**
@@ -284,6 +303,16 @@ public class DateUtil {
 		}
 	}
 
+	public static Date parseTimeOnly(String timeStr){
+		if(StringUtil.isNullStr(timeStr))return null;
+		try {
+			return timePartFormat.parse(timeStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public static TimeZone getTimeZone(){
 		return TimeZone.getDefault();
 	}
@@ -294,12 +323,15 @@ public class DateUtil {
 
 //		System.out.println(getMSStyleDateStr(new Date()));
 
-		long startTime = System.currentTimeMillis();
-		System.out.println(getDayEndStr(new Date()));
-		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
+//		long startTime = System.currentTimeMillis();
+//		System.out.println(getDayEndStr(new Date()));
+//		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
 
 //		Date date = getTimePart(new Date());
 //		System.out.println(timeFormat.format(date));
 //		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
+
+		Date date = getDayEnd(new Date());
+		System.out.println(timeFormat.format(date));
 	}
 }
