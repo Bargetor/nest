@@ -75,6 +75,10 @@ public class Point extends Geometry<Coordinate>{
 		this.setY(y);
 	}
 
+	@Override
+	public String toString() {
+		return this.coordinates.toString();
+	}
 
 	public static void main(String[] args){
 		Point point = new Point();

@@ -47,4 +47,9 @@ public class Coordinate extends ArrayList<Double> {
     public double getY(){
         return this.get(1);
     }
+
+    @Override
+    public String toString() {
+        return this.getX() + "," + this.getY();
+    }
 }
