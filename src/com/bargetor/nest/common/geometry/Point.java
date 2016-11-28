@@ -72,7 +72,7 @@ public class Point extends Geometry<Coordinate>{
 	 * @param y the y to set
 	 */
 	public void setY(double y) {
-		this.setY(y);
+		this.coordinates.setY(y);
 	}
 
 	@Override
