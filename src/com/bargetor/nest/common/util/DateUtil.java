@@ -172,8 +172,8 @@ public class DateUtil {
 	 * @return
 	 */
 	public static Date getTimePart(Date date){
-		long time = date.getTime();
-		long timePart = time % 86400000L;
+		long time = date.getTime() + getTimeZone().getRawOffset();
+		long timePart = time % 86400000L - getTimeZone().getRawOffset();
 
 		return new Date(timePart);
 	}

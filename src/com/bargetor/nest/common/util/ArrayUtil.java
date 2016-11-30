@@ -13,6 +13,18 @@ import java.util.stream.Stream;
  */
 public class ArrayUtil {
 
+    public static <T>T setGet(Set<T> set, int index){
+        if(index < 0)return null;
+        if(set == null)return null;
+        if(index >= set.size())return null;
+
+        Iterator<T> it = set.iterator();
+        for (int i = 0; i < index; i++) {
+            it.next();
+        }
+        return it.next();
+    }
+
     public static <T>T randomValue(Collection<T> c){
         if(isCollectionNull(c))return null;
         int randomIndex = RandomUtil.randomIntByInterval(0, c.size());
@@ -285,5 +297,11 @@ public class ArrayUtil {
         System.out.println(System.currentTimeMillis());
         System.out.println(randomValue(intList));
         System.out.println(System.currentTimeMillis());
+
+        Set<Integer> set = new LinkedHashSet<>();
+        set.add(1);
+        set.add(2);
+
+        System.out.println(setGet(set, 1));
     }
 }
