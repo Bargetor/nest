@@ -233,7 +233,7 @@ public class DateUtil {
 	 * @return  long 返回类型
 	 * @throws
 	*/
-	public static long timeLack(String startTime,String endTime){
+	public static long timeLack(String startTime, String endTime){
 		if(startTime == null || "".equals(startTime))return 0;
 		if(endTime == null || "".equals(endTime))return 0;
 		try {
