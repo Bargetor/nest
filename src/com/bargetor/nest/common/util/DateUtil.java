@@ -1,6 +1,6 @@
 package com.bargetor.nest.common.util;
 
-import sun.util.resources.cldr.ebu.CalendarData_ebu_KE;
+import com.google.common.collect.Range;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -357,20 +357,35 @@ public class DateUtil {
 		if(startDate == null || endDate == null)return null;
 		if(endDate.getTime() < startDate.getTime())return null;
 
-		List<Date> result = new ArrayList<>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(startDate);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-
-		while (cal.getTime().getTime() <= endDate.getTime()){
-			result.add(cal.getTime());
-			cal.add(Calendar.DATE, 1);
-		}
+		List<Range<Date>> ranges = breakDown(startDate, endDate, Calendar.DAY_OF_YEAR);
+		List<Date> result = ArrayUtil.list2List(ranges, Range::lowerEndpoint);
 
 		return result;
+	}
+
+	/**
+	 * 将起止日期在某一时间单位上进行分裂
+	 * @param start 开始时间
+	 * @param end 结束时间
+	 * @param calendarUnit 时间单位
+	 * @return 分类出的区间
+	 * @see Calendar
+	 */
+	public static List<Range<Date>> breakDown(Date start, Date end, int calendarUnit){
+		if(end.compareTo(start) < 0)return null;
+		List<Range<Date>> ranges = new ArrayList<>();
+
+		Date processDate = start;
+		Range<Date> range = null;
+		do{
+			Date unitStart = DateUtil.getStart(processDate, calendarUnit);
+			Date unitEnd = DateUtil.getEnd(processDate, calendarUnit);
+			range = Range.closed(unitStart, unitEnd);
+			ranges.add(range);
+			processDate = new Date(unitEnd.getTime() + 1);
+		}while (!range.contains(end));
+
+		return ranges;
 	}
 
 	public static Date strToDate(String dateStr){
