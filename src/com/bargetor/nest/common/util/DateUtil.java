@@ -253,10 +253,23 @@ public class DateUtil {
      * @return
      */
 	public static List<String> getIntervalDateStrList(Date startDate, Date endDate){
+		List<Date> dates = getIntervalDateList(startDate, endDate);
+		if(ArrayUtil.isCollectionNull(dates))return null;
+		return ArrayUtil.list2List(dates, DateUtil::getDateStr);
+	}
+
+	/**
+	 * 获取两个日期之间,日期字符串的列表
+	 * 比如 start 2016-04-04 end 2016-04-06, 返回 <2016-04-04, 2016-04-05, 2016-04-06>
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public static List<Date> getIntervalDateList(Date startDate, Date endDate){
 		if(startDate == null || endDate == null)return null;
 		if(endDate.getTime() < startDate.getTime())return null;
 
-		List<String> result = new ArrayList<>();
+		List<Date> result = new ArrayList<>();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(startDate);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -265,7 +278,7 @@ public class DateUtil {
 		cal.set(Calendar.MILLISECOND, 0);
 
 		while (cal.getTime().getTime() <= endDate.getTime()){
-			result.add(getDateStr(cal.getTime()));
+			result.add(cal.getTime());
 			cal.add(Calendar.DATE, 1);
 		}
 
