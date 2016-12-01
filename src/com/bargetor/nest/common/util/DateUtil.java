@@ -1,5 +1,7 @@
 package com.bargetor.nest.common.util;
 
+import sun.util.resources.cldr.ebu.CalendarData_ebu_KE;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,6 +92,92 @@ public class DateUtil {
 	*/
 	public static String dateToString(Date date){
 		return timeFormat.format(date);
+	}
+
+	/**
+	 * 获取日期在一定单位内的开始
+	 * @param date 日期
+	 * @param unit 单位，Calendar
+	 * @return
+	 * @see Calendar
+	 */
+	public static Date getStart(Date date, int unit){
+		if(date == null)return null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+
+		int tempUnit = unit;
+		switch (tempUnit){
+			case Calendar.YEAR:
+				cal.set(Calendar.DAY_OF_YEAR, 1);
+				tempUnit = Calendar.DAY_OF_YEAR;
+			case Calendar.MONTH:
+				if(tempUnit == Calendar.MONTH){
+					cal.set(Calendar.DAY_OF_MONTH, 1);
+					tempUnit = Calendar.DAY_OF_MONTH;
+				}
+			case Calendar.WEEK_OF_YEAR:
+			case Calendar.WEEK_OF_MONTH:
+				if(tempUnit == Calendar.WEEK_OF_MONTH || tempUnit == Calendar.WEEK_OF_MONTH){
+					cal.set(Calendar.DAY_OF_WEEK, 1);
+				}
+			case Calendar.DAY_OF_YEAR:
+			case Calendar.DAY_OF_MONTH:
+			case Calendar.DAY_OF_WEEK:
+				cal.set(Calendar.HOUR_OF_DAY, 0);
+			case Calendar.HOUR_OF_DAY:
+			case Calendar.HOUR:
+				cal.set(Calendar.MINUTE, 0);
+			case Calendar.MINUTE:
+				cal.set(Calendar.SECOND, 0);
+			case Calendar.SECOND:
+				cal.set(Calendar.MILLISECOND, 0);
+		}
+		return cal.getTime();
+	}
+
+	/**
+	 * 获取日期在一定单位内的结束
+	 * @param date 日期
+	 * @param unit 单位，Calendar
+	 * @return
+	 * @see Calendar
+	 */
+	public static Date getEnd(Date date, int unit){
+		if(date == null)return null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+
+		int tempUnit = unit;
+		switch (tempUnit){
+			case Calendar.YEAR:
+				cal.add(Calendar.YEAR, 1);
+				cal.set(Calendar.DAY_OF_YEAR, 0);
+				tempUnit = Calendar.DAY_OF_YEAR;
+			case Calendar.MONTH:
+				if(tempUnit == Calendar.MONTH){
+					cal.add(Calendar.MONTH, 1);
+					cal.set(Calendar.DAY_OF_MONTH, 0);
+					tempUnit = Calendar.DAY_OF_MONTH;
+				}
+			case Calendar.WEEK_OF_YEAR:
+			case Calendar.WEEK_OF_MONTH:
+				if(tempUnit == Calendar.WEEK_OF_MONTH || tempUnit == Calendar.WEEK_OF_MONTH){
+					cal.set(Calendar.DAY_OF_WEEK, 0);
+				}
+			case Calendar.DAY_OF_YEAR:
+			case Calendar.DAY_OF_MONTH:
+			case Calendar.DAY_OF_WEEK:
+				cal.set(Calendar.HOUR_OF_DAY, 23);
+			case Calendar.HOUR_OF_DAY:
+			case Calendar.HOUR:
+				cal.set(Calendar.MINUTE, 59);
+			case Calendar.MINUTE:
+				cal.set(Calendar.SECOND, 59);
+			case Calendar.SECOND:
+				cal.set(Calendar.MILLISECOND, 999);
+		}
+		return cal.getTime();
 	}
 	
 	/**
@@ -346,5 +434,7 @@ public class DateUtil {
 
 		Date date = getDayEnd(new Date());
 		System.out.println(timeFormat.format(date));
+
+		System.out.println(getEnd(date, Calendar.WEEK_OF_MONTH));
 	}
 }
