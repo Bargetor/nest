@@ -326,8 +326,7 @@ public class DateUtil {
 		if(endTime == null || "".equals(endTime))return 0;
 		try {
 			return timeFormat.parse(endTime).getTime() - timeFormat.parse(startTime).getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			return 0;
 		}
 
@@ -392,8 +391,7 @@ public class DateUtil {
 		if(StringUtil.isNullStr(dateStr))return null;
 		try {
 			return timeFormat.parse(dateStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -403,7 +401,7 @@ public class DateUtil {
 		SimpleDateFormat format =  new SimpleDateFormat(formatStr);
 		try {
 			return format.parse(dateStr);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -414,7 +412,7 @@ public class DateUtil {
 		if(StringUtil.isNullStr(dateStr))return null;
 		try {
 			return format.parse(dateStr);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -423,8 +421,7 @@ public class DateUtil {
 		if(StringUtil.isNullStr(timeStr))return null;
 		try {
 			return timePartFormat.parse(timeStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			return null;
 		}
 	}
