@@ -55,7 +55,7 @@ public class ForkJoinManager implements InitializingBean, DisposableBean {
     public <I, R>List<R> parallelTask(Collection<I> inputs, ParallelTask.Worker<I, R> worker){
         ParallelTask<I, R> parallelTask = new ParallelTask<>(inputs, worker);
         List<ParallelTask<I, R>.ParallelTaskWorker<I, R>> workers = parallelTask.getWorkers();
-        if(ArrayUtil.isCollectionNull(workers))return null;
+        if(ArrayUtil.isNull(workers))return null;
 
         List<Future<R>> future = this.forkJoinPool.invokeAll(workers);
         return ArrayUtil.list2List(future, one -> {

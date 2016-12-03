@@ -59,7 +59,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 	}
 	
 	public void addPoints(Collection<Point> points){
-		if(ArrayUtil.isCollectionNull(points))return;
+		if(ArrayUtil.isNull(points))return;
 		points.forEach(point -> this.addPoint(point));
 	}
 	
@@ -109,7 +109,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 	}
 
 	public Point getCenter(){
-		if(ArrayUtil.isCollectionNull(this.coordinates))return null;
+		if(ArrayUtil.isNull(this.coordinates))return null;
 		double totalX = 0;
 		double totalY = 0;
 		int count = this.coordinates.size();

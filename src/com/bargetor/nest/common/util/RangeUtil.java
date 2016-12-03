@@ -4,7 +4,6 @@ import com.google.common.collect.BoundType;
 import com.google.common.collect.Range;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class RangeUtil {
                 Range<T> resultItem = resultIt.next();
                 result.remove(resultItem);
                 List<Range<T>> lastRange = removeIntersection(resultItem, range);
-                if(ArrayUtil.isCollectionNull(lastRange))continue;
+                if(ArrayUtil.isNull(lastRange))continue;
                 result.addAll(lastRange);
             }
         }

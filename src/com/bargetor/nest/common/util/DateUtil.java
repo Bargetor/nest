@@ -342,7 +342,7 @@ public class DateUtil {
      */
 	public static List<String> getIntervalDateStrList(Date startDate, Date endDate){
 		List<Date> dates = getIntervalDateList(startDate, endDate);
-		if(ArrayUtil.isCollectionNull(dates))return null;
+		if(ArrayUtil.isNull(dates))return null;
 		return ArrayUtil.list2List(dates, DateUtil::getDateStr);
 	}
 

@@ -22,7 +22,7 @@ public class TaskConfigurationProxy implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(ArrayUtil.isCollectionNull(this.configs))return;
+        if(ArrayUtil.isNull(this.configs))return;
 
         this.configs.forEach(config -> TaskManager.getInstance().commitTaskConfig(config));
     }

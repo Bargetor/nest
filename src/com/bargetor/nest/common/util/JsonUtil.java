@@ -210,7 +210,7 @@ public class JsonUtil {
 	 */
 	public static <T>List<T> jsonArrayToCollection(JSONArray jsonArray, Class<T> subClass) {
 		List<Object> temp = jsonArrayToCollection(jsonArray, (Type) subClass);
-		if(ArrayUtil.isCollectionNull(temp))return null;
+		if(ArrayUtil.isNull(temp))return null;
 		List<T> result = new ArrayList<>();
 		for(Object obj : temp){
 			result.add((T)obj);

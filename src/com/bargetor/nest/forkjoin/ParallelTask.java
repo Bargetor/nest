@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.RecursiveTask;
 
 /**
  * Created by Bargetor on 16/5/6.
@@ -22,7 +21,7 @@ public class ParallelTask<I, R>{
     }
 
     public List<ParallelTaskWorker<I, R>> getWorkers() {
-        if(ArrayUtil.isCollectionNull(this.input))return null;
+        if(ArrayUtil.isNull(this.input))return null;
         List<ParallelTaskWorker<I, R>> parallelTaskWorkers = new ArrayList<>();
 
         this.input.forEach(one -> {

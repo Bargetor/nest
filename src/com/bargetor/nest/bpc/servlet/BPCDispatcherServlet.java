@@ -4,7 +4,6 @@ import static org.springframework.util.ClassUtils.convertClassNameToResourcePath
 import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bargetor.nest.bpc.annotation.BPCService;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
@@ -16,12 +15,10 @@ import com.bargetor.nest.bpc.handler.BPCExceptionHandler;
 import com.bargetor.nest.bpc.handler.BPCRequestProcessHandler;
 import com.bargetor.nest.bpc.handler.BPCReturnValueHandler;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
-import com.bargetor.nest.common.bpc.BPCUtil;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
 import com.bargetor.nest.influxdb.InfluxDBManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.net.SyslogAppender;
 import org.influxdb.dto.Point;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -212,7 +209,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	private boolean doFilter(BPCRequest request, BPCResponse response){
 		if(request.getMethod().isTest() && this.isDebug)return true;
-		if(ArrayUtil.isCollectionNull(this.filterSet))return true;
+		if(ArrayUtil.isNull(this.filterSet))return true;
 		for (BPCFilter filter: this.filterSet) {
 			if(!filter.pass(request, response)){
 				logger.info(String.format("bpc filter {%s} no pass -> %s",

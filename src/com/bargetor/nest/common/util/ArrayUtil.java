@@ -26,7 +26,7 @@ public class ArrayUtil {
     }
 
     public static <T>T randomValue(Collection<T> c){
-        if(isCollectionNull(c))return null;
+        if(isNull(c))return null;
         int randomIndex = RandomUtil.randomIntByInterval(0, c.size());
         Iterator<T> it = c.iterator();
         for (int i = 0; i < randomIndex; i++) {
@@ -37,7 +37,7 @@ public class ArrayUtil {
     }
 
     public static <T>List<T> addAll(Collection<? extends Collection<T>> cc){
-        if(isCollectionNull(cc))return null;
+        if(isNull(cc))return null;
         return add(list2Array(cc));
     }
 
@@ -63,7 +63,7 @@ public class ArrayUtil {
     }
 
     public static <T>T[] list2Array(Collection<T> c){
-        if(isCollectionNull(c))return null;
+        if(isNull(c))return null;
         T obj = c.iterator().next();
 
         Class<T> clazz = (Class<T>) obj.getClass();
@@ -112,7 +112,7 @@ public class ArrayUtil {
      * @return
      */
     public static <T>List<T> subList(List<T> list, int from, int to){
-        if(isCollectionNull(list))return null;
+        if(isNull(list))return null;
         if(from < 0 || to < 0)return null;
         int start = from >= list.size() ? list.size() - 1 : from;
         start = start < 0 ? 0 : start;
@@ -129,12 +129,12 @@ public class ArrayUtil {
      * @param collection
      * @return
      */
-    public static boolean isCollectionNull(Collection<?> collection){
+    public static boolean isNull(Collection<?> collection){
         return collection == null || collection.size() <= 0;
     }
 
-    public static boolean isCollectionNotNull(Collection<?> collection){
-        return !isCollectionNull(collection);
+    public static boolean isNotNull(Collection<?> collection){
+        return !isNull(collection);
     }
 
     /**
@@ -144,8 +144,8 @@ public class ArrayUtil {
      * @return
      */
     public static boolean isInclude(Collection<?> main, Collection<?> include){
-        if(ArrayUtil.isCollectionNull(include))return true;
-        if(ArrayUtil.isCollectionNull(main))return false;
+        if(ArrayUtil.isNull(include))return true;
+        if(ArrayUtil.isNull(main))return false;
 
         for (Object in : include) {
             if(!main.contains(in))return false;
@@ -162,8 +162,8 @@ public class ArrayUtil {
      * @return
      */
     public static <T>Collection<T> subtract(Collection<T> minuend, Collection<T> subtrahend){
-        if(ArrayUtil.isCollectionNull(minuend))return minuend;
-        if(ArrayUtil.isCollectionNull(subtrahend))return minuend;
+        if(ArrayUtil.isNull(minuend))return minuend;
+        if(ArrayUtil.isNull(subtrahend))return minuend;
 
         List<T> result = new ArrayList<>(minuend);
         subtrahend.forEach(sub -> result.remove(sub));
@@ -180,7 +180,7 @@ public class ArrayUtil {
      * @return
      */
     public static <E, K>Map<K, List<E>> distinct(Collection<E> list, Distincter<E, K> distincter){
-        if(isCollectionNull(list))return null;
+        if(isNull(list))return null;
         if(distincter == null)return null;
         Map<K, List<E>> distinctMap = new HashMap<>();
         for (E item: list) {
@@ -204,7 +204,7 @@ public class ArrayUtil {
     }
 
     public static <T>void listForeach(Collection<T> list, Consumer<T> action){
-        if(isCollectionNull(list))return;
+        if(isNull(list))return;
         Stream<T> stream = list.parallelStream();
         stream.forEach(action);
     }
@@ -231,7 +231,7 @@ public class ArrayUtil {
      * @return
      */
     public static <T, V>List<V>list2List(Collection<T> fromList, OneToOne<T, V> oneToOne, boolean isParallelStream){
-        if(ArrayUtil.isCollectionNull(fromList))return null;
+        if(ArrayUtil.isNull(fromList))return null;
 
         if(isParallelStream){
             return ForkJoinManager.getInstance().parallelTask(fromList, one -> oneToOne.one2One(one));
@@ -252,7 +252,7 @@ public class ArrayUtil {
 
 
     public static <E, K>Collection<E> gather(Collection<E> list, K key, Gather<E, K> gather){
-        if(ArrayUtil.isCollectionNull(list))return null;
+        if(ArrayUtil.isNull(list))return null;
         if(key == null)return null;
         if(gather == null)return null;
         List<E> result = new ArrayList<>();
@@ -271,7 +271,7 @@ public class ArrayUtil {
     }
 
     public static <T>List<T> filter(Collection<T> c, ArrayFilter<T> filter){
-        if(isCollectionNull(c))return null;
+        if(isNull(c))return null;
         if(filter == null)return new ArrayList<>(c);
 
         List<T> filterC = new CopyOnWriteArrayList<>();
