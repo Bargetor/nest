@@ -36,6 +36,7 @@ dependencies {
         'org.json:json:20140107',
         'com.alibaba:fastjson:1.2.12',
         'org.springframework:spring-context:4.1.6.RELEASE',
+        'org.springframework:spring-aspects:4.1.6.RELEASE',
         'org.springframework:spring-webmvc:4.1.6.RELEASE',
         'org.springframework:spring-jdbc:4.1.6.RELEASE',
         'org.springframework.data:spring-data-redis:1.6.4.RELEASE',

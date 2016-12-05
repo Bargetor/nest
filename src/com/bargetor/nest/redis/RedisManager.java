@@ -97,6 +97,15 @@ public class RedisManager {
 		}
 	}
 
+	public long ttl(String key){
+		Jedis jedis = jedisPool.getResource();
+		try{
+			return jedis.ttl(key);
+		}finally {
+			jedisPool.returnResourceObject(jedis);
+		}
+	}
+
 	public boolean exist(String key){
 		Jedis jedis = jedisPool.getResource();
 		try{
@@ -120,6 +129,15 @@ public class RedisManager {
 			jedisPool.returnResourceObject(jedis);
 		}
 		return value;
+	}
+
+	public String get(String key){
+		Jedis jedis = jedisPool.getResource();
+		try{
+			return jedis.get(key);
+		}finally{
+			jedisPool.returnResourceObject(jedis);
+		}
 	}
 	
 	/**
@@ -155,6 +173,38 @@ public class RedisManager {
 			if(expire != 0){
 				jedis.expire(key, expire);
 		 	}
+		}finally{
+			jedisPool.returnResourceObject(jedis);
+		}
+		return value;
+	}
+
+	/**
+	 * 原子
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public long incrBy(String key, long value){
+		return this.incrBy(key, value, 0);
+	}
+
+	public long incr(String key){
+		Jedis jedis = jedisPool.getResource();
+		try{
+			return jedis.incr(key);
+		}finally{
+			jedisPool.returnResourceObject(jedis);
+		}
+	}
+
+	public long incrBy(String key, long value, int expire){
+		Jedis jedis = jedisPool.getResource();
+		try{
+			jedis.incrBy(key, value);
+			if(expire != 0){
+				jedis.expire(key, expire);
+			}
 		}finally{
 			jedisPool.returnResourceObject(jedis);
 		}
