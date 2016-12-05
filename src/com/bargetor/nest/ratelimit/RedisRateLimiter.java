@@ -16,11 +16,13 @@ public class RedisRateLimiter implements RateLimiter{
     private RedisManager redisManager;
     private long permits;
     private long period;
+    private double rate;
 
     public RedisRateLimiter(String key, long permits, long period, RedisManager redisManager){
         this.key = key;
         this.period = period;
         this.permits = permits;
+        this.rate = (1.0 * permits) / (1.0 * period);
         this.redisManager = redisManager;
         this.redisKey = this.buildRedisKey(key);
         this.setNewLimitToRedis();
@@ -36,7 +38,7 @@ public class RedisRateLimiter implements RateLimiter{
         long waitTime = this.reserveAndGetWaitTime();
         Uninterruptibles.sleepUninterruptibly(waitTime, TimeUnit.MILLISECONDS);
         if(waitTime > 0){
-            this.acquire();
+            waitTime += this.acquire();
         }
         return waitTime;
     }
@@ -79,10 +81,12 @@ public class RedisRateLimiter implements RateLimiter{
         long currentCount = this.reserve();
         if(currentCount <= this.permits)return 0;
 
-        long waitTime = ((currentCount - this.permits) / this.permits)
-                * this.period + this.getLimitLastTime();
+        long limitLastTime = this.getLimitLastTime();
 
-        return waitTime * 1000;
+        long waitTime = (long) ((currentCount - this.permits - 1) / this.rate * 1000)
+                 + limitLastTime * 1000;
+
+        return waitTime;
     }
 
     private synchronized long reserve(){

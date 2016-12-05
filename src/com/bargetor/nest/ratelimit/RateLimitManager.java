@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Aspect
 @Component
-public class RateLimitManager implements DisposableBean {
+public class RateLimitManager implements InitializingBean, DisposableBean {
     private final static Logger logger = Logger.getLogger(RateLimitManager.class);
     private Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
     private Map<String, RateLimit> rateLimitMap = new HashMap<>();
@@ -87,5 +87,12 @@ public class RateLimitManager implements DisposableBean {
         this.rateLimiterMap.forEach((key, rateLimiter) -> {
             rateLimiter.destroy();
         });
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if(this.rateLimiterFactory == null){
+            this.rateLimiterFactory = new GuavaRateLimiterFactory();
+        }
     }
 }
