@@ -205,10 +205,36 @@ public class ArrayUtil {
 
     public static <T>void listForeach(Collection<T> list, Consumer<T> action){
         if(isNull(list))return;
+        //这里需要删除集合中的空值，否则平行流会报错
+        trim(list);
         Stream<T> stream = list.parallelStream();
         stream.forEach(action);
     }
 
+    public static <T>void trim(Collection<T> list){
+        if(isNull(list))return;
+        Iterator<T> it = list.iterator();
+        while (it.hasNext()){
+            T one = it.next();
+            if(one == null)it.remove();
+        }
+    }
+
+    public static <T>void foreachByIndex(Collection<T> list, ConsumerByIndex<T> action){
+        if(isNull(list) || action == null)return;
+
+        Iterator<T> it = list.iterator();
+        int index = 0;
+        while (it.hasNext()){
+            T one = it.next();
+            action.foreach(index, one);
+            index++;
+        }
+    }
+
+    public interface ConsumerByIndex<T>{
+        public void foreach(int index, T one);
+    }
     /**
      * 将list转换成另一个list
      * @param fromList
@@ -238,6 +264,7 @@ public class ArrayUtil {
         }else{
             List<V> toList = new ArrayList<>();
             fromList.forEach(one -> {
+                if(one == null)return;
                 V to = oneToOne.one2One(one);
                 if(to == null)return;
                 toList.add(to);
