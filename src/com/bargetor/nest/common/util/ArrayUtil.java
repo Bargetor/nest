@@ -276,6 +276,7 @@ public class ArrayUtil {
 
         List<T> filterC = new CopyOnWriteArrayList<>();
         listForeach(c, one -> {
+            if(one == null)return;
             if(filter.filter(one))filterC.add(one);
         });
 

@@ -11,13 +11,18 @@ import java.lang.reflect.Field;
 public class ParamCheckUtil {
     private static final Logger logger = Logger.getLogger(ParamCheckUtil.class);
 
+
+    public static <T>boolean check(T paramsBean){
+        return check(paramsBean, false);
+    }
     /**
      * 通过标注验证参数bean的有效性
      * @param paramsBean
+     * @param isThrow 是否抛出错误
      * @param <T>
      * @return
      */
-    public static <T>boolean check(T paramsBean){
+    public static <T>boolean check(T paramsBean, boolean isThrow){
         if(paramsBean == null)return false;
         Field[] fields = ReflectUtil.getAllFields(paramsBean.getClass());
         boolean isPass = true;
@@ -28,7 +33,9 @@ public class ParamCheckUtil {
             boolean isRequired = checkAnnotation.isRequired();
             Object value = ReflectUtil.getProperty(paramsBean, field);
             if(isRequired && value == null){
-                logger.info(String.format("the %s is required", field.getName()));
+                String msg = String.format("the %s is required", field.getName());
+                if(isThrow)throw new ParamCheckError(msg);
+                logger.info(msg);
                 return false;
             }
         }
@@ -37,6 +44,10 @@ public class ParamCheckUtil {
     }
 
     public static <T>boolean checkFail(T paramsBean){
-        return !check(paramsBean);
+        return checkFail(paramsBean, false);
+    }
+
+    public static <T>boolean checkFail(T paramsBean, boolean isThrow){
+        return !check(paramsBean, isThrow);
     }
 }
