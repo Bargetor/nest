@@ -13,16 +13,36 @@ import java.util.stream.Stream;
  */
 public class ArrayUtil {
 
-    public static <T>T setGet(Set<T> set, int index){
+    public static <T>T get(Collection<T> c, int index){
         if(index < 0)return null;
-        if(set == null)return null;
-        if(index >= set.size())return null;
+        if(c == null)return null;
+        if(index >= c.size())return null;
 
-        Iterator<T> it = set.iterator();
+        Iterator<T> it = c.iterator();
         for (int i = 0; i < index; i++) {
             it.next();
         }
         return it.next();
+    }
+
+    /**
+     * 获取在集合中与@param obj相同的一个
+     * @param c
+     * @param obj
+     * @param <T>
+     * @return
+     */
+    public static <T>T get(Collection<T> c, T obj){
+        if(isNull(c))return null;
+        if(obj == null)return null;
+
+        Iterator<T> it = c.iterator();
+        while (it.hasNext()){
+            T one = it.next();
+            if(one == null)continue;
+            if(one.equals(obj))return one;
+        }
+        return null;
     }
 
     public static <T>T randomValue(Collection<T> c){
@@ -330,6 +350,6 @@ public class ArrayUtil {
         set.add(1);
         set.add(2);
 
-        System.out.println(setGet(set, 1));
+        System.out.println(get(set, 1));
     }
 }
