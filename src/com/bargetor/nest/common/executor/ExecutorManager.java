@@ -11,6 +11,7 @@ package com.bargetor.nest.common.executor;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -48,8 +49,8 @@ public class ExecutorManager {
 		this.executorService.execute(task);
 	}
 
-	public void commitRunable(Runnable runnable){
-		this.executorService.execute(runnable);
+	public Future<?> commitRunnable(Runnable runnable){
+		return this.executorService.submit(runnable);
 	}
 	
 	
