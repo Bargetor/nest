@@ -1,5 +1,7 @@
 package com.bargetor.nest.common.util;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,16 +12,23 @@ public class NumberUtil {
     private static Map<Character, Long> chineseUnitMap;
     private static Map<Character, Long> chineseNumberMap;
     private static Map<Character, Long> chinesePartUnitMap;
+    private static Map<Long, String> chineseUnitMapReverse;
+    private static Map<Long, String> chineseNumberMapReverse;
+    private static Map<Long, String> chinesePartUnitMapReverse;
 
     static {
         chineseUnitMap = new HashMap<>();
         chineseUnitMap.put('十', 10L);
         chineseUnitMap.put('百', 100L);
         chineseUnitMap.put('千', 1000L);
+        chineseUnitMapReverse = new HashMap<>();
+        chineseUnitMap.forEach((key, value) -> chineseUnitMapReverse.put(value, String.valueOf(key)));
 
         chinesePartUnitMap = new HashMap<>();
         chinesePartUnitMap.put('万', 10000L);
         chinesePartUnitMap.put('亿', 100000000L);
+        chinesePartUnitMapReverse = new HashMap<>();
+        chinesePartUnitMap.forEach((key, value) -> chinesePartUnitMapReverse.put(value, String.valueOf(key)));
 
         chineseNumberMap = new HashMap<>();
         chineseNumberMap.put('零', 0L);
@@ -32,11 +41,13 @@ public class NumberUtil {
         chineseNumberMap.put('七', 7L);
         chineseNumberMap.put('八', 8L);
         chineseNumberMap.put('九', 9L);
+        chineseNumberMapReverse = new HashMap<>();
+        chineseNumberMap.forEach((key, value) -> chineseNumberMapReverse.put(value, String.valueOf(key)));
     }
 
 
     public static long chinese2Number(String chinese){
-        if(!isChineaseNum(chinese)){
+        if(!isChineseNum(chinese)){
             return Long.parseLong(chinese);
         }
 
@@ -81,6 +92,57 @@ public class NumberUtil {
         return result;
     }
 
+    public static String number2Chinese(long number){
+        String prefix = "";
+        if(number < 0){
+            prefix = "负";
+            number = Math.abs(number);
+        }
+        if(number == 0)return getChineseNumberFromLong(0L);
+
+        String result = "";
+        int numberBits = (int) Math.log10(number);
+        String maxUnit = getChineseUnitFormBits(numberBits);
+        String maxPartUnit = getChinesePartUnitFormBits(numberBits);
+
+        long last = number;
+        long preBits = -1L;
+        while (last > 0){
+            int currentBits = (int) Math.log10(last);
+            long currentUnitNumber = (long) Math.pow(10, currentBits);
+            long bitNumber = last / currentUnitNumber;
+            String bitNumberChinese = getChineseNumberFromLong(bitNumber);
+
+            String unit = getChineseUnitFormBits(currentBits);
+            if(!unit.equals(maxUnit)){
+                maxUnit = unit;
+            }
+
+            String partUnit = getChinesePartUnitFormBits(currentBits);
+
+            if(!partUnit.equals(maxPartUnit)){
+                maxPartUnit = partUnit;
+            }
+
+
+            if(preBits - currentBits > 1){
+                result += "零";
+            }
+
+            //这里处理的是十一/十万这种情况
+            if(result.isEmpty() && bitNumber == 1 && maxUnit.equals("十")){
+                result += maxUnit + maxPartUnit;
+            }else{
+                result += bitNumberChinese + maxUnit + maxPartUnit;
+            }
+
+            last = last % currentUnitNumber;
+            preBits = currentBits;
+        }
+
+        return prefix + result;
+    }
+
     private static long getNumberFromChinese(Character c){
         if(c == null)return 0;
         Long number = chineseNumberMap.get(c);
@@ -111,7 +173,33 @@ public class NumberUtil {
         }
     }
 
-    private static boolean isChineaseNum(String num){
+    private static String getChinesePartUnitFormBits(int bits){
+        if(bits < 4)return "";
+        if(bits >=4 && bits < 8)return getChinesePartUnitFromLong(10000L);
+        if(bits >= 8 && bits < 12)return getChinesePartUnitFromLong(100000000L);
+        return getChinesePartUnitFormBits(bits - 8) + getChinesePartUnitFromLong(100000000L);
+    }
+
+    private static String getChineseUnitFormBits(int bits){
+        int last = bits % 4;
+        long key = (long) Math.pow(10, last);
+        String unit = chineseUnitMapReverse.get(key);
+        return unit == null ? "" : String.valueOf(unit);
+    }
+
+    private static String getChineseNumberFromLong(long l){
+        return chineseNumberMapReverse.get(l);
+    }
+
+    private static String getChineseUnitFromLong(long l){
+        return chineseUnitMapReverse.get(l);
+    }
+
+    private static String getChinesePartUnitFromLong(long l){
+        return chinesePartUnitMapReverse.get(l);
+    }
+
+    private static boolean isChineseNum(String num){
         try{
             Long.parseLong(num);
             return false;
@@ -122,6 +210,8 @@ public class NumberUtil {
 
     public static void main(String[] args){
         System.out.println(chinese2Number("十万"));
+        System.out.println((int)Math.log10(999));
+        System.out.println(number2Chinese(-11));
     }
 
 }
