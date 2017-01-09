@@ -202,7 +202,7 @@ public class DateUtil {
 //		cal.set(Calendar.MILLISECOND, 0);
 //
 //		return cal.getTime();
-
+		if(date == null)return null;
 		long day = (date.getTime() + getTimeZone().getRawOffset()) / 86400000L;
 		long time = day * 86400000L - getTimeZone().getRawOffset();
 		return new Date(time);
@@ -231,6 +231,7 @@ public class DateUtil {
 //
 //		return cal.getTime();
 
+		if(date == null)return null;
 		long day = (date.getTime() + getTimeZone().getRawOffset()) / 86400000L;
 		long time = (day + 1) * 86400000L - getTimeZone().getRawOffset();
 		time -= 1;

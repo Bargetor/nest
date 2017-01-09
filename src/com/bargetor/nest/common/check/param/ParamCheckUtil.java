@@ -31,16 +31,28 @@ public class ParamCheckUtil {
             ParamCheck checkAnnotation = field.getAnnotation(ParamCheck.class);
             if(checkAnnotation == null)continue;
             boolean isRequired = checkAnnotation.isRequired();
+
+            ParamCheckList checkList = new ParamCheckList();
+            checkList.setRequired(isRequired);
+
             Object value = ReflectUtil.getProperty(paramsBean, field);
-            if(isRequired && value == null){
-                String msg = String.format("the %s is required", field.getName());
-                if(isThrow)throw new ParamCheckError(msg);
+            if(!checkParam(value, checkList)) {
+                String msg = String.format("the %s check fail", field.getName());
+                if (isThrow) throw new ParamCheckError(msg);
                 logger.info(msg);
                 return false;
             }
         }
 
         return isPass;
+    }
+
+    public static boolean checkParam(Object param, ParamCheckList checkList){
+        if(checkList == null)return true;
+
+        if(checkList.isRequired() && param == null)return false;
+
+        return true;
     }
 
     public static <T>boolean checkFail(T paramsBean){
@@ -50,4 +62,6 @@ public class ParamCheckUtil {
     public static <T>boolean checkFail(T paramsBean, boolean isThrow){
         return !check(paramsBean, isThrow);
     }
+
+    public static boolean checkParamFail(Object param, ParamCheckList checkList){return !checkParam(param, checkList);}
 }

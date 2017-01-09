@@ -83,14 +83,15 @@ public class ReflectUtil {
      * @return  boolean 返回类型
      * @throws
     */
-    public static boolean setProperty(Object bean, String propertyName,Object value) {
+    public static boolean setProperty(Object bean, String propertyName, Object value) {
         Class<?> clazz = bean.getClass();
         try {
             Field field = getField(clazz, propertyName);
             if(field == null)return false;
             Method method = getSetterMethod(propertyName, clazz, new Class[] { field.getType() });
             if (method == null) {
-				return false;
+				field.set(bean, value);
+				return true;
 			} else {
 				Object newValue = value;
 				BaseType baseType = whichBaseType(field.getType().getName());
@@ -130,9 +131,10 @@ public class ReflectUtil {
 
 	public static Object getProperty(Object bean, Field field){
 		if(bean == null || field == null)return null;
+
 		Method method = getMethod(bean.getClass(), getGetterName(field), new Class[]{});
 		try {
-			return (method == null)?null:method.invoke(bean, new Object[] {});
+			return (method == null) ? field.get(bean) : method.invoke(bean, new Object[] {});
 		} catch (IllegalAccessException |InvocationTargetException e) {
 			e.printStackTrace();
 			return null;

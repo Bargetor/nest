@@ -29,10 +29,11 @@ public class BPCServiceProxyBean implements InitializingBean, ApplicationContext
         for(Method method : targetClass.getMethods()){
             BPCMethod methodAnnotation = AnnotationUtils.findAnnotation(method, BPCMethod.class);
             if(methodAnnotation != null){
-                BPCServiceMethod methodBean = new BPCServiceMethod();
-                methodBean.setMethod(method);
-                methodBean.setService(this.target);
-                methodBean.setMethodName(methodAnnotation.name());
+                BPCServiceMethod methodBean = new BPCServiceMethod(
+                        methodAnnotation.name(),
+                        this.target,
+                        method
+                );
                 methodBean.setTest(methodAnnotation.isTest());
 
                 BPCDispatchManager.getInstance().registerMethod(this.url, methodBean);
