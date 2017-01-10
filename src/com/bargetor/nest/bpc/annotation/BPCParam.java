@@ -10,4 +10,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface BPCParam {
     boolean isRequired() default false;
+    boolean isAll() default false;
 }

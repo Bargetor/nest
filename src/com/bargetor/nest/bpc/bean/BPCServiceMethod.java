@@ -88,8 +88,16 @@ public class BPCServiceMethod {
 
     private Object buildParamValue(JSONObject bpcParamsJson, Parameter parameter){
         if(bpcParamsJson == null || parameter == null)return null;
+
+        BPCParam bpcParamAnnotation = parameter.getAnnotation(BPCParam.class);
         String paramName = parameter.getName();
-        Object value = bpcParamsJson.getObject(paramName, parameter.getType());
+        Object value = null;
+
+        if(bpcParamAnnotation != null && bpcParamAnnotation.isAll()){
+            value = bpcParamsJson.toJavaObject(parameter.getType());
+        }else{
+            value = bpcParamsJson.getObject(paramName, parameter.getType());
+        }
 
         ParamCheckList checkList = this.getParamCheckList(parameter);
         if(ParamCheckUtil.checkParamFail(value, checkList)){
