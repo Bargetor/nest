@@ -12,6 +12,8 @@ package com.bargetor.nest.common.util;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -23,6 +25,31 @@ import java.util.Map.Entry;
  *
  */
 public class MapUtil {
+
+	public static <K, V>Map<K, V> randomEntry(Map<K, V> map, int count){
+		if(isMapNull(map))return null;
+		if(count <= 0)return null;
+		if(count >= map.size())return new HashMap<>(map);
+
+		List<K> randomKeys = ArrayUtil.randomValue(map.keySet(), count);
+		return subMap(map, randomKeys);
+	}
+
+	public static <K, V>Map<K, V> subMap(Map<K, V> map, List<K> subKeys){
+		if(isMapNull(map) || ArrayUtil.isNull(subKeys))return null;
+		try {
+			Map<K, V> subMap = map.getClass().newInstance();
+
+			subKeys.forEach(key -> {
+				subMap.put(key, map.get(key));
+			});
+
+			return subMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	 * sortMap(map排序)
@@ -39,10 +66,10 @@ public class MapUtil {
 		if (oriMap != null && !oriMap.isEmpty()) {
 			List<Entry<T, N>> entryList = new ArrayList<Map.Entry<T, N>>(oriMap.entrySet());
 			Collections.sort(entryList, comparator);
-			Iterator<Map.Entry<T, N>> iter = entryList.iterator();
+			Iterator<Map.Entry<T, N>> iterator = entryList.iterator();
 			Map.Entry<T, N> tmpEntry = null;
-			while (iter.hasNext()) {
-				tmpEntry = iter.next();
+			while (iterator.hasNext()) {
+				tmpEntry = iterator.next();
 				sortedMap.put(tmpEntry.getKey(), tmpEntry.getValue());
 			}
 		}
@@ -136,5 +163,30 @@ public class MapUtil {
 	public interface GetKey<K, V>{
 		public K getKey(V entry);
 	}
-		
+
+	public static <K, V>Map<K, V> filter(Map<K, V> map, MapFilter<K, V> filter){
+		if(isMapNull(map))return null;
+		if(filter == null)return new HashMap<>(map);
+
+		Map<K, V> filterC = new ConcurrentHashMap<>();
+
+		map.forEach((key, value) -> {
+			if(value == null)return;
+			if(filter.filter(key, value))filterC.put(key, value);
+		});
+
+		return filterC;
+	}
+
+	public interface  MapFilter<K, V>{
+		boolean filter(K key, V value);
+	}
+
+	public static <K, V>void remove(Map<K, V> map, Collection<K> keys){
+		if(isMapNull(map) || ArrayUtil.isNull(keys))return;
+
+		keys.forEach(key -> {
+			map.remove(key);
+		});
+	}
 }

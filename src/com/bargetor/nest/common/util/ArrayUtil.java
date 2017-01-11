@@ -45,6 +45,22 @@ public class ArrayUtil {
         return null;
     }
 
+    public static <T>List<T> randomValue(Collection<T> c, int count){
+        if(isNull(c) || count <= 0)return null;
+        List<T> toBeRandom = new ArrayList<>(c);
+        if(count >= toBeRandom.size())return toBeRandom;
+
+        List<T> values = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            T value = randomValue(toBeRandom);
+            values.add(value);
+            toBeRandom.remove(value);
+            if(isNull(toBeRandom))break;
+        }
+
+        return values;
+    }
+
     public static <T>T randomValue(Collection<T> c){
         if(isNull(c))return null;
         int randomIndex = RandomUtil.randomIntByInterval(0, c.size());
