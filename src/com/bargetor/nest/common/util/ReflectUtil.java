@@ -72,7 +72,7 @@ public class ReflectUtil {
 	public static boolean isCollection(Class<?> clazz){
 		return Collection.class.isAssignableFrom(clazz);
 	}
-	
+
     /**
      *<p>Title: setProperty</p>
      *<p>Description:反射调用setter方法，进行赋值</p>
@@ -107,6 +107,19 @@ public class ReflectUtil {
         }
     }
 
+	public static boolean setPropertyForField(Object bean, Field field, Object value){
+		if(bean == null || field == null)return false;
+
+		try {
+			field.setAccessible(true);
+			field.set(bean, value);
+			return true;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
     /**
      *<p>Title: getProperty</p>
      *<p>Description:反射调用getter方法，得到field的值</p>
@@ -129,12 +142,23 @@ public class ReflectUtil {
         return null;
     }
 
+    public static Object getPropertyForField(Object bean, Field field){
+		if(bean == null || field == null)return null;
+		try {
+			field.setAccessible(true);
+			return field.get(bean);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public static Object getProperty(Object bean, Field field){
 		if(bean == null || field == null)return null;
 
 		Method method = getMethod(bean.getClass(), getGetterName(field), new Class[]{});
 		try {
-			return (method == null) ? field.get(bean) : method.invoke(bean, new Object[] {});
+			return (method == null) ? getPropertyForField(bean, field) : method.invoke(bean, new Object[] {});
 		} catch (IllegalAccessException |InvocationTargetException e) {
 			e.printStackTrace();
 			return null;
