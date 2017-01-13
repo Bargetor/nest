@@ -45,6 +45,15 @@ public class ArrayUtil {
         return null;
     }
 
+    public static <T>T first(Collection<T> c){
+        return get(c, 0);
+    }
+
+    public static <T>T last(Collection<T> c){
+        return get(c, c.size() - 1);
+    }
+
+
     public static <T>List<T> randomValue(Collection<T> c, int count){
         if(isNull(c) || count <= 0)return null;
         List<T> toBeRandom = new ArrayList<>(c);

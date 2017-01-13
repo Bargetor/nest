@@ -164,6 +164,50 @@ public class MapUtil {
 		public K getKey(V entry);
 	}
 
+	public static <OK, OV, NK, NV> Map<NK, NV>map2Map(Map<OK, OV> map, BiTransformer<OK, OV, NK, NV> transformer){
+		if(isMapNull(map))return null;
+		if(transformer == null)return null;
+		Map<NK, NV> result = ReflectUtil.newInstance(map.getClass());
+
+		map.forEach((key, value) -> {
+			SimpleMapEntry<NK, NV> entry = transformer.transform(key, value);
+			result.put(entry.getKey(), entry.getValue());
+		});
+
+		return result;
+	}
+
+	public interface BiTransformer<OK, OV, NK, NV>{
+		SimpleMapEntry<NK, NV> transform(OK key, OV value);
+	}
+
+	public static class SimpleMapEntry<K, V>{
+		private K key;
+		private V value;
+
+		public SimpleMapEntry(K key, V value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		public K getKey() {
+			return key;
+		}
+
+		public void setKey(K key) {
+			this.key = key;
+		}
+
+		public V getValue() {
+			return value;
+		}
+
+		public void setValue(V value) {
+			this.value = value;
+		}
+	}
+
+
 	public static <K, V>Map<K, V> filter(Map<K, V> map, MapFilter<K, V> filter){
 		if(isMapNull(map))return null;
 		if(filter == null)return new HashMap<>(map);

@@ -9,6 +9,8 @@
  */
 package com.bargetor.nest.common.geometry;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.bargetor.nest.common.util.ArrayUtil;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 	 * @return  the points
 	 * @since   1.0.0
 	 */
-	
+	@JSONField(serialize = false)
 	public List<Point> getPoints() {
 		return ArrayUtil.list2List(this.coordinates, coordinate -> new Point(coordinate));
 	}
@@ -71,11 +73,13 @@ public class Polygon extends Geometry<List<Coordinate>> {
 	 * @exception
 	 * @since  1.0.0
 	*/
+	@JSONField(serialize = false)
 	public boolean isPolygon(){
 		return this.coordinates.size() >= 3;
 	}
 
 
+	@JSONField(serialize = false)
 	public double getMaxX(){
 		double max = Double.MIN_VALUE;
 		for(Coordinate coordinate : this.coordinates){
@@ -84,6 +88,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 		return max;
 	}
 
+	@JSONField(serialize = false)
 	public double getMaxY(){
 		double max = Double.MIN_VALUE;
 		for(Coordinate coordinate : this.coordinates){
@@ -92,6 +97,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 		return max;
 	}
 
+	@JSONField(serialize = false)
 	public double getMinX(){
 		double min = Double.MAX_VALUE;
 		for(Coordinate coordinate : this.coordinates){
@@ -100,6 +106,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 		return min;
 	}
 
+	@JSONField(serialize = false)
 	public double getMinY(){
 		double min = Double.MAX_VALUE;
 		for(Coordinate coordinate : this.coordinates){
@@ -108,6 +115,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 		return min;
 	}
 
+	@JSONField(serialize = false)
 	public Point getCenter(){
 		if(ArrayUtil.isNull(this.coordinates))return null;
 		double totalX = 0;
@@ -122,4 +130,13 @@ public class Polygon extends Geometry<List<Coordinate>> {
 		return new Point(totalX / count, totalY / count);
 	}
 
+	public static void main(String[] args){
+		Polygon polygon = new Polygon();
+		polygon.addPoint(new Point(1, 0));
+
+		System.out.println(JSON.toJSONString(polygon));
+
+		Polygon dePolygon = JSON.parseObject(JSON.toJSONString(polygon), Polygon.class);
+		System.out.println(dePolygon);
+	}
 }

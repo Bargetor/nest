@@ -10,6 +10,7 @@
 package com.bargetor.nest.common.geometry;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  *
@@ -25,7 +26,7 @@ import com.alibaba.fastjson.JSON;
 public class Point extends Geometry<Coordinate>{
 
 	public Point(){
-		this(0, 0);
+		this.setCoordinates(new Coordinate());
 	}
 
 	public Point(Coordinate coordinate){
@@ -48,7 +49,7 @@ public class Point extends Geometry<Coordinate>{
 	 * @return  the x
 	 * @since   1.0.0
 	 */
-	
+	@JSONField(serialize = false)
 	public double getX() {
 		return this.coordinates.getX();
 	}
@@ -64,7 +65,7 @@ public class Point extends Geometry<Coordinate>{
 	 * @return  the y
 	 * @since   1.0.0
 	 */
-	
+	@JSONField(serialize = false)
 	public double getY() {
 		return this.coordinates.getY();
 	}
@@ -84,5 +85,8 @@ public class Point extends Geometry<Coordinate>{
 		Point point = new Point();
 		point.setX(1);
 		System.out.println(JSON.toJSONString(point));
+
+		Point dePoint = JSON.parseObject(JSON.toJSONString(point), Point.class);
+		System.out.println(dePoint);
 	}
 }

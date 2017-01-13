@@ -19,6 +19,10 @@ public abstract class Geometry<C> {
         return coordinates;
     }
 
+    public void setCoordinates(C coordinates) {
+        this.coordinates = coordinates;
+    }
+
     public enum Type{
         Point,
         Polygon,

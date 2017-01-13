@@ -8,7 +8,7 @@ import java.util.Collection;
  */
 public class Coordinate extends ArrayList<Double> {
     public Coordinate(){
-        this(0D, 0D);
+        super(2);
     }
 
     public Coordinate(double x, double y){
@@ -33,19 +33,31 @@ public class Coordinate extends ArrayList<Double> {
     }
 
     public void setX(double x){
-        this.set(0, x);
+        if(this.isEmpty()){
+            this.add(x);
+            this.add(0D);
+        }else {
+            this.set(0, x);
+        }
     }
 
     public void setY(double y){
-        this.set(1, y);
+        if(this.isEmpty()){
+            this.add(0D);
+            this.add(y);
+        }else if(this.size() == 1){
+            this.add(y);
+        }else{
+            this.set(1, y);
+        }
     }
 
     public double getX(){
-        return this.get(0);
+        return this.isEmpty() ? 0D : this.get(0);
     }
 
     public double getY(){
-        return this.get(1);
+        return this.size() <= 1 ? 0D : this.get(1);
     }
 
     @Override
