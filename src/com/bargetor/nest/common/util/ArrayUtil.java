@@ -232,7 +232,11 @@ public class ArrayUtil {
             K key = distincter.getKey(item);
             if(key == null)continue;
 
-            List<E> itemList = distinctMap.get(key);
+            K mapKey = get(distinctMap.keySet(), key);
+            List<E> itemList = null;
+            if(mapKey != null){
+                itemList = distinctMap.get(mapKey);
+            }
             if(itemList == null){
                 itemList = new ArrayList<>();
                 distinctMap.put(key, itemList);

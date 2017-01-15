@@ -208,6 +208,18 @@ public class DateUtil {
 		return new Date(time);
 	}
 
+	public static Date getDayMid(Date date){
+		if(date == null)return null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 12);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		return cal.getTime();
+	}
+
 	public static Date getTodayStart(){
 		return getDayStart(new Date());
 	}
