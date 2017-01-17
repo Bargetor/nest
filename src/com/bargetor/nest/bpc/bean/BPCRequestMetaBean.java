@@ -4,15 +4,15 @@ package com.bargetor.nest.bpc.bean;
  * Created by Bargetor on 16/5/25.
  */
 public class BPCRequestMetaBean {
-    private int userid;
+    private int userId;
     private String token;
 
-    public int getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -26,7 +26,7 @@ public class BPCRequestMetaBean {
     @Override
     public String toString() {
         return "{" +
-                "userid=" + userid +
+                "userId=" + userId +
                 ", token='" + token + '\'' +
                 '}';
     }
