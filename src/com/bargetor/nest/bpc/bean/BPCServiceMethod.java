@@ -44,11 +44,13 @@ public class BPCServiceMethod {
             }else{
                 return this.method.invoke(this.service, params);
             }
-
         } catch (InvocationTargetException e) {
             throw e.getTargetException();
         } catch (IllegalAccessException e) {
             logger.error(String.format("bcp method {%s} invoke error", this.methodName), e);
+            return null;
+        } catch (IllegalArgumentException e){
+            logger.error(String.format("bcp method {%s} invoke error, because params is lost", this.methodName), e);
             return null;
         }
     }

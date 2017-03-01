@@ -2,19 +2,12 @@ package com.bargetor.nest.bpc.exception;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * Created by Bargetor on 16/4/13.
  */
 public class BPCException extends RuntimeException {
-
-    /**
-     * serialVersionUID:TODO（用一句话描述这个变量表示什么）
-     *
-     * @since 1.0.0
-     */
-
-    private static final long serialVersionUID = 1L;
     private int status;
     private String msg;
 
