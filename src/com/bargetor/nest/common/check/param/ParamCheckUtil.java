@@ -37,7 +37,7 @@ public class ParamCheckUtil {
 
             Object value = ReflectUtil.getProperty(paramsBean, field);
             if(!checkParam(value, checkList)) {
-                String msg = String.format("the %s check fail", field.getName());
+                String msg = String.format("the [%s.%s] check fail", paramsBean.getClass().getName(), field.getName());
                 if (isThrow) throw new ParamCheckError(msg);
                 logger.info(msg);
                 return false;
