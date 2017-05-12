@@ -3,6 +3,7 @@ package com.bargetor.nest.bpc.manager;
 import com.bargetor.nest.bpc.bean.BPCServiceMethod;
 import com.bargetor.nest.bpc.servlet.BPCDispatcherServlet;
 import com.bargetor.nest.common.util.StringUtil;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Created by Bargetor on 16/3/20.
  */
 public class BPCDispatchManager {
+    private final static Logger logger = Logger.getLogger(BPCDispatchManager.class);
     private static BPCDispatchManager instance;
 
     /**
@@ -54,6 +56,7 @@ public class BPCDispatchManager {
         if(this.containsMethod(mapping, method))return true;
 
         mapping.put(method.getMethodName(), method);
+        logger.info(String.format("bpc start init service method {%s}", method.getMethodName()));
         return true;
     }
 

@@ -31,13 +31,29 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        this.connectDB();
+    }
+
+    public void writePoint(Point point){
+        if(this.db == null){
+            this.connectDB();
+        }
+
+        if(this.db == null)return;
+        this.db.write(this.databaseName, this.retentionPolicy, point);
+    }
+
+    private void connectDB(){
         if(!ParamCheckUtil.check(this) || StringUtil.isNullStr(this.serverUrl)){
             logger.error("influxdb params miss error", new Exception("influxdb params miss error"));
             return;
         }
+
         try {
+            if(this.db != null)return;
             this.db = InfluxDBFactory.connect(this.serverUrl, this.userName, this.password);
             this.db.createDatabase(this.databaseName);
+            logger.info("influxdb connect done!");
         }catch (Exception e){
             this.db = null;
             logger.error("influxdb connect error", e);
@@ -48,12 +64,9 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
             logger.error("influxdb unknow error");
             return;
         }
+
     }
 
-    public void writePoint(Point point){
-        if(this.db == null)return;
-        this.db.write(this.databaseName, this.retentionPolicy, point);
-    }
 
     public String getServerUrl() {
         return serverUrl;

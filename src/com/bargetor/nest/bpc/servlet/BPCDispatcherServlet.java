@@ -167,7 +167,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 					AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
 					String bpcServiceAnnotationName = BPCService.class.getName();
 					if(annotationMetadata.hasAnnotation(bpcServiceAnnotationName)){
-						logger.info(String.format("bpc load nest %s", classMetadata.getClassName()));
+						logger.info(String.format("bpc load service %s", classMetadata.getClassName()));
 						String url = (String) annotationMetadata.getAnnotationAttributes(bpcServiceAnnotationName).get("url");
 						this.registerBPCService(defaultListableBeanFactory, classMetadata.getClassName(), url);
 					}
@@ -185,13 +185,13 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		proxyBeanDefinitionBuilder.addPropertyValue("targetClassName", className);
 		proxyBeanDefinitionBuilder.addPropertyValue("url", url);
 
-		//init bpc nest
-		logger.info(String.format("bpc start init nest {%s}", className));
+		//init bpc service
+		logger.info(String.format("bpc start init service {%s}", className));
 		Class<?> targetClass = null;
 		try {
 			targetClass = ClassUtils.getDefaultClassLoader().loadClass(className);
 		} catch (ClassNotFoundException e) {
-			logger.error(String.format("bpc load nest class {%s} error", className), e);
+			logger.error(String.format("bpc load service class {%s} error", className), e);
 			return;
 		}
 		BeanDefinitionBuilder targetBeanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(targetClass);
