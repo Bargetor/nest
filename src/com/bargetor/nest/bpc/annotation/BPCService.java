@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface BPCService {
-    String url() default BPCDispatcherServlet.BPC_DEFAULT_URL;
+    String url() default BPCDispatcherServlet.BPC_DEFAULT_URL_PATTERN;
 }

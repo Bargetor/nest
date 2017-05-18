@@ -50,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Bargetor on 16/3/20.
  */
 public class BPCDispatcherServlet extends HttpServlet implements InitializingBean, BeanFactoryPostProcessor, ApplicationContextAware {
-	public static final String BPC_DEFAULT_URL = "/invoke";
+	public static final String BPC_DEFAULT_URL_PATTERN = "/invoke/**";
 
 
 	private static final Logger logger = Logger.getLogger(BPCDispatcherServlet.class);
@@ -89,7 +89,8 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String httpMethod = req.getMethod();
 
-		if(!BPCDispatchManager.getInstance().containsUrlMapping(req.getRequestURI().toString())){
+		if(!BPCDispatchManager.getInstance().containsMappingForUrl(req.getRequestURI().toString())){
+			resp.setStatus(403);
 			return;
 		}
 
