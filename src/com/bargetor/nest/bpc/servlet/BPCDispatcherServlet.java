@@ -16,6 +16,7 @@ import com.bargetor.nest.bpc.handler.BPCRequestProcessHandler;
 import com.bargetor.nest.bpc.handler.BPCReturnValueHandler;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
+import com.bargetor.nest.common.executor.ExecutorManager;
 import com.bargetor.nest.common.util.ArrayUtil;
 import com.bargetor.nest.influxdb.InfluxDBManager;
 import org.apache.log4j.Logger;
@@ -230,14 +231,16 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	 * @param isSuccess 调用是否成功
 	 */
 	private void point(BPCRequest request, boolean isSuccess){
-		if(request == null)return;
-		if(request.getMethod() == null)return;
-		Point point = Point.measurement(this.pointMeasurement)
-				.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField(request.getMethod().getMethodName(), isSuccess)
-				.build();
+		ExecutorManager.getInstance().commitRunnable(() -> {
+			if(request == null)return;
+			if(request.getMethod() == null)return;
+			Point point = Point.measurement(this.pointMeasurement)
+					.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+					.addField(request.getMethod().getMethodName(), isSuccess)
+					.build();
 
-		this.influxDBManager.writePoint(point);
+			this.influxDBManager.writePoint(point);
+		});
 	}
 
 	/****************************************** getter and setter *******************************************/
