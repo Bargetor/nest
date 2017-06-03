@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class SpringApplicationUtil implements ApplicationContextAware{
 
-	private static ApplicationContext applicationContext;
+	public static ApplicationContext applicationContext;
 
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
