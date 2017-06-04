@@ -19,26 +19,26 @@ import java.util.Map;
  */
 @MappedJdbcTypes({JdbcType.VARCHAR, JdbcType.OTHER})
 @MappedTypes({Map.class})
-public class JsonMapTypeHandler extends BaseTypeHandler<Map<String, String>> {
+public class JsonMapTypeHandler extends BaseTypeHandler<Map> {
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Map<String, String> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Map parameter, JdbcType jdbcType) throws SQLException {
         ps.setObject(i, JSON.toJSONString(parameter));
     }
 
     @Override
-    public Map<String, String> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public Map getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String json = rs.getString(columnName);
         return JSON.parseObject(json, HashMap.class);
     }
 
     @Override
-    public Map<String, String> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public Map getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String json = rs.getString(columnIndex);
         return JSON.parseObject(json, HashMap.class);
     }
 
     @Override
-    public Map<String, String> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public Map getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String json = cs.getString(columnIndex);
         return JSON.parseObject(json, HashMap.class);
     }
