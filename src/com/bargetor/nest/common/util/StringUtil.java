@@ -29,7 +29,7 @@ public class StringUtil {
 	*/
 	public static boolean isNullStr(String str){
 		if(str != null){
-			return str.length() <= 0;
+			return str.isEmpty();
 		}else{
 			return true;
 		}

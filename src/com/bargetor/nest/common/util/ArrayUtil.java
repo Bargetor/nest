@@ -175,7 +175,7 @@ public class ArrayUtil {
      * @return
      */
     public static boolean isNull(Collection<?> collection){
-        return collection == null || collection.size() <= 0;
+        return collection == null || collection.isEmpty();
     }
 
     public static boolean isNotNull(Collection<?> collection){
