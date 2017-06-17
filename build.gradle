@@ -49,12 +49,13 @@ dependencies {
         'org.apache.shiro:shiro-all:1.2.3',
         'redis.clients:jedis:2.9.0',
         'org.influxdb:influxdb-java:2.5',
-        'com.github.sgroschupf:zkclient:0.1'
+        'com.101tec:zkclient:0.10'
     )
     compile (
         'com.alibaba:dubbo:2.5.3'
     ){
         exclude group:'org.springframework', module:'spring'
+        exclude group:'org.apache.zookeeper', module:'zookeeper'
     }
 
 }

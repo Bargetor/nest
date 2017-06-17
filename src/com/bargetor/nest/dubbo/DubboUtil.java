@@ -13,6 +13,10 @@ import com.bargetor.nest.dubbo.error.NoDubboRegistryError;
  * Created by bargetor on 2017/5/30.
  */
 public class DubboUtil {
+    public static <T>ReferenceConfig<T> createReferenceConfig(Class<T> interfaceClass){
+        return DubboUtil.createReferenceConfig(DubboUtil.getAppConfig(), DubboUtil.getRegistryConfig(), interfaceClass);
+    }
+
     public static <T>ReferenceConfig<T> createReferenceConfig(ApplicationConfig appConfig, RegistryConfig registryConfig, Class<T> interfaceClass){
         ReferenceConfig<T> config = new ReferenceConfig<>();
         config.setApplication(appConfig);
