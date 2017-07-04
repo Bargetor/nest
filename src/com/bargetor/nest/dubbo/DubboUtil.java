@@ -22,6 +22,7 @@ public class DubboUtil {
         config.setApplication(appConfig);
         config.setRegistry(registryConfig);
         config.setInterface(interfaceClass);
+        config.setCheck(true);
         return config;
     }
 

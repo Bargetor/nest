@@ -38,7 +38,7 @@ public class BPCServiceMethod {
 
     public Object invoke(BPCRequestBean requestBean) throws Throwable {
         try {
-            Object[] params = buildInvokeParams(requestBean);
+            Object[] params = this.buildInvokeParams(requestBean);
             if(params == null){
                 return this.method.invoke(this.service);
             }else{
