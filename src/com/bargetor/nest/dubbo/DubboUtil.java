@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import com.bargetor.nest.common.util.StringUtil;
 import com.bargetor.nest.dubbo.error.NoDubboApplicationError;
 import com.bargetor.nest.dubbo.error.NoDubboProtocolError;
 import com.bargetor.nest.dubbo.error.NoDubboRegistryError;
@@ -14,15 +15,23 @@ import com.bargetor.nest.dubbo.error.NoDubboRegistryError;
  */
 public class DubboUtil {
     public static <T>ReferenceConfig<T> createReferenceConfig(Class<T> interfaceClass){
-        return DubboUtil.createReferenceConfig(DubboUtil.getAppConfig(), DubboUtil.getRegistryConfig(), interfaceClass);
+        return DubboUtil.createReferenceConfig(DubboUtil.getAppConfig(), DubboUtil.getRegistryConfig(), interfaceClass, null);
     }
 
-    public static <T>ReferenceConfig<T> createReferenceConfig(ApplicationConfig appConfig, RegistryConfig registryConfig, Class<T> interfaceClass){
+    public static <T>ReferenceConfig<T> createReferenceConfig(Class<T> interfaceClass, String version){
+        return DubboUtil.createReferenceConfig(DubboUtil.getAppConfig(), DubboUtil.getRegistryConfig(), interfaceClass, version);
+    }
+
+    public static <T>ReferenceConfig<T> createReferenceConfig(ApplicationConfig appConfig, RegistryConfig registryConfig, Class<T> interfaceClass, String version){
         ReferenceConfig<T> config = new ReferenceConfig<>();
         config.setApplication(appConfig);
         config.setRegistry(registryConfig);
         config.setInterface(interfaceClass);
         config.setCheck(true);
+        config.setLazy(true);
+        if (StringUtil.isNotNullStr(version)){
+            config.setVersion(version);
+        }
         return config;
     }
 
