@@ -10,6 +10,7 @@
 package com.bargetor.nest.common.ui;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.bargetor.nest.common.geometry.Point;
 import com.bargetor.nest.common.util.CoordTransformUtil;
 
 import java.io.Serializable;
@@ -127,6 +128,10 @@ public class Location implements Serializable {
 
 	public String toWKTString(){
 		return String.format("Point(%s %s)", this.lng, this.lat);
+	}
+
+	public Point toPoint(){
+		return new Point(this.lng, this.lat);
 	}
 
 	public enum Type{
