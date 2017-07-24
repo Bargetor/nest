@@ -44,6 +44,22 @@ public class ForkJoinManager implements InitializingBean, DisposableBean {
         this.init();
     }
 
+    public ParallelTasks parallelTasks(ParallelTask.WorkerForNull worker){
+        ParallelTasks tasks = new ParallelTasks();
+        if (worker == null)return tasks;
+        tasks.add(worker);
+
+        return tasks;
+    }
+
+    public ParallelTasks parallelTasks(ParallelTask.Worker worker){
+        ParallelTasks tasks = new ParallelTasks();
+        if (worker == null)return tasks;
+        tasks.add(worker);
+
+        return tasks;
+    }
+
     /**
      * 平行处理
      * @param inputs

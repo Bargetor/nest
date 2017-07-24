@@ -51,4 +51,8 @@ public class ParallelTask<I, R>{
     public interface Worker<T, V>{
         V work(T one);
     }
+
+    public interface WorkerForNull{
+        void work();
+    }
 }
