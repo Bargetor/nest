@@ -83,12 +83,12 @@ public class BPCServiceMethod {
         Object[] paramValues = new Object[paramsCount];
         JSONObject bpcParamJson = JSON.parseObject(requestBean.getParams());
         for(int i = 0, len = paramsCount; i < paramsCount; i++){
-            paramValues[i] = this.buildParamValue(bpcParamJson, parameters[i]);
+            paramValues[i] = this.buildParamValue(requestBean, bpcParamJson, parameters[i]);
         }
         return paramValues;
     }
 
-    private Object buildParamValue(JSONObject bpcParamsJson, Parameter parameter){
+    private Object buildParamValue(BPCRequestBean requestBean, JSONObject bpcParamsJson, Parameter parameter){
         if(bpcParamsJson == null || parameter == null)return null;
 
         BPCParam bpcParamAnnotation = parameter.getAnnotation(BPCParam.class);
@@ -97,7 +97,9 @@ public class BPCServiceMethod {
 
         if(bpcParamAnnotation != null && bpcParamAnnotation.isAll()){
             value = bpcParamsJson.toJavaObject(parameter.getType());
-        }else{
+        }else if(this.isMetaParamBeanType(parameter)){
+            value = JSON.parseObject(JSON.toJSONString(requestBean.getMeta()), parameter.getType());
+        }else {
             value = bpcParamsJson.getObject(paramName, parameter.getType());
         }
 
@@ -107,6 +109,10 @@ public class BPCServiceMethod {
         }
 
         return value;
+    }
+
+    private boolean isMetaParamBeanType(Parameter parameter){
+        return BPCRequestMetaBean.class.equals(parameter.getType());
     }
 
 

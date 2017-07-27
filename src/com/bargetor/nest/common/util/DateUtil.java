@@ -18,9 +18,19 @@ import java.util.*;
 public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
 	public static final String timePartFormatStr = "HH:mm:ss";
-	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(timeFormatStr);
-	public static final SimpleDateFormat timePartFormat = new SimpleDateFormat(timePartFormatStr);
+	public static final ThreadLocal<SimpleDateFormat> timeFormat = new ThreadLocal<SimpleDateFormat>(){
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(timeFormatStr);
+		}
+	};
 
+	public static final ThreadLocal<SimpleDateFormat> timePartFormat = new ThreadLocal<SimpleDateFormat>(){
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(timePartFormatStr);
+		}
+	};
 
 	public static String getStr(String formatStr, Date date){
 		SimpleDateFormat timeFormat = new SimpleDateFormat(formatStr);
@@ -35,7 +45,7 @@ public class DateUtil {
 	 * @throws
 	*/
 	public static String getNow(){
-		return timeFormat.format(new Date());
+		return timeFormat.get().format(new Date());
 	}
 	
 	/**
@@ -47,7 +57,7 @@ public class DateUtil {
 	 * @throws
 	 */
 	public static String getNowToLateForStr(long ms){
-		return timeFormat.format(new Date(System.currentTimeMillis() + ms));
+		return timeFormat.get().format(new Date(System.currentTimeMillis() + ms));
 	}
 
 	/**
@@ -91,7 +101,7 @@ public class DateUtil {
 	 * @throws
 	*/
 	public static String dateToString(Date date){
-		return timeFormat.format(date);
+		return timeFormat.get().format(date);
 	}
 
 	/**
@@ -189,7 +199,7 @@ public class DateUtil {
 	 * @throws
 	*/
 	public static String getDayStartStr(Date date){
-		return timeFormat.format(getDayStart(date));
+		return timeFormat.get().format(getDayStart(date));
 	}
 
 	public static Date getDayStart(Date date){
@@ -251,7 +261,7 @@ public class DateUtil {
 	}
 
 	public static String getDayEndStr(Date date){
-		return timeFormat.format(getDayEnd(date));
+		return timeFormat.get().format(getDayEnd(date));
 	}
 	
 	/**
@@ -338,7 +348,7 @@ public class DateUtil {
 		if(startTime == null || "".equals(startTime))return 0;
 		if(endTime == null || "".equals(endTime))return 0;
 		try {
-			return timeFormat.parse(endTime).getTime() - timeFormat.parse(startTime).getTime();
+			return timeFormat.get().parse(endTime).getTime() - timeFormat.get().parse(startTime).getTime();
 		} catch (Exception e) {
 			return 0;
 		}
@@ -403,7 +413,7 @@ public class DateUtil {
 	public static Date strToDate(String dateStr){
 		if(StringUtil.isNullStr(dateStr))return null;
 		try {
-			return timeFormat.parse(dateStr);
+			return timeFormat.get().parse(dateStr);
 		} catch (Exception e) {
 			return null;
 		}
@@ -433,7 +443,7 @@ public class DateUtil {
 	public static Date parseTimeOnly(String timeStr){
 		if(StringUtil.isNullStr(timeStr))return null;
 		try {
-			return timePartFormat.parse(timeStr);
+			return timePartFormat.get().parse(timeStr);
 		} catch (Exception e) {
 			return null;
 		}
@@ -458,7 +468,7 @@ public class DateUtil {
 //		System.out.println("time is :" + (System.currentTimeMillis() - startTime));
 
 		Date date = getDayEnd(new Date());
-		System.out.println(timeFormat.format(date));
+		System.out.println(timeFormat.get().format(date));
 
 		System.out.println(getEnd(date, Calendar.WEEK_OF_MONTH));
 	}
