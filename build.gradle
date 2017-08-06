@@ -49,7 +49,8 @@ dependencies {
         'org.apache.shiro:shiro-all:1.2.3',
         'redis.clients:jedis:2.9.0',
         'org.influxdb:influxdb-java:2.5',
-        'com.101tec:zkclient:0.10'
+        'com.101tec:zkclient:0.10',
+        'org.redisson:redisson:3.5.0'
     )
     compile (
         'com.alibaba:dubbo:2.5.3'
