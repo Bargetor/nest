@@ -141,7 +141,7 @@ public class Location implements Serializable {
 	}
 
 	public static void main(String[] args){
-		Location location = new Location(116.308022, 40.056892);
+		Location location = new Location(116.403882, 39.914873);
 		location.setType(Type.BD09);
 
 		System.out.println("the original location is:" + location.toString());
