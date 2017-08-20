@@ -9,6 +9,11 @@
  */
 package com.bargetor.nest.common.executor;
 
+import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -24,7 +29,8 @@ import java.util.concurrent.Future;
  * @version 1.0.0
  *
  */
-public class ExecutorManager {
+@Component
+public class ExecutorManager implements InitializingBean, DisposableBean {
 	private static ExecutorManager instance;
 	
 	private ExecutorService executorService;
@@ -32,7 +38,8 @@ public class ExecutorManager {
 	
 	public static ExecutorManager getInstance(){
 		if(instance == null){
-			instance = new ExecutorManager();
+			instance = (ExecutorManager) SpringApplicationUtil.getBean(ExecutorManager.class);
+			if (instance == null) instance = new ExecutorManager();
 		}
 		return instance;
 	}
@@ -41,7 +48,7 @@ public class ExecutorManager {
 	 * 创建一个新的实例 ExecutorManager.
 	 *
 	 */
-	protected ExecutorManager() {
+	public ExecutorManager() {
 		this.executorService = Executors.newCachedThreadPool();
 	}
 	
@@ -52,8 +59,17 @@ public class ExecutorManager {
 	public Future<?> commitRunnable(Runnable runnable){
 		return this.executorService.submit(runnable);
 	}
-	
-	
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		this.executorService.shutdown();
+	}
+
 	public static void main(String[] args){
 		
 	}

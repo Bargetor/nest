@@ -73,6 +73,15 @@ public class SpringApplicationUtil implements ApplicationContextAware{
 		return result;
 	}
 
+	public static <T>Map<String, T> getBeans(Class<T> clazz){
+		Map<String, T> result = null;
+		try {
+			result = applicationContext.getBeansOfType(clazz);
+		}catch (Exception e){}
+
+		return result;
+	}
+
 	public static List<ClassAnnotationInfo> scanAnnotation(
 			ApplicationContext applicationContext,
 			Class<?> annotationClass,
