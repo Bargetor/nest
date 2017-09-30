@@ -3,17 +3,30 @@ package com.bargetor.nest.bpc.bean;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bargetor.nest.bpc.annotation.BPCParam;
+import com.bargetor.nest.bpc.exception.BPCLockGetException;
+import com.bargetor.nest.bpc.exception.BPCLockOccupiedException;
 import com.bargetor.nest.bpc.exception.BPCMethodParameterValueCheckFailError;
 import com.bargetor.nest.common.check.param.ParamCheckList;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
+import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 import com.bargetor.nest.common.util.MapUtil;
+import com.bargetor.nest.common.util.StringUtil;
 import org.apache.log4j.Logger;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static org.apache.ibatis.ognl.Ognl.parseExpression;
 
 /**
  * Created by Bargetor on 16/3/20.
@@ -28,6 +41,7 @@ public class BPCServiceMethod {
     private Map<Parameter, ParamCheckList> paramCheckListMap;
 
     private boolean isTest = false;
+    private String lockKey;
 
     public BPCServiceMethod(String methodName, Object service, Method method){
         this.methodName = methodName;
@@ -38,12 +52,8 @@ public class BPCServiceMethod {
 
     public Object invoke(BPCRequestBean requestBean) throws Throwable {
         try {
-            Object[] params = this.buildInvokeParams(requestBean);
-            if(params == null){
-                return this.method.invoke(this.service);
-            }else{
-                return this.method.invoke(this.service, params);
-            }
+            LinkedHashMap<String, Object> paramMap = this.buildInvokeParams(requestBean);
+            return this.invokeByLockIfNeed(paramMap);
         } catch (InvocationTargetException e) {
             throw e.getTargetException();
         } catch (IllegalAccessException e) {
@@ -53,6 +63,56 @@ public class BPCServiceMethod {
             logger.error(String.format("bcp method {%s} invoke error, because params is lost", this.methodName), e);
             return null;
         }
+    }
+
+    private Object invokeByLockIfNeed(LinkedHashMap<String, Object> paramMap) throws InvocationTargetException, IllegalAccessException {
+        //不需要锁
+        if(StringUtil.isNullStr(this.lockKey)){
+            return this.invokeBasic(paramMap);
+        }
+
+        String realRockKey = this.buildLockKey(paramMap);
+        if(StringUtil.isNullStr(realRockKey))throw new BPCLockGetException();
+
+        RedissonClient redissonClient = (RedissonClient) SpringApplicationUtil.getBean(RedissonClient.class);
+
+        //使用集群同步锁，为每一个任务上锁，避免重复计算
+        RLock lock = redissonClient.getLock(realRockKey);
+        boolean locked = false;
+        try {
+            locked = lock.tryLock(1000, 60000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            //获取锁失败，直接退出
+            throw new BPCLockGetException();
+        }
+
+        if(locked){
+            Object result = this.invokeBasic(paramMap);
+            lock.unlock();
+            return result;
+        }else{
+            throw new BPCLockOccupiedException();
+        }
+    }
+
+    private String buildLockKey(LinkedHashMap<String, Object> paramMap){
+        if(StringUtil.isNullStr(this.lockKey))return null;
+
+        SpelExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        context.setVariables(paramMap);
+        Expression exp = parser.parseExpression(this.lockKey);
+        return exp.getValue(context, String.class);
+    }
+
+    private Object invokeBasic(LinkedHashMap<String, Object> paramMap) throws InvocationTargetException, IllegalAccessException {
+        Object result;
+        if(MapUtil.isMapNull(paramMap)){
+            result = this.method.invoke(this.service);
+        }else{
+            result = this.method.invoke(this.service, paramMap.values().toArray());
+        }
+        return result;
     }
 
     private void buildParamCheckList(Method method){
@@ -76,16 +136,16 @@ public class BPCServiceMethod {
         return this.paramCheckListMap.get(param);
     }
 
-    private Object[] buildInvokeParams(BPCRequestBean requestBean){
+    private LinkedHashMap<String, Object> buildInvokeParams(BPCRequestBean requestBean){
         Parameter[] parameters = this.method.getParameters();
-        int paramsCount = parameters.length;
-        if(paramsCount <= 0)return null;
-        Object[] paramValues = new Object[paramsCount];
+        if(parameters.length <= 0)return null;
+        LinkedHashMap<String, Object> paramMap = new LinkedHashMap<>();
         JSONObject bpcParamJson = JSON.parseObject(requestBean.getParams());
-        for(int i = 0, len = paramsCount; i < paramsCount; i++){
-            paramValues[i] = this.buildParamValue(requestBean, bpcParamJson, parameters[i]);
+        for (Parameter parameter : parameters){
+            Object paramValue = this.buildParamValue(requestBean, bpcParamJson, parameter);
+            paramMap.put(parameter.getName(), paramValue);
         }
-        return paramValues;
+        return paramMap;
     }
 
     private Object buildParamValue(BPCRequestBean requestBean, JSONObject bpcParamsJson, Parameter parameter){
@@ -148,5 +208,13 @@ public class BPCServiceMethod {
 
     public void setTest(boolean test) {
         isTest = test;
+    }
+
+    public String getLockKey() {
+        return lockKey;
+    }
+
+    public void setLockKey(String lockKey) {
+        this.lockKey = lockKey;
     }
 }

@@ -10,5 +10,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface BPCMethod {
     String name();
+    //集群锁key，spEl 表达式，参数为方法调用参数，填写即代表锁定
+    String lockKey() default "";
     boolean isTest() default false;
 }
