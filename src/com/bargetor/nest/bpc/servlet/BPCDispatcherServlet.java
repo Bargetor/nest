@@ -119,7 +119,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 			//调用成功打点
 			this.point(bpcRequest, bpcStartTime, true);
 		}catch (Throwable e){
-			logger.error("process error", e);
+			logger.error(String.format("method process error and request body is %s", requestBody), e);
 			this.exceptionHandler.process(bpcRequest, bpcResponse, e);
 
 			//调用失败打点
