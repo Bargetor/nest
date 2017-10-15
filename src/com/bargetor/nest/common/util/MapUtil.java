@@ -88,9 +88,9 @@ public class MapUtil {
 	public static Map<String, String> beanToParamsMap(Object bean){
 		if(bean == null)return null;
 		Map<String, String> result = new LinkedHashMap<String, String>();
-		Field[] fields = bean.getClass().getDeclaredFields();
+		Field[] fields = ReflectUtil.getAllFields(bean.getClass());
 		for (Field field : fields) {
-			Object value = ReflectUtil.getProperty(bean, field.getName());
+			Object value = ReflectUtil.getProperty(bean, field);
 			if(value == null) continue;
 			result.put(field.getName(), value.toString());
 		}

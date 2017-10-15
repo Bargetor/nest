@@ -507,7 +507,7 @@ public class ReflectUtil {
 	 * @since  1.0.0
 	*/
 	private static <T>Field[] getAllFields(Class<T> clazz, List<Field> fieldsResult, List<String> fieldNamesList){
-		if(clazz ==null)return null;
+		if(clazz == null)return null;
 		if(!Object.class.isAssignableFrom(clazz))return null;
 		for(Field field : clazz.getDeclaredFields()){
 			if(!fieldNamesList.contains(field.getName())){
