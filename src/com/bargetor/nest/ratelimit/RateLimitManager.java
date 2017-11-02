@@ -33,7 +33,7 @@ public class RateLimitManager implements InitializingBean, DisposableBean {
     private final static Logger logger = Logger.getLogger(RateLimitManager.class);
     private Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
     private Map<String, RateLimit> rateLimitMap = new HashMap<>();
-    @Autowired
+    @Autowired(required = false)
     private RateLimiterFactory rateLimiterFactory;
 
     @Before("@annotation(com.bargetor.nest.ratelimit.annotation.RateLimit)")

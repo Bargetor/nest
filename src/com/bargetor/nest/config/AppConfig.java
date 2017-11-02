@@ -19,29 +19,29 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig{
     private static final Logger logger = Logger.getLogger(AppConfig.class);
 
-    @Bean(name = "taskMapper")
-    public MapperFactoryBean taskMapper(){
-        MapperFactoryBean factoryBean = new MapperFactoryBean();
-        factoryBean.setMapperInterface(TaskMapper.class);
-        SqlSessionFactoryBean sqlSessionFactoryBean = (SqlSessionFactoryBean) SpringApplicationUtil.getBean(SqlSessionFactoryBean.class);
-        try {
-            factoryBean.setSqlSessionFactory(sqlSessionFactoryBean.getObject());
-        } catch (Exception e) {
-            logger.error(e);
-        }
-
-        return factoryBean;
-    }
-
-    @Bean(destroyMethod = "destroy")
-    public TaskManager taskManager(){
-        TaskManager taskManager = new TaskManager();
-        try {
-            taskManager.setTaskMapper((TaskMapper) taskMapper().getObject());
-        } catch (Exception e) {
-            logger.error(e);
-        }
-        return taskManager;
-    }
+//    @Bean(name = "taskMapper")
+//    public MapperFactoryBean taskMapper(){
+//        MapperFactoryBean factoryBean = new MapperFactoryBean();
+//        factoryBean.setMapperInterface(TaskMapper.class);
+//        SqlSessionFactoryBean sqlSessionFactoryBean = (SqlSessionFactoryBean) SpringApplicationUtil.getBean(SqlSessionFactoryBean.class);
+//        try {
+//            factoryBean.setSqlSessionFactory(sqlSessionFactoryBean.getObject());
+//        } catch (Exception e) {
+//            logger.error(e);
+//        }
+//
+//        return factoryBean;
+//    }
+//
+//    @Bean(destroyMethod = "destroy")
+//    public TaskManager taskManager(){
+//        TaskManager taskManager = new TaskManager();
+//        try {
+//            taskManager.setTaskMapper((TaskMapper) taskMapper().getObject());
+//        } catch (Exception e) {
+//            logger.error(e);
+//        }
+//        return taskManager;
+//    }
 
 }
