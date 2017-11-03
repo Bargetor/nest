@@ -33,15 +33,15 @@ public class AppConfig{
 //        return factoryBean;
 //    }
 //
-//    @Bean(destroyMethod = "destroy")
-//    public TaskManager taskManager(){
-//        TaskManager taskManager = new TaskManager();
+    @Bean(destroyMethod = "destroy")
+    public TaskManager taskManager(){
+        TaskManager taskManager = new TaskManager();
 //        try {
 //            taskManager.setTaskMapper((TaskMapper) taskMapper().getObject());
 //        } catch (Exception e) {
 //            logger.error(e);
 //        }
-//        return taskManager;
-//    }
+        return taskManager;
+    }
 
 }
