@@ -57,8 +57,8 @@ public class ObjectClone {
     	if(newObjForSpecial != null) return newObjForSpecial;
     	
     	//进行序列化克隆
-    	T newObjByStrem = cloneByStrem(obj);
-    	if(newObjByStrem != null) return newObjByStrem;
+    	T newObjByStream = cloneByStream(obj);
+    	if(newObjByStream != null) return newObjByStream;
     	
     	//调用自身实现克隆函数
     	Method cloneMethod = ReflectUtil.getMethod(obj.getClass(), "clone", new Class[]{});
@@ -297,14 +297,14 @@ public class ObjectClone {
     }
       
     /**
-     *<p>Title: cloneByStrem</p>
+     *<p>Title: cloneByStream</p>
      *<p>Description:对对象进行序列化克隆</p>
      * @param @param src
      * @param @return 设定文件
      * @return  Object 返回类型
      * @throws
     */
-	private <T>T cloneByStrem(T src) {
+	private <T>T cloneByStream(T src) {
 		if(src == null)return null;
 		if(!ReflectUtil.isInterfaceToAchieve(src.getClass(), "Serializable"))return null;
         T dst = null;
