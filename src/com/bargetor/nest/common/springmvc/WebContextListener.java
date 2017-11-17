@@ -1,7 +1,6 @@
 package com.bargetor.nest.common.springmvc;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.chainsaw.Main;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
@@ -27,9 +26,9 @@ public class WebContextListener implements ApplicationListener {
             ContextClosedEvent event = (ContextClosedEvent) applicationEvent;
             if(event.getApplicationContext().getParent()==null){
                 logger.debug("App context was Closed.");
-                synchronized (Main.class) {
+                synchronized (Object.class) {
                     try {
-                        Main.class.notifyAll();
+                        Object.class.notifyAll();
                     } catch (Throwable e) {}
                 }
                 Runtime.getRuntime().exit(0);
