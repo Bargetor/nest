@@ -80,6 +80,14 @@ public class Location implements Serializable {
 	 */
 	@Override
 	public String toString() {
+		return this.toLngLat();
+	}
+
+	public String toLatLng(){
+		return lat + "," + lng;
+	}
+
+	public String toLngLat(){
 		return lng + "," + lat;
 	}
 
