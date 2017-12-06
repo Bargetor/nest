@@ -12,7 +12,11 @@ import java.util.List;
  */
 public class RangeUtil {
 
-    public static <T extends Comparable>List<Range<T>> removeIntersection(Range<T> mainRange, Range<T>... ranges){
+    public static <T extends Comparable>List<Range<T>> removeIntersection(Range<T> mainRange, Range<T>[] ranges){
+        return removeIntersection(mainRange, ArrayUtil.array2List(ranges));
+    }
+
+    public static <T extends Comparable>List<Range<T>> removeIntersection(Range<T> mainRange, List<Range<T>> ranges){
         if(mainRange == null)return null;
         List<Range<T>> result = new ArrayList<>();
         result.add(mainRange);
@@ -114,6 +118,6 @@ public class RangeUtil {
 
         System.out.println(removeIntersection(mainRange, range));
 
-        System.out.println(removeIntersection(mainRange, range, range2));
+//        System.out.println(removeIntersection(mainRange, range, range2));
     }
 }
