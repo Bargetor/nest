@@ -39,7 +39,7 @@ public class RedisCache implements Cache, InitializingBean {
         if(key == null)return null;
         Object value = this.redisManager.getObject((String)key);
         if(value == null)return null;
-        logger.info(String.format("%s cache hit -> %s", this.getName(), key));
+        logger.debug(String.format("%s cache hit -> %s", this.getName(), key));
         return new SimpleValueWrapper(value);
     }
 
@@ -55,7 +55,7 @@ public class RedisCache implements Cache, InitializingBean {
     public void put(Object key, Object value) {
         String keyStr = (String)key;
         this.redisManager.putObject(keyStr, value);
-        logger.info(String.format("%s cache put -> %s", this.getName(), key));
+        logger.debug(String.format("%s cache put -> %s", this.getName(), key));
     }
 
     @Override

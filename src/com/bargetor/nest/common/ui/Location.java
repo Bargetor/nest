@@ -142,6 +142,9 @@ public class Location implements Serializable {
 		return new Point(this.lng, this.lat);
 	}
 
+	@JSONField(deserialize = false, serialize = false)
+	public boolean isZero(){ return this.lat == 0.0 && this.lng == 0.0;}
+
 	public enum Type{
 		WGS84,
 		GCJ02,
