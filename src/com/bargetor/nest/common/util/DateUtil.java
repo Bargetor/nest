@@ -377,9 +377,14 @@ public class DateUtil {
 	 */
 	public static List<Date> getIntervalDateList(Date startDate, Date endDate){
 		if(startDate == null || endDate == null)return null;
-		if(endDate.getTime() < startDate.getTime())return null;
+		Date start = startDate;
+		Date end = endDate;
+		if(endDate.getTime() < startDate.getTime()){
+			start = endDate;
+			end = startDate;
+		}
 
-		List<Range<Date>> ranges = breakDown(startDate, endDate, Calendar.DAY_OF_YEAR);
+		List<Range<Date>> ranges = breakDown(start, end, Calendar.DAY_OF_YEAR);
 		List<Date> result = ArrayUtil.list2List(ranges, Range::lowerEndpoint);
 
 		return result;
