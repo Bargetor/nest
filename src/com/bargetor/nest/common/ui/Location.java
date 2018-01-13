@@ -43,6 +43,10 @@ public class Location implements Serializable {
 		this.lng = lng;
 		this.lat = lat;
 	}
+
+	public static Location zero(){
+		return new Location(0.0, 0.0);
+	}
 	/**
 	 * lng
 	 *
