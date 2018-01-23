@@ -38,32 +38,29 @@ import com.bargetor.nest.common.bpc.controller.BPCHandlerMethodArgumentResolver;
  * @version 1.0.0
  *
  */
-@Configuration
-//自定义错误处理
-@ComponentScan(basePackages = {"com.bargetor.nest"}, basePackageClasses = {AppMVCConfig.class} , includeFilters = {@Filter(type = FilterType.ANNOTATION, value = {ControllerAdvice.class})})
-public class AppMVCConfig extends WebMvcConfigurationSupport{
-	private static final Logger logger = Logger.getLogger(AppMVCConfig.class);
+//@Configuration
+////自定义错误处理
+//@ComponentScan(basePackages = {"com.bargetor.nest"}, basePackageClasses = {AppMVCConfig.class} , includeFilters = {@Filter(type = FilterType.ANNOTATION, value = {ControllerAdvice.class})})
+//public class AppMVCConfig extends WebMvcConfigurationSupport{
+//	private static final Logger logger = Logger.getLogger(AppMVCConfig.class);
 
-	@Bean
-	public BPCRequestMappingHandlerMapping requestMappingHandlerMapping() {
-		//自定义request mapping handler mapping for api version
-		BPCRequestMappingHandlerMapping handlerMapping = new BPCRequestMappingHandlerMapping();
-		handlerMapping.setOrder(0);
-		handlerMapping.setInterceptors(getInterceptors());
-		return handlerMapping;
-	}
-	
-	@Bean
-	public RequestMappingHandlerAdapter requestMappingHandlerAdapter(){
-		RequestMappingHandlerAdapter adapter = super.requestMappingHandlerAdapter();
-		//自定义参数解析
-		adapter.getCustomArgumentResolvers().add(new BPCHandlerMethodArgumentResolver());
-		//自定义返回值
-		adapter.getCustomReturnValueHandlers().add(new BPCHandlerMethodReturnValueHandler());
-		
-		return adapter;
-	}
-
-
-
-}
+//	@Bean
+//	public BPCRequestMappingHandlerMapping requestMappingHandlerMapping() {
+//		//自定义request mapping handler mapping for api version
+//		BPCRequestMappingHandlerMapping handlerMapping = new BPCRequestMappingHandlerMapping();
+//		handlerMapping.setOrder(0);
+//		handlerMapping.setInterceptors(getInterceptors());
+//		return handlerMapping;
+//	}
+//
+//	@Bean
+//	public RequestMappingHandlerAdapter requestMappingHandlerAdapter(){
+//		RequestMappingHandlerAdapter adapter = super.requestMappingHandlerAdapter();
+//		//自定义参数解析
+//		adapter.getCustomArgumentResolvers().add(new BPCHandlerMethodArgumentResolver());
+//		//自定义返回值
+//		adapter.getCustomReturnValueHandlers().add(new BPCHandlerMethodReturnValueHandler());
+//
+//		return adapter;
+//	}
+//}

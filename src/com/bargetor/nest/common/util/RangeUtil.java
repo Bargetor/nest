@@ -113,7 +113,7 @@ public class RangeUtil {
 
     public static void main(String[] args){
         Range<Integer> mainRange = Range.closedOpen(-3, 1);
-        Range<Integer> range = Range.closed(0, 5);
+        Range<Integer> range = Range.closed(-3, 1);
         Range<Integer> range2 = Range.closed(-3, -2);
 
         System.out.println(removeIntersection(mainRange, range));
