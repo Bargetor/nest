@@ -82,6 +82,11 @@ public class SpringApplicationUtil implements ApplicationContextAware{
 		return result;
 	}
 
+	public static String getProperty(String name){
+		return applicationContext.getEnvironment().getProperty(name);
+	}
+
+
 	public static List<ClassAnnotationInfo> scanAnnotation(
 			ApplicationContext applicationContext,
 			Class<?> annotationClass,
