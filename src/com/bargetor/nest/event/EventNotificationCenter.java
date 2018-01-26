@@ -1,4 +1,4 @@
-package com.bargetor.nest.notification;
+package com.bargetor.nest.event;
 
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
@@ -20,21 +20,26 @@ import java.util.*;
  * Created by bargetor on 2017/6/3.
  */
 @Component
-public class NotificationCenter implements BeanFactoryPostProcessor, ApplicationContextAware, ApplicationListener<ApplicationEvent> {
-    private static final Logger logger = Logger.getLogger(NotificationCenter.class);
+public class EventNotificationCenter implements BeanFactoryPostProcessor, ApplicationContextAware, ApplicationListener<ApplicationEvent> {
+    private static final Logger logger = Logger.getLogger(EventNotificationCenter.class);
     private ApplicationContext applicationContext;
 
     private Map<Class<? extends ApplicationEvent>, Set<SpringApplicationUtil.MethodAnnotationInfo>> eventMapping = new HashMap<>();
 
     public static void notify(ApplicationEvent event){
-        SpringApplicationUtil.applicationContext.publishEvent(event);
+        EventNotificationCenter center = (EventNotificationCenter) SpringApplicationUtil.getBean(EventNotificationCenter.class);
+        center.publish(event);
+    }
+
+    public void publish(ApplicationEvent event){
+        this.applicationContext.publishEvent(event);
     }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         try {
             List<SpringApplicationUtil.MethodAnnotationInfo> notificationAnnotationHandlers
-                    = SpringApplicationUtil.scanMethodAnnotation(this.applicationContext, NotificationHandler.class, "");
+                    = SpringApplicationUtil.scanMethodAnnotation(this.applicationContext, EventHandler.class, "");
 
             if(ArrayUtil.isNull(notificationAnnotationHandlers))return;
 

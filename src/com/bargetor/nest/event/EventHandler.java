@@ -1,4 +1,4 @@
-package com.bargetor.nest.notification;
+package com.bargetor.nest.event;
 
 import org.springframework.context.ApplicationEvent;
 
@@ -10,6 +10,6 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface NotificationHandler {
+public @interface EventHandler {
     Class<? extends ApplicationEvent> event();
 }
