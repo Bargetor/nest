@@ -21,6 +21,7 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class SpringApplicationUtil implements ApplicationContextAware{
 	}
 
 	public static String getProperty(String name){
-		return applicationContext.getEnvironment().getProperty(name);
+		return ((XmlWebApplicationContext) applicationContext).getBeanFactory().resolveEmbeddedValue("${" + name +"}");
 	}
 
 
