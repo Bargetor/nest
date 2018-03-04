@@ -351,10 +351,10 @@ public class ArrayUtil {
         if(filter == null)return new ArrayList<>(c);
 
         List<T> filterC = new CopyOnWriteArrayList<>();
-        listForeach(c, one -> {
-            if(one == null)return;
+        for (T one : c) {
+            if(one == null) continue;
             if(filter.filter(one))filterC.add(one);
-        });
+        }
 
         return filterC;
     }

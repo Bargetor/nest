@@ -46,6 +46,15 @@ public class SpringApplicationUtil implements ApplicationContextAware{
 		SpringApplicationUtil.applicationContext = applicationContext;
 	}
 
+	/**
+	 * 是否为debug环境
+	 * 根据system.bpc.isDebug配置而来
+	 * @return
+	 */
+	public static boolean isDebugEnv(){
+		return Boolean.valueOf(getProperty("system.bpc.isDebug"));
+	}
+
 	public static Object getBean(String name) {
 		return applicationContext.getBean(name);
 	}
@@ -84,7 +93,11 @@ public class SpringApplicationUtil implements ApplicationContextAware{
 	}
 
 	public static String getProperty(String name){
-		return ((XmlWebApplicationContext) applicationContext).getBeanFactory().resolveEmbeddedValue("${" + name +"}");
+		try {
+			return ((XmlWebApplicationContext) applicationContext).getBeanFactory().resolveEmbeddedValue("${" + name +"}");
+		}catch (Exception e){
+			return null;
+		}
 	}
 
 
