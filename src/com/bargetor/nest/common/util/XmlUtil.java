@@ -106,6 +106,7 @@ public class XmlUtil {
 	private static Object xmlToBean(String xmlStr, JAXBContext jc){
 		try {
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
+			unmarshaller.setSchema(null);
 			StringReader reader = new StringReader(xmlStr);
 			
 			Object result = unmarshaller.unmarshal(reader);
