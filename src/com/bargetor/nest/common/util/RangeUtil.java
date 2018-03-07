@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class RangeUtil {
 
+    public static <T extends Comparable> boolean isConnectedWithoutEquals(Range<T> main, Range<T> other) {
+        return main.lowerEndpoint().compareTo(other.upperEndpoint()) < 0
+                && main.upperEndpoint().compareTo(other.lowerEndpoint()) > 0;
+    }
+
     public static <T extends Comparable>List<Range<T>> removeIntersection(Range<T> mainRange, Range<T>[] ranges){
         return removeIntersection(mainRange, ArrayUtil.array2List(ranges));
     }
