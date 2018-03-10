@@ -6,7 +6,20 @@ import java.util.concurrent.TimeUnit
 
 class RedissonLockHelper{
     companion object {
-        fun lock(key: String, waitTime: Long, leaseTime: Long, onLock: () -> Unit, onLockGetFail: () -> Unit? = {}, onLockOccupied: () -> Unit? = {}): Unit{
+//        fun lock(key: String, waitTime: Long, leaseTime: Long, onLock: () -> Unit, onLockGetFail: () -> Unit? = {}, onLockOccupied: () -> Unit? = {}): Unit {
+//            lock(key, waitTime, leaseTime, onLock = {
+//                onLock()
+//                return@lock Any()
+//            }, onLockGetFail = {
+//                onLockGetFail()
+//                return@lock Any()
+//            }, onLockOccupied = {
+//                onLockOccupied()
+//                return@lock Any()
+//            })
+//        }
+
+        fun <T>lock(key: String, waitTime: Long, leaseTime: Long, onLock: () -> T, onLockGetFail: () -> T? = {null}, onLockOccupied: () -> T? = {null}): T? {
             val redissonClient = SpringApplicationUtil.getBean(RedissonClient::class.java) as RedissonClient
             val lock = redissonClient.getLock(key)
             var locked = false
@@ -14,13 +27,13 @@ class RedissonLockHelper{
             try {
                 locked = lock.tryLock(waitTime, leaseTime, TimeUnit.MILLISECONDS)
                 if (locked) {
-                    onLock()
+                    return onLock()
                 } else {
-                    onLockOccupied()
+                    return onLockOccupied()
                 }
             } catch (e: InterruptedException) {
                 //获取锁失败，直接退出
-                onLockGetFail()
+                return onLockGetFail()
             } finally {
                 lock.unlock()
             }
