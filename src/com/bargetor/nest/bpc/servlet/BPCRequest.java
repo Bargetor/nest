@@ -1,7 +1,7 @@
 package com.bargetor.nest.bpc.servlet;
 
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
-import com.bargetor.nest.bpc.bean.BPCServiceMethod;
+import com.bargetor.nest.bpc.manager.BPCServiceMethod;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,5 @@
 package com.bargetor.nest.bpc.manager;
 
-import com.bargetor.nest.bpc.bean.BPCServiceMethod;
 import com.bargetor.nest.bpc.servlet.BPCDispatcherServlet;
 import com.bargetor.nest.common.util.MapUtil;
 import com.bargetor.nest.common.util.StringUtil;

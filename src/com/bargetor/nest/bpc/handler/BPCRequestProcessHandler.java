@@ -1,7 +1,7 @@
 package com.bargetor.nest.bpc.handler;
 
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
-import com.bargetor.nest.bpc.bean.BPCServiceMethod;
+import com.bargetor.nest.bpc.manager.BPCServiceMethod;
 import com.bargetor.nest.bpc.servlet.BPCRequest;
 import com.bargetor.nest.bpc.servlet.BPCResponse;
 import org.apache.log4j.Logger;

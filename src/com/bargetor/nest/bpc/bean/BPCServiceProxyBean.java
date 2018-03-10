@@ -2,6 +2,7 @@ package com.bargetor.nest.bpc.bean;
 
 import com.bargetor.nest.bpc.annotation.BPCMethod;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
+import com.bargetor.nest.bpc.manager.BPCServiceMethod;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +37,7 @@ public class BPCServiceProxyBean implements InitializingBean, ApplicationContext
                 );
                 methodBean.setTest(methodAnnotation.isTest());
                 methodBean.setLockKey(methodAnnotation.lockKey());
+                methodBean.setRequestValidateEL(methodAnnotation.requestValidateEL());
 
                 BPCDispatchManager.getInstance().registerMethod(this.url, methodBean);
             }

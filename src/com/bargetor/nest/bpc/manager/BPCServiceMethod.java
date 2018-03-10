@@ -1,11 +1,14 @@
-package com.bargetor.nest.bpc.bean;
+package com.bargetor.nest.bpc.manager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bargetor.nest.bpc.annotation.BPCParam;
+import com.bargetor.nest.bpc.bean.BPCRequestBean;
+import com.bargetor.nest.bpc.bean.BPCRequestMetaBean;
 import com.bargetor.nest.bpc.exception.BPCLockGetException;
 import com.bargetor.nest.bpc.exception.BPCLockOccupiedException;
 import com.bargetor.nest.bpc.exception.BPCMethodParameterValueCheckFailError;
+import com.bargetor.nest.bpc.exception.BPCRequestAuthException;
 import com.bargetor.nest.common.check.param.ParamCheckList;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
@@ -26,8 +29,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.apache.ibatis.ognl.Ognl.parseExpression;
-
 /**
  * Created by Bargetor on 16/3/20.
  */
@@ -42,6 +43,7 @@ public class BPCServiceMethod {
 
     private boolean isTest = false;
     private String lockKey;
+    private String requestValidateEL;
 
     public BPCServiceMethod(String methodName, Object service, Method method){
         this.methodName = methodName;
@@ -53,6 +55,7 @@ public class BPCServiceMethod {
     public Object invoke(BPCRequestBean requestBean) throws Throwable {
         try {
             LinkedHashMap<String, Object> paramMap = this.buildInvokeParams(requestBean);
+            if (!this.requestValidate(this.addValidateNeedParamsTo(paramMap, requestBean))) throw new BPCRequestAuthException();
             return this.invokeByLockIfNeed(paramMap);
         } catch (InvocationTargetException e) {
             throw e.getTargetException();
@@ -105,6 +108,17 @@ public class BPCServiceMethod {
         return exp.getValue(context, String.class);
     }
 
+    private boolean requestValidate(LinkedHashMap<String, Object> paramMap){
+        if(StringUtil.isNullStr(this.requestValidateEL))return true;
+
+        SpelExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        context.setVariables(paramMap);
+        Expression exp = parser.parseExpression(this.requestValidateEL);
+        return exp.getValue(context, Boolean.class);
+    }
+
+
     private Object invokeBasic(LinkedHashMap<String, Object> paramMap) throws InvocationTargetException, IllegalAccessException {
         Object result;
         if(MapUtil.isMapNull(paramMap)){
@@ -147,6 +161,13 @@ public class BPCServiceMethod {
         }
         return paramMap;
     }
+
+    private LinkedHashMap<String, Object> addValidateNeedParamsTo(LinkedHashMap<String, Object> invokeParams, BPCRequestBean requestBean){
+        LinkedHashMap<String, Object> allParams = new LinkedHashMap<>(invokeParams);
+        allParams.put("meta", requestBean.getMeta());
+        return allParams;
+    }
+
 
     private Object buildParamValue(BPCRequestBean requestBean, JSONObject bpcParamsJson, Parameter parameter){
         if(bpcParamsJson == null || parameter == null)return null;
@@ -216,5 +237,13 @@ public class BPCServiceMethod {
 
     public void setLockKey(String lockKey) {
         this.lockKey = lockKey;
+    }
+
+    public String getRequestValidateEL() {
+        return requestValidateEL;
+    }
+
+    public void setRequestValidateEL(String requestValidateEL) {
+        this.requestValidateEL = requestValidateEL;
     }
 }
