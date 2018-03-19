@@ -117,7 +117,7 @@ public class Polygon extends Geometry<List<Coordinate>> {
 
 	@JSONField(serialize = false)
 	public Point getCenter(){
-		if(ArrayUtil.isNull(this.coordinates))return null;
+		if(ArrayUtil.isNull(this.coordinates))return Point.zero();
 		double totalX = 0;
 		double totalY = 0;
 		int count = this.coordinates.size();

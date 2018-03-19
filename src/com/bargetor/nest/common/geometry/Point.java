@@ -25,6 +25,10 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class Point extends Geometry<Coordinate>{
 
+	public static Point zero(){
+		return new Point(0, 0);
+	}
+
 	public Point(){
 		this.setCoordinates(new Coordinate());
 	}

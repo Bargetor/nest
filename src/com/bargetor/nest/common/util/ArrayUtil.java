@@ -98,6 +98,11 @@ public class ArrayUtil {
         return result;
     }
 
+    public static <T> List<T> listOf(T... array){
+        if(array == null)return null;
+        return array2List(array);
+    }
+
     public static <T> List<T> array2List(T[] array){
         if(array == null)return null;
         List<T> list = new ArrayList<>();
