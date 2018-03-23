@@ -163,6 +163,7 @@ public class BPCServiceMethod {
     }
 
     private LinkedHashMap<String, Object> addValidateNeedParamsTo(LinkedHashMap<String, Object> invokeParams, BPCRequestBean requestBean){
+        if (invokeParams == null) invokeParams = new LinkedHashMap();
         LinkedHashMap<String, Object> allParams = new LinkedHashMap<>(invokeParams);
         allParams.put("meta", requestBean.getMeta());
         return allParams;

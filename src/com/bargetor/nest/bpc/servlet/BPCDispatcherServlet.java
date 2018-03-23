@@ -52,7 +52,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class BPCDispatcherServlet extends HttpServlet implements InitializingBean, BeanFactoryPostProcessor, ApplicationContextAware {
 	public static final String BPC_DEFAULT_URL_PATTERN = "/invoke/**";
-
+	public static final String BPC_INFLUXDB_INVOKE_SUCCESS_TAG = "bpc_invoke_is_success";
 
 	private static final Logger logger = Logger.getLogger(BPCDispatcherServlet.class);
 	private ApplicationContext applicationContext;
@@ -239,6 +239,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 					.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
 					.addField(request.getMethod().getMethodName(), isSuccess)
 					.addField(request.getMethod().getMethodName() + "_invoke_time", System.currentTimeMillis() - bpcStartTime)
+					.tag(BPC_INFLUXDB_INVOKE_SUCCESS_TAG, new Boolean(isSuccess).toString())
 					.build();
 
 			this.influxDBManager.writePoint(point);
