@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -121,7 +122,16 @@ public class HttpRequester {
 	}
 
 	public String urlEncodeParams(Map<String, String> params){
-		return MapUtil.concatParams(params);
+		if(params == null || params.size() <= 0)return null;
+		Map<String, String> encodeParams = new HashMap<>();
+		params.forEach((key, value) -> {
+			try {
+				encodeParams.put(key, URLEncoder.encode(value, "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				encodeParams.put(key, value.replace(" ", ""));
+			}
+		});
+		return MapUtil.concatParams(encodeParams);
 	}
 
 	public String concatParams(String url, Map<String, String> params){
@@ -237,11 +247,10 @@ public class HttpRequester {
 	public HttpResponse send(String urlString, String method,
 			String requestBody, Map<String, String> properties) throws IOException{
 		HttpRequestBase request;
-		String urlEncode = urlString.replace(" ", "+");
 		if("GET".equals(method)){
-			request = new HttpGet(urlEncode);
+			request = new HttpGet(urlString);
 		}else if("POST".equals(method)){
-			request = new HttpPost(urlEncode);
+			request = new HttpPost(urlString);
 
 			if(StringUtil.isNotNullStr(requestBody)){
 				HttpEntity entity = new ByteArrayEntity(requestBody.getBytes(this.defaultContentEncoding));
