@@ -42,7 +42,21 @@ public class RedisManager {
 		}
 		this.jedisPool = new JedisPool(new JedisPoolConfig(), host, port, timeout, password, database);
 	}
-	
+
+	public long time(){
+		Jedis jedis = jedisPool.getResource();
+		long time = System.currentTimeMillis();
+		try{
+			List<String> redisTimes = jedis.time();
+			time = (Long.valueOf(redisTimes.get(0)) * 1000) + (Long.valueOf(redisTimes.get(1)) / 1000);
+		}finally{
+			jedisPool.returnResourceObject(jedis);
+		}
+
+		return time;
+	}
+
+
 	/**
 	 * getMap(获取map)
 	 * (这里描述这个方法适用条件 – 可选)
