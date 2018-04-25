@@ -24,6 +24,10 @@ public class SelectLimiter {
         if (this.size < 0) this.size = 0;
     }
 
+    public boolean isInvalid(){
+        return this.size <= 0 || this.start >= this.end || this.start < 0 || this.end < 0;
+    }
+
     public int getStart() {
         return start;
     }
