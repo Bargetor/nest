@@ -6,6 +6,7 @@ package com.bargetor.nest.mybatis;
 public class SelectLimiter {
     private int start;
     private int end;
+    private int size;
 
     public static SelectLimiter build(int pageNum, int pageSize){
         if(pageNum < 0 || pageSize <= 0)return null;
@@ -19,6 +20,8 @@ public class SelectLimiter {
     public SelectLimiter(int limitStart, int limitEnd){
         this.start = limitStart;
         this.end = limitEnd;
+        this.size = limitEnd - limitStart;
+        if (this.size < 0) this.size = 0;
     }
 
     public int getStart() {
@@ -35,5 +38,13 @@ public class SelectLimiter {
 
     public void setEnd(int end) {
         this.end = end;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }
