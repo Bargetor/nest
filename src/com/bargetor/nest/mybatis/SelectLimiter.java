@@ -17,6 +17,10 @@ public class SelectLimiter {
         return new SelectLimiter(limitStart, limitEnd);
     }
 
+    public SelectLimiter(){
+
+    }
+
     public SelectLimiter(int limitStart, int limitEnd){
         this.start = limitStart;
         this.end = limitEnd;
