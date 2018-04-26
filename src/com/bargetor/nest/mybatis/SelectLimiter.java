@@ -1,9 +1,11 @@
 package com.bargetor.nest.mybatis;
 
+import java.io.Serializable;
+
 /**
  * Created by bargetor on 2017/1/9.
  */
-public class SelectLimiter {
+public class SelectLimiter implements Serializable {
     private int start;
     private int end;
     private int size;
