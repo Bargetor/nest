@@ -17,12 +17,15 @@ import com.bargetor.nest.bpc.handler.BPCReturnValueHandler;
 import com.bargetor.nest.bpc.manager.BPCDispatchManager;
 import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.executor.ExecutorManager;
+import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
 import com.bargetor.nest.influxdb.InfluxDBManager;
+import com.bargetor.nest.influxdb.InfluxDBManagerImpl;
 import org.apache.log4j.Logger;
 import org.influxdb.dto.Point;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -65,11 +68,12 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	private boolean isDebug = false;
 
+	@Autowired
 	private InfluxDBManager influxDBManager;
 	private String pointMeasurement = "bpc";
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		if(this.returnValueHandler == null){
 			this.returnValueHandler = new BPCReturnValueHandler();
 		}
@@ -78,7 +82,6 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 		}
 
 		this.processHandler = new BPCRequestProcessHandler();
-
 	}
 
 	@Override

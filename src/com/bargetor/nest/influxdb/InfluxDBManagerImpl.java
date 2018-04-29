@@ -10,21 +10,29 @@ import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
 import org.influxdb.impl.TimeUtil;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Bargetor on 16/9/3.
  */
+@Component
 public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
     private static final Logger logger = Logger.getLogger(InfluxDBManagerImpl.class);
 
+    @Value("${influxdb.url:null}")
     @ParamCheck(isRequired = true)
     private String serverUrl;
+    @Value("${influxdb.username:null}")
     @ParamCheck(isRequired = true)
     private String userName;
+    @Value("${influxdb.password:null}")
     @ParamCheck(isRequired = true)
     private String password;
+    @Value("${influxdb.database:null}")
     @ParamCheck(isRequired = true)
     private String databaseName;
+    @Value("${influxdb.retentionPolicy:null}")
     private String retentionPolicy = "default";
 
     private InfluxDB db;
