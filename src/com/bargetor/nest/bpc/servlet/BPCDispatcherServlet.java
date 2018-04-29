@@ -235,6 +235,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	 * @param isSuccess 调用是否成功
 	 */
 	private void point(BPCRequest request, long bpcStartTime, boolean isSuccess){
+		if (this.influxDBManager == null) this.influxDBManager = (InfluxDBManager) SpringApplicationUtil.getBean(InfluxDBManager.class);
 		ExecutorManager.getInstance().commitRunnable(() -> {
 			if(request == null)return;
 			if(request.getMethod() == null)return;
