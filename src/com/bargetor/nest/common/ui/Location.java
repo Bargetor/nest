@@ -149,6 +149,13 @@ public class Location implements Serializable {
 	@JSONField(deserialize = false, serialize = false)
 	public boolean isZero(){ return this.lat == 0.0 && this.lng == 0.0;}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Location)) return false;
+		Location other = (Location) obj;
+		return this.lat == other.lat && this.lng == other.lng && this.type == other.type;
+	}
+
 	public enum Type{
 		WGS84,
 		GCJ02,

@@ -69,7 +69,7 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
         }
 
         if(this.db == null){
-            logger.error("influxdb unknow error");
+            logger.error("influxdb unknown error");
             return;
         }
 
