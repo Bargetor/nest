@@ -64,7 +64,8 @@ dependencies {
         'redis.clients:jedis:2.9.0',
         'org.influxdb:influxdb-java:2.5',
         'com.101tec:zkclient:0.10',
-        'org.redisson:redisson:3.5.0'
+        'org.redisson:redisson:3.5.0',
+        'io.jstack:sendcloud4j:0.0.5'
     )
     compile (
         'com.alibaba:dubbo:2.5.3'

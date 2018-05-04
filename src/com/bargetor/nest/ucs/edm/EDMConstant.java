@@ -20,11 +20,10 @@ package com.bargetor.nest.ucs.edm;
  * @version 1.0.0
  *
  */
+@Deprecated
 public class EDMConstant {
 	public static final String MAIL_SEND_URL = "http://sendcloud.sohu.com/webapi/mail.send.json";
-	
-	
-	
-	public static final String SC_API_USER = "bargetor_test_C9Lnuz";
-	public static final String SC_API_KEY = "va1NbZRs1VIQPk1b";
+
+	public static final String SC_API_USER = "migrant";
+	public static final String SC_API_KEY = "k03voG7oi1l2qtRH";
 }

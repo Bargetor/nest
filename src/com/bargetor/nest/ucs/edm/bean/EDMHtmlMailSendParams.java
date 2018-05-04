@@ -20,6 +20,7 @@ package com.bargetor.nest.ucs.edm.bean;
  * @version 1.0.0
  *
  */
+@Deprecated
 public class EDMHtmlMailSendParams extends EDMMailSendBaseParams{
 	private String html;
 

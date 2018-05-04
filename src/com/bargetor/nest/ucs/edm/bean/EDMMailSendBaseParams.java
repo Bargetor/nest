@@ -23,6 +23,7 @@ import java.util.List;
  * @version 1.0.0
  *
  */
+@Deprecated
 public class EDMMailSendBaseParams {
 	private String form;
 	private List<String> to;
