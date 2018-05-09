@@ -2,6 +2,28 @@ package com.bargetor.nest.common.util
 
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.BeanWrapperImpl
+import kotlin.properties.ObservableProperty
+import kotlin.reflect.KProperty
+
+fun <T> observing(initialValue: T,
+                  willSet: () -> Unit = { },
+                  didSet: () -> Unit = { }
+) = object : ObservableProperty<T>(initialValue) {
+    override fun beforeChange(property: KProperty<*>, oldValue: T, newValue: T): Boolean =
+            true.apply { willSet() }
+
+    override fun afterChange(property: KProperty<*>, oldValue: T, newValue: T) = didSet()
+}
+
+fun <T> observingOrNull(initialValueOrNull: T?,
+                  willSet: () -> Unit = { },
+                  didSet: () -> Unit = { }
+) = object : ObservableProperty<T?>(initialValueOrNull) {
+    override fun beforeChange(property: KProperty<*>, oldValue: T?, newValue: T?): Boolean =
+            true.apply { willSet() }
+
+    override fun afterChange(property: KProperty<*>, oldValue: T?, newValue: T?) = didSet()
+}
 
 class BeanUtil{
     companion object {

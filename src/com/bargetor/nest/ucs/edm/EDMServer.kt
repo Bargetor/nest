@@ -4,7 +4,6 @@ import io.jstack.sendcloud4j.SendCloud
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.io.File
 import io.jstack.sendcloud4j.mail.Email
 
 
