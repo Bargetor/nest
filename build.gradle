@@ -65,13 +65,18 @@ dependencies {
         'org.influxdb:influxdb-java:2.5',
         'com.101tec:zkclient:0.10',
         'org.redisson:redisson:3.5.0',
-        'io.jstack:sendcloud4j:0.0.5'
+
     )
     compile (
         'com.alibaba:dubbo:2.5.3'
     ){
         exclude group:'org.springframework', module:'spring'
         exclude group:'org.apache.zookeeper', module:'zookeeper'
+    }
+    compile (
+        'io.jstack:sendcloud4j:0.0.5'
+    ){
+        exclude group:'ch.qos.logback', module:'logback-classic'
     }
 
 }
