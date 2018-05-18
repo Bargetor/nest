@@ -109,7 +109,8 @@ public class BPCServiceMethod {
     }
 
     private boolean requestValidate(LinkedHashMap<String, Object> paramMap){
-        if(StringUtil.isNullStr(this.requestValidateEL))return true;
+        if (StringUtil.isNullStr(this.requestValidateEL))return true;
+        if (this.isTest) return true;
 
         SpelExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
