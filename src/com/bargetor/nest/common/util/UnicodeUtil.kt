@@ -1,5 +1,9 @@
 package com.bargetor.nest.common.util
 
+import com.sun.tools.internal.xjc.model.Multiplicity.group
+import java.util.regex.Pattern
+
+
 class UnicodeUtil{
     companion object {
         fun unicode(string: String): String{
@@ -20,21 +24,23 @@ class UnicodeUtil{
             }
         }
 
-        fun deUnicode(unicode: String): String{
-            val string = StringBuffer()
-            unicode.split("\\u").forEach {
-                if (it.isEmpty()) return@forEach
-                // 转换出每一个代码点
-                val data = Integer.parseInt(it, 16)
-                // 追加成string
-                string.append(data.toChar())
+
+        fun unicodeToString(str: String): String {
+            var str = str
+
+            val pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))")
+            val matcher = pattern.matcher(str)
+            var ch: Char
+            while (matcher.find()) {
+                ch = Integer.parseInt(matcher.group(2), 16).toChar()
+                str = str.replace(matcher.group(1), ch + "")
             }
-            return string.toString()
+            return str
         }
     }
 }
 
 fun main(args: Array<String>) {
     println(UnicodeUtil.unicode("上海"))
-    println(UnicodeUtil.deUnicode("\\u4e0a\\u6d77"))
+    println(UnicodeUtil.unicodeToString("\\u4e0aFF\\u6d77"))
 }

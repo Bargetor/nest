@@ -467,6 +467,15 @@ public class DateUtil {
 		}
 	}
 
+	public static Date parseDateOnly(String dateStr){
+		if(StringUtil.isNullStr(dateStr))return null;
+		try {
+			return datePartFormat.get().parse(dateStr);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public static TimeZone getTimeZone(){
 		return TimeZone.getDefault();
 	}
