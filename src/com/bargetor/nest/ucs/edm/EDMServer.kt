@@ -15,7 +15,17 @@ class EDMServer: InitializingBean{
     @Value("\${sendCloud.apiKey:null}")
     var sendCloudApiKey: String? = null
 
-    var sendCloud: SendCloud? = null
+    internal var sendCloud: SendCloud? = null
+
+    fun send(from: String, fromName: String, to: List<String>, subject: String ,contentHtml: String){
+        val email = Email.general()
+                .from(from)
+                .fromName(fromName)
+                .html(contentHtml)          // or .plain()
+                .subject(subject)
+                .to(to.toTypedArray())
+        val result = this.sendCloud?.mail()?.send(email)
+    }
 
     override fun afterPropertiesSet() {
         if (this.sendCloudApiKey != null && this.sendCloudApiUser != null){

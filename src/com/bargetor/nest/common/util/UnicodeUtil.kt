@@ -1,8 +1,6 @@
 package com.bargetor.nest.common.util
 
-import com.sun.tools.internal.xjc.model.Multiplicity.group
 import java.util.regex.Pattern
-
 
 class UnicodeUtil{
     companion object {
