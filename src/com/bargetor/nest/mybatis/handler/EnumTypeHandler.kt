@@ -4,11 +4,12 @@ import org.apache.ibatis.type.EnumTypeHandler
 import org.apache.ibatis.type.JdbcType
 import org.apache.ibatis.type.MappedJdbcTypes
 import org.apache.ibatis.type.MappedTypes
+import sun.jvm.hotspot.debugger.cdbg.EnumType
 import java.sql.CallableStatement
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 
-@MappedJdbcTypes(JdbcType.TINYINT, JdbcType.INTEGER, JdbcType.BIGINT, JdbcType.SMALLINT)
+@MappedJdbcTypes(JdbcType.TINYINT, JdbcType.INTEGER, JdbcType.BIGINT, JdbcType.SMALLINT, JdbcType.VARCHAR)
 @MappedTypes(CodeEnum::class)
 class EnumTypeHandler<E : Enum<E>>(val type: Class<E>) : EnumTypeHandler<E>(type){
 
@@ -27,8 +28,8 @@ class EnumTypeHandler<E : Enum<E>>(val type: Class<E>) : EnumTypeHandler<E>(type
 
     override fun getNullableResult(cs: CallableStatement?, columnIndex: Int): E? {
         if (CodeEnum::class.java.isAssignableFrom(this.type)){
-            val c = cs?.getInt(columnIndex) ?: return null
-            return CodeEnum.valueOfCode(this.type as Class<CodeEnum<E>>, c) as E
+            val c = cs?.getString(columnIndex) ?: return null
+            return this.getEnum(c)
         }else{
             return super.getNullableResult(cs, columnIndex)
         }
@@ -36,8 +37,8 @@ class EnumTypeHandler<E : Enum<E>>(val type: Class<E>) : EnumTypeHandler<E>(type
 
     override fun getNullableResult(rs: ResultSet?, columnIndex: Int): E? {
         if (CodeEnum::class.java.isAssignableFrom(this.type)){
-            val c = rs?.getInt(columnIndex) ?: return null
-            return CodeEnum.valueOfCode(this.type as Class<CodeEnum<E>>, c) as E
+            val c = rs?.getString(columnIndex) ?: return null
+            return this.getEnum(c)
         }else{
             return super.getNullableResult(rs, columnIndex)
         }
@@ -45,10 +46,19 @@ class EnumTypeHandler<E : Enum<E>>(val type: Class<E>) : EnumTypeHandler<E>(type
 
     override fun getNullableResult(rs: ResultSet?, columnName: String?): E? {
         if (CodeEnum::class.java.isAssignableFrom(this.type)){
-            val c = rs?.getInt(columnName) ?: return null
-            return CodeEnum.valueOfCode(this.type as Class<CodeEnum<E>>, c) as E
+            val c = rs?.getString(columnName) ?: return null
+            return this.getEnum(c)
         }else{
             return super.getNullableResult(rs, columnName)
+        }
+    }
+
+    private fun getEnum(string: String): E?{
+        val int = string.toIntOrNull()
+        return if (int == null){
+            this.type.enumConstants.firstOrNull { it.name == string }
+        }else{
+            CodeEnum.valueOfCode(this.type as Class<CodeEnum<E>>, int) as E
         }
     }
 }
