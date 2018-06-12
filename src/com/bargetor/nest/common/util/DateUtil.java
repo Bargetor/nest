@@ -19,6 +19,7 @@ public class DateUtil {
 	public static final String timeFormatStr = "yyyy-MM-dd HH:mm:ss";
 	public static final String timePartFormatStr = "HH:mm:ss";
 	public static final String datePartFormatStr = "yyyy-MM-dd";
+	public static final String dateTimeTZFormatStr = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	public static final ThreadLocal<SimpleDateFormat> timeFormat = new ThreadLocal<SimpleDateFormat>(){
 		@Override
 		protected SimpleDateFormat initialValue() {
@@ -37,6 +38,13 @@ public class DateUtil {
 		@Override
 		protected SimpleDateFormat initialValue() {
 			return new SimpleDateFormat(datePartFormatStr);
+		}
+	};
+
+	public static final ThreadLocal<SimpleDateFormat> dateTimeTZPartFormat = new ThreadLocal<SimpleDateFormat>(){
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(dateTimeTZFormatStr);
 		}
 	};
 
