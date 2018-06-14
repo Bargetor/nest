@@ -420,6 +420,7 @@ public class DateUtil {
 	 * @see Calendar
 	 */
 	public static List<Range<Date>> breakDown(Date start, Date end, int calendarUnit){
+		if (start == null || end == null) return null;
 		if(end.compareTo(start) < 0)return null;
 		List<Range<Date>> ranges = new ArrayList<>();
 

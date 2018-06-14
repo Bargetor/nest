@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
 import com.bargetor.nest.bpc.exception.BPCException;
+import com.bargetor.nest.bpc.exception.BPCUnknownException;
 import com.bargetor.nest.bpc.servlet.BPCRequest;
 import com.bargetor.nest.bpc.servlet.BPCResponse;
 import com.bargetor.nest.common.bpc.BPCUtil;
@@ -22,7 +23,7 @@ public class BPCExceptionHandler {
             JSON errorJson = ((BPCException)e).toJson();
             responseBean.setError(errorJson);
         }else {
-            responseBean.setError(e);
+            responseBean.setError(new BPCUnknownException().toJson());
         }
         String responseJsonString = JSON.toJSONString(responseBean);
         BPCUtil.writeResponse(response.getHttpResponse(), responseJsonString);
