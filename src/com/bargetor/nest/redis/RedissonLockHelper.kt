@@ -24,16 +24,16 @@ class RedissonLockHelper{
             val lock = redissonClient.getLock(key)
             var locked = false
 
-            try {
+            return try {
                 locked = lock.tryLock(waitTime, leaseTime, TimeUnit.MILLISECONDS)
                 if (locked) {
-                    return onLock()
+                    onLock()
                 } else {
-                    return onLockOccupied()
+                    onLockOccupied()
                 }
             } catch (e: InterruptedException) {
                 //获取锁失败，直接退出
-                return onLockGetFail()
+                onLockGetFail()
             } finally {
                 lock.unlock()
             }
