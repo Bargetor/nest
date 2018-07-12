@@ -26,6 +26,7 @@ public class DateUtil {
 			return new SimpleDateFormat(timeFormatStr);
 		}
 	};
+	public static final Long dayLongMS = 86400000L;
 
 	public static final ThreadLocal<SimpleDateFormat> timePartFormat = new ThreadLocal<SimpleDateFormat>(){
 		@Override
