@@ -13,7 +13,7 @@ public class RegexKeyCache implements Cache {
 
     private String name;
 
-    private final ConcurrentMap<Object, Object> store;
+    final ConcurrentMap<Object, Object> store;
 
     private boolean allowNullValues;
 

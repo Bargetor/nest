@@ -3,10 +3,11 @@ package com.bargetor.nest.common.util
 import java.util.regex.Pattern
 
 @kotlin.jvm.JvmName("systemPrintRunTime")
-public fun printRunTime(action: () -> Unit): Unit {
+public fun <T>printRunTime(action: () -> T): T {
     val start = System.currentTimeMillis()
-    action()
+    val result = action()
     println("run time:" + (System.currentTimeMillis() - start))
+    return result
 }
 
 @kotlin.jvm.JvmName("filterEmoji")
