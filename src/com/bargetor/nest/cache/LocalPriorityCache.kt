@@ -38,11 +38,11 @@ class LocalPriorityCache: Cache, InitializingBean {
         return this.regexKeyCache.store
     }
 
-    override fun get(key: Any?): Cache.ValueWrapper {
+    override fun get(key: Any?): Cache.ValueWrapper? {
         return this.regexKeyCache.get(key) ?: this.redisCache.get(key)
     }
 
-    override fun <T : Any?> get(key: Any?, type: Class<T>?): T {
+    override fun <T : Any?> get(key: Any?, type: Class<T>?): T? {
         return this.regexKeyCache.get(key, type) ?: this.redisCache.get(key, type)
     }
 
@@ -51,7 +51,7 @@ class LocalPriorityCache: Cache, InitializingBean {
         this.redisCache.evict(key)
     }
 
-    override fun putIfAbsent(key: Any?, value: Any?): Cache.ValueWrapper {
+    override fun putIfAbsent(key: Any?, value: Any?): Cache.ValueWrapper? {
         this.redisCache.putIfAbsent(key, value)
         return this.regexKeyCache.putIfAbsent(key, value)
     }
