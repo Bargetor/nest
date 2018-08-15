@@ -5,7 +5,7 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import io.jstack.sendcloud4j.mail.Email
-
+import io.jstack.sendcloud4j.mail.Result
 
 
 @Component
@@ -17,11 +17,20 @@ class EDMServer: InitializingBean{
 
     internal var sendCloud: SendCloud? = null
 
-    fun send(from: String, fromName: String, to: List<String>, subject: String ,contentHtml: String){
+    fun send(from: String, fromName: String, to: List<String>, subject: String ,contentHtml: String): Result?{
         val email = Email.general()
                 .from(from)
                 .fromName(fromName)
                 .html(contentHtml)          // or .plain()
+                .subject(subject)
+                .to(to.toTypedArray())
+        return this.sendCloud?.mail()?.send(email)
+    }
+
+    fun sendTemplate(from: String, fromName: String, to: List<String>, subject: String, template: String){
+        val email = Email.template(template)
+                .from(from)
+                .fromName(fromName)
                 .subject(subject)
                 .to(to.toTypedArray())
         val result = this.sendCloud?.mail()?.send(email)
