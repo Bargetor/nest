@@ -9,10 +9,7 @@
  */
 package com.bargetor.nest.common.util;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -29,7 +26,13 @@ import freemarker.template.TemplateException;
  *
  */
 public class TemplateUtil {
-	
+
+	public static String build(InputStream inputStream, Object data){
+		if (inputStream == null) return null;
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+		return build(bufferedReader, data);
+	}
+
 	public static String build(Reader reader, Object data){
 		try {
 			Template template = new Template("", reader, null);
