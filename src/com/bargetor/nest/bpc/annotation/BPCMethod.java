@@ -19,4 +19,5 @@ public @interface BPCMethod {
      * @return
      */
     String requestValidateEL() default "";
+    boolean isNonUserTokenMethod() default false;
 }

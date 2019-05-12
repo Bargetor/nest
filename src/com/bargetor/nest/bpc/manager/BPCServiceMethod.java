@@ -42,6 +42,7 @@ public class BPCServiceMethod {
     private Map<Parameter, ParamCheckList> paramCheckListMap;
 
     private boolean isTest = false;
+    private boolean isNonUserTokenMethod = false;
     private String lockKey;
     private String requestValidateEL;
 
@@ -90,9 +91,14 @@ public class BPCServiceMethod {
         }
 
         if(locked){
-            Object result = this.invokeBasic(paramMap);
-            lock.unlock();
-            return result;
+            try{
+                Object result = this.invokeBasic(paramMap);
+                return result;
+            }catch (Exception e){
+                throw e;
+            } finally {
+                lock.unlock();
+            }
         }else{
             throw new BPCLockOccupiedException();
         }
@@ -247,5 +253,13 @@ public class BPCServiceMethod {
 
     public void setRequestValidateEL(String requestValidateEL) {
         this.requestValidateEL = requestValidateEL;
+    }
+
+    public boolean isNonUserTokenMethod() {
+        return isNonUserTokenMethod;
+    }
+
+    public void setNonUserTokenMethod(boolean nonUserTokenMethod) {
+        isNonUserTokenMethod = nonUserTokenMethod;
     }
 }

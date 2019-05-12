@@ -37,6 +37,7 @@ public class BPCServiceProxyBean implements InitializingBean, ApplicationContext
                 );
                 methodBean.setTest(methodAnnotation.isTest());
                 methodBean.setLockKey(methodAnnotation.lockKey());
+                methodBean.setNonUserTokenMethod(methodAnnotation.isNonUserTokenMethod());
                 methodBean.setRequestValidateEL(methodAnnotation.requestValidateEL());
 
                 BPCDispatchManager.getInstance().registerMethod(this.url, methodBean);
