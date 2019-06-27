@@ -65,6 +65,7 @@ dependencies {
         'org.influxdb:influxdb-java:2.5',
         'com.101tec:zkclient:0.10',
         'org.redisson:redisson:3.5.0',
+        'com.baomidou:mybatis-plus:3.1.2',
 
     )
     compile (
