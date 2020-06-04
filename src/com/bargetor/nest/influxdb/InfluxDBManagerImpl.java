@@ -43,12 +43,22 @@ public class InfluxDBManagerImpl implements InitializingBean, InfluxDBManager {
     }
 
     public void writePoint(Point point){
+        if (this.isDisable())return;
+
         if(this.db == null){
             this.connectDB();
         }
 
         if(this.db == null)return;
         this.db.write(this.databaseName, this.retentionPolicy, point);
+    }
+
+    /**
+     * 判断是否关闭influx
+     * @return
+     */
+    private boolean isDisable(){
+        return StringUtil.isNullStr(this.serverUrl) || "null".equals(this.serverUrl);
     }
 
     private void connectDB(){

@@ -437,6 +437,10 @@ public class DateUtil {
 
 		return ranges;
 	}
+	public static boolean isSameDay(Date date1, Date date2){
+		if (date1 == null || date2 == null) return false;
+		return getDayStart(date1).getTime() == getDayStart(date2).getTime();
+	}
 
 	public static Date strToDate(String dateStr){
 		if(StringUtil.isNullStr(dateStr))return null;
