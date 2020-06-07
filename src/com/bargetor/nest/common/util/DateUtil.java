@@ -121,6 +121,12 @@ public class DateUtil {
 		return timeFormat.get().format(date);
 	}
 
+	public static int getUnit(Date date, int unit){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(unit);
+	}
+
 	/**
 	 * 获取日期在一定单位内的开始
 	 * @param date 日期
