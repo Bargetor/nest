@@ -93,6 +93,13 @@ public class DateUtil {
 		return new Date(date.getTime() + ms);
 	}
 
+	public static Date getLateForUnit(Date date, int offset, int unit){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(unit, offset);
+		return cal.getTime();
+	}
+
 	public static String getDateStr(Date date){
 		return getStr("yyyy-MM-dd", date);
 	}
