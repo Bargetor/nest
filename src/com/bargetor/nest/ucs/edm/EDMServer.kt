@@ -5,6 +5,7 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import io.jstack.sendcloud4j.mail.Email
+import io.jstack.sendcloud4j.mail.GeneralEmail
 import io.jstack.sendcloud4j.mail.Result
 
 
@@ -24,16 +25,20 @@ class EDMServer: InitializingBean{
                 .html(contentHtml)          // or .plain()
                 .subject(subject)
                 .to(to.toTypedArray())
-        return this.sendCloud?.mail()?.send(email)
+        return this.send(email)
     }
 
-    fun sendTemplate(from: String, fromName: String, to: List<String>, subject: String, template: String){
+    fun sendTemplate(from: String, fromName: String, to: List<String>, subject: String, template: String): Result?{
         val email = Email.template(template)
                 .from(from)
                 .fromName(fromName)
                 .subject(subject)
                 .to(to.toTypedArray())
-        val result = this.sendCloud?.mail()?.send(email)
+        return this.send(email)
+    }
+
+    fun send(email: Email<*>): Result?{
+        return this.sendCloud?.mail()?.send(email)
     }
 
     override fun afterPropertiesSet() {
