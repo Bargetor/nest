@@ -52,7 +52,7 @@ fun main(args: Array<String>) {
     val edmServer = EDMServer()
     edmServer.sendCloud = SendCloud.createWebApi("migrant", "k03voG7oi1l2qtRH")
     val email = Email.general()
-            .from("test@bargetor.com")
+            .from("cow@bargetor.com")
             .fromName("JStack Support")
             .html("<b>Hello World!</b>")          // or .plain()
             .subject("mail title")
