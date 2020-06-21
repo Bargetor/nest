@@ -6,6 +6,7 @@ import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 import com.alibaba.fastjson.JSON;
 import com.bargetor.nest.bpc.annotation.BPCService;
 import com.bargetor.nest.bpc.bean.BPCRequestBean;
+import com.bargetor.nest.bpc.bean.BPCRequestMetaBean;
 import com.bargetor.nest.bpc.bean.BPCResponseBean;
 import com.bargetor.nest.bpc.bean.BPCServiceProxyBean;
 import com.bargetor.nest.bpc.exception.BPCMetaParamInvalidException;
@@ -19,6 +20,7 @@ import com.bargetor.nest.common.check.param.ParamCheckUtil;
 import com.bargetor.nest.common.executor.ExecutorManager;
 import com.bargetor.nest.common.springmvc.SpringApplicationUtil;
 import com.bargetor.nest.common.util.ArrayUtil;
+import com.bargetor.nest.common.util.StringUtil;
 import com.bargetor.nest.influxdb.InfluxDBManager;
 import com.bargetor.nest.influxdb.InfluxDBManagerImpl;
 import org.apache.log4j.Logger;
@@ -67,6 +69,7 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	private Set<BPCFilter> filterSet;
 
 	private boolean isDebug = false;
+	private String debugToken;
 
 	@Autowired
 	private InfluxDBManager influxDBManager;
@@ -214,7 +217,29 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 	}
 
 	private boolean doFilter(BPCRequest request, BPCResponse response){
-		if(request.getMethod().isTest() && this.isDebug)return true;
+		if (request.getMethod().isTest()){
+			if (!this.isDebug) {
+				logger.info("test method must use in debug mode");
+				return false;
+			}
+			BPCRequestMetaBean metaBean = request.getRequestBean().getMeta();
+			if (metaBean == null) {
+				logger.info("debug token miss");
+				return false;
+			}
+			String requestDebugToken = metaBean.getToken();
+			if (StringUtil.isNullStr(requestDebugToken)) {
+				logger.info("debug token miss");
+				return false;
+			}
+			if (requestDebugToken.equals(this.debugToken)){
+				return true;
+			}else{
+				logger.info("debug token miss");
+				return false;
+			}
+		}
+
 		if(ArrayUtil.isNull(this.filterSet))return true;
 		for (BPCFilter filter: this.filterSet) {
 			if(!filter.pass(request, response)){
@@ -323,5 +348,13 @@ public class BPCDispatcherServlet extends HttpServlet implements InitializingBea
 
 	public void setPointMeasurement(String pointMeasurement) {
 		this.pointMeasurement = pointMeasurement;
+	}
+
+	public String getDebugToken() {
+		return debugToken;
+	}
+
+	public void setDebugToken(String debugToken) {
+		this.debugToken = debugToken;
 	}
 }
