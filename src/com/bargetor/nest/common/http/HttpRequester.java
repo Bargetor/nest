@@ -20,15 +20,13 @@ import com.bargetor.nest.common.util.MapUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -69,7 +67,6 @@ public class HttpRequester {
 	 */
 	public HttpRequester(File keyStore, String keyStorePassword){
 		this.defaultContentEncoding = Charset.defaultCharset().name();
-
 		if(keyStore == null){
 			this.httpClient = HttpClients.createDefault();
 		}else {
@@ -260,7 +257,6 @@ public class HttpRequester {
 		}else{
 			return null;
 		}
-		
 		if(MapUtil.isMapNotNull(properties)){
 			for (Entry<String, String> entry : properties.entrySet()) {
 				request.setHeader(entry.getKey(), entry.getValue());

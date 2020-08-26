@@ -16,9 +16,11 @@ class RegexUtil {
             return find(regex, string)
         }
 
-        fun find(regex: Regex, string: String): List<String> {
+        fun find(regex: Regex, string: String, groupIndex: Int? = null): List<String> {
             val matcher = regex.findAll(string)
-            return matcher.map { it.value }.toList()
+            return matcher.map {
+                if (groupIndex != null) it.groups[groupIndex]!!.value else it.value
+            }.toList()
         }
     }
 }
