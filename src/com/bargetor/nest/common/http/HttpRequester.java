@@ -49,7 +49,7 @@ public class HttpRequester {
 	private static final Logger logger = Logger.getLogger(HttpRequester.class);
 	
 	private CloseableHttpClient httpClient;
-	private RequestConfig requestConfig = HttpRequester.buildDefaultRequestConfig();
+	public HttpRequestConfig requestConfig = HttpRequester.buildDefaultRequestConfig(10000);
 	
 	/**
 	 * defaultContentEncoding:默认内容编码
@@ -268,12 +268,12 @@ public class HttpRequester {
 
 	private HttpResponse request(HttpRequestBase request){
 		logger.info("launch http " + request.getMethod() + " request:" + request.getURI());
-		request.setConfig(requestConfig);
+		request.setConfig(this.requestConfig.getRequestConfig());
 		// 重试3次
 		int retry = 0;
 		do {
 			try {
-				CloseableHttpResponse response = httpClient.execute(request);
+				CloseableHttpResponse response = this.httpClient.execute(request);
 				return this.makeContent(request.getURI().toString(), request, response);
 			} catch (SSLHandshakeException e){
 				//https证书校验失败
@@ -285,9 +285,9 @@ public class HttpRequester {
 				request.releaseConnection();
 			}
 			logger.info("send http fail, retry:" + retry);
-		} while (++retry < 3);
+		} while (++retry < this.requestConfig.getRetry());
 
-		logger.error("send http fail after retry 3 times, url=" + request.getURI());
+		logger.error("send http fail after retry " + this.requestConfig.getRetry() + " times, url=" + request.getURI());
 		return null;
 	}
 	
@@ -397,12 +397,14 @@ public class HttpRequester {
 		}
 	}
 
-	public static RequestConfig buildDefaultRequestConfig(){
+	public static HttpRequestConfig buildDefaultRequestConfig(int timeout){
 		RequestConfig requestConfig = RequestConfig.custom()
-				.setConnectTimeout(10000)
-				.setConnectionRequestTimeout(10000)
-				.setSocketTimeout(10000).build();
-		return requestConfig;
+				.setConnectTimeout(timeout)
+				.setConnectionRequestTimeout(timeout)
+				.setSocketTimeout(timeout).build();
+		HttpRequestConfig httpRequestConfig = new HttpRequestConfig();
+		httpRequestConfig.requestConfig = requestConfig;
+		return httpRequestConfig;
 	}
  
 	/**
