@@ -73,6 +73,7 @@ dependencies {
     ){
         exclude group:'org.springframework', module:'spring'
         exclude group:'org.apache.zookeeper', module:'zookeeper'
+        exclude group:'org.slf4j', module:'slf4j-log4j12'
     }
     compile (
         'io.jstack:sendcloud4j:0.0.5'

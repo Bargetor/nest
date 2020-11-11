@@ -161,11 +161,13 @@ public class DateUtil {
 				if(tempUnit == Calendar.WEEK_OF_MONTH || tempUnit == Calendar.WEEK_OF_MONTH){
 					cal.set(Calendar.DAY_OF_WEEK, 1);
 				}
-			case Calendar.DAY_OF_YEAR:
 			case Calendar.DAY_OF_MONTH:
 			case Calendar.DAY_OF_WEEK:
-				cal.set(Calendar.HOUR_OF_DAY, 0);
+				cal.set(Calendar.DAY_OF_WEEK, 1);
+				cal.add(Calendar.DAY_OF_YEAR, 1);
+			case Calendar.DAY_OF_YEAR:
 			case Calendar.HOUR_OF_DAY:
+				cal.set(Calendar.HOUR_OF_DAY, 0);
 			case Calendar.HOUR:
 				cal.set(Calendar.MINUTE, 0);
 			case Calendar.MINUTE:
@@ -205,11 +207,13 @@ public class DateUtil {
 				if(tempUnit == Calendar.WEEK_OF_MONTH || tempUnit == Calendar.WEEK_OF_MONTH){
 					cal.set(Calendar.DAY_OF_WEEK, 0);
 				}
-			case Calendar.DAY_OF_YEAR:
 			case Calendar.DAY_OF_MONTH:
 			case Calendar.DAY_OF_WEEK:
-				cal.set(Calendar.HOUR_OF_DAY, 23);
+				cal.set(Calendar.DAY_OF_WEEK, 7);
+				cal.add(Calendar.DAY_OF_YEAR, 1);
+			case Calendar.DAY_OF_YEAR:
 			case Calendar.HOUR_OF_DAY:
+				cal.set(Calendar.HOUR_OF_DAY, 23);
 			case Calendar.HOUR:
 				cal.set(Calendar.MINUTE, 59);
 			case Calendar.MINUTE:
