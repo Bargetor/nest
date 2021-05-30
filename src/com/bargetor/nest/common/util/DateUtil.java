@@ -163,8 +163,11 @@ public class DateUtil {
 				}
 			case Calendar.DAY_OF_MONTH:
 			case Calendar.DAY_OF_WEEK:
-				cal.set(Calendar.DAY_OF_WEEK, 1);
-				cal.add(Calendar.DAY_OF_YEAR, 1);
+				if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+					cal.add(Calendar.WEEK_OF_YEAR, -1);
+				}
+				cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//				cal.add(Calendar.DAY_OF_YEAR, 1);
 			case Calendar.DAY_OF_YEAR:
 			case Calendar.HOUR_OF_DAY:
 				cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -209,8 +212,12 @@ public class DateUtil {
 				}
 			case Calendar.DAY_OF_MONTH:
 			case Calendar.DAY_OF_WEEK:
-				cal.set(Calendar.DAY_OF_WEEK, 7);
-				cal.add(Calendar.DAY_OF_YEAR, 1);
+				if (tempUnit == Calendar.DAY_OF_WEEK){
+					if (cal.get(Calendar.DAY_OF_WEEK) > Calendar.SUNDAY){
+						cal.add(Calendar.WEEK_OF_YEAR, 1);
+					}
+					cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+				}
 			case Calendar.DAY_OF_YEAR:
 			case Calendar.HOUR_OF_DAY:
 				cal.set(Calendar.HOUR_OF_DAY, 23);
